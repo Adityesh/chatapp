@@ -1,0 +1,77 @@
+[2024-06-15T19:00:00.929Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-15T19:00:01.182Z][QUERY]: SELECT version();
+[2024-06-15T19:00:01.184Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'migrations'
+[2024-06-15T19:00:01.187Z][QUERY]: CREATE TABLE "projects"."migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_8c82d7f526340ab734260ea46be" PRIMARY KEY ("id"))
+[2024-06-15T19:00:01.201Z][QUERY]: SELECT * FROM "projects"."migrations" "migrations" ORDER BY "id" DESC
+[2024-06-15T19:00:01.202Z]No migrations were found in the database. Nothing to revert!
+[2024-06-15T19:00:15.404Z][ ] Migration1718357029779
+[2024-06-15T19:00:15.405Z][ ] Migration1718447055187
+[2024-06-15T19:00:15.405Z][ ] SchemaUpdate1718477951822
+[2024-06-15T19:00:35.239Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-15T19:00:35.498Z][QUERY]: SELECT version();
+[2024-06-15T19:00:35.500Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'migrations'
+[2024-06-15T19:00:35.505Z][QUERY]: SELECT * FROM "projects"."migrations" "migrations" ORDER BY "id" DESC
+[2024-06-15T19:00:35.507Z]0 migrations are already loaded in the database.
+[2024-06-15T19:00:35.507Z]3 migrations were found in the source code.
+[2024-06-15T19:00:35.507Z]3 migrations are new migrations must be executed.
+[2024-06-15T19:00:35.507Z][QUERY]: START TRANSACTION
+[2024-06-15T19:00:35.508Z][QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-15T19:00:35.509Z][FAILED QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-15T19:00:35.509Z][QUERY ERROR]: error: relation "users" already exists
+[2024-06-15T19:00:35.509Z]Migration "Migration1718357029779" failed, error: relation "users" already exists
+[2024-06-15T19:00:35.509Z][QUERY]: ROLLBACK
+[2024-06-15T19:01:02.650Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-15T19:01:02.874Z][QUERY]: SELECT version();
+[2024-06-15T19:01:02.875Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'migrations'
+[2024-06-15T19:01:02.881Z][QUERY]: SELECT * FROM "projects"."migrations" "migrations" ORDER BY "id" DESC
+[2024-06-15T19:01:02.882Z]No migrations were found in the database. Nothing to revert!
+[2024-06-15T19:01:28.075Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-15T19:01:28.264Z][QUERY]: SELECT version();
+[2024-06-15T19:01:28.266Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'migrations'
+[2024-06-15T19:01:28.271Z][QUERY]: SELECT * FROM "projects"."migrations" "migrations" ORDER BY "id" DESC
+[2024-06-15T19:01:28.272Z]0 migrations are already loaded in the database.
+[2024-06-15T19:01:28.272Z]2 migrations were found in the source code.
+[2024-06-15T19:01:28.273Z]2 migrations are new migrations must be executed.
+[2024-06-15T19:01:28.273Z][QUERY]: START TRANSACTION
+[2024-06-15T19:01:28.273Z][QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-15T19:01:28.275Z][FAILED QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-15T19:01:28.275Z][QUERY ERROR]: error: relation "users" already exists
+[2024-06-15T19:01:28.275Z]Migration "Migration1718357029779" failed, error: relation "users" already exists
+[2024-06-15T19:01:28.275Z][QUERY]: ROLLBACK
+[2024-06-15T19:02:09.418Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-15T19:02:09.608Z][QUERY]: SELECT version();
+[2024-06-15T19:02:09.610Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'migrations'
+[2024-06-15T19:02:09.615Z][QUERY]: SELECT * FROM "projects"."migrations" "migrations" ORDER BY "id" DESC
+[2024-06-15T19:02:09.616Z]No migrations were found in the database. Nothing to revert!
+[2024-06-15T19:03:13.522Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-15T19:03:13.758Z][QUERY]: SELECT version();
+[2024-06-15T19:03:13.759Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'migrations'
+[2024-06-15T19:03:13.765Z][QUERY]: SELECT * FROM "projects"."migrations" "migrations" ORDER BY "id" DESC
+[2024-06-15T19:03:13.766Z]0 migrations are already loaded in the database.
+[2024-06-15T19:03:13.766Z]3 migrations were found in the source code.
+[2024-06-15T19:03:13.766Z]3 migrations are new migrations must be executed.
+[2024-06-15T19:03:13.766Z][QUERY]: START TRANSACTION
+[2024-06-15T19:03:13.767Z][QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-15T19:03:13.768Z][FAILED QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-15T19:03:13.768Z][QUERY ERROR]: error: relation "users" already exists
+[2024-06-15T19:03:13.768Z]Migration "Migration1718357029779" failed, error: relation "users" already exists
+[2024-06-15T19:03:13.768Z][QUERY]: ROLLBACK
+[2024-06-15T19:04:15.865Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-15T19:04:16.002Z][QUERY]: SELECT version();
+[2024-06-15T19:04:16.003Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'migrations'
+[2024-06-15T19:04:16.009Z][QUERY]: SELECT * FROM "projects"."migrations" "migrations" ORDER BY "id" DESC
+[2024-06-15T19:04:16.010Z]0 migrations are already loaded in the database.
+[2024-06-15T19:04:16.010Z]1 migrations were found in the source code.
+[2024-06-15T19:04:16.010Z]1 migrations are new migrations must be executed.
+[2024-06-15T19:04:16.010Z][QUERY]: START TRANSACTION
+[2024-06-15T19:04:16.011Z][QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying NOT NULL, "email" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-15T19:04:16.018Z][QUERY]: CREATE TABLE "projects"."test" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying NOT NULL, "email" character varying NOT NULL, CONSTRAINT "PK_5417af0062cf987495b611b59c7" PRIMARY KEY ("id"))
+[2024-06-15T19:04:16.028Z][QUERY]: INSERT INTO "projects"."migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1718478238643,"SchemaUpdate1718478238643"]
+[2024-06-15T19:04:16.029Z]Migration SchemaUpdate1718478238643 has been  executed successfully.
+[2024-06-15T19:04:16.029Z][QUERY]: COMMIT
+[2024-06-15T19:05:02.875Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-15T19:05:02.997Z][QUERY]: SELECT version();
+[2024-06-15T19:05:02.999Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-06-15T19:05:03.003Z][QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2024-06-15T19:05:03.016Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-06-15T19:05:03.016Z]No migrations were found in the database. Nothing to revert!
