@@ -14,6 +14,9 @@ const pgPool = new pg.Pool({
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin : process.env.CLIENT_ORIGIN
+  })
   app.setGlobalPrefix('api');
   app.use(
     session({

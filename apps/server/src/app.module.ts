@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { PassportModule } from '@nestjs/passport';
       inject: [ConfigService],
     }),
     PassportModule.register({ session: true }),
+    EventsModule
   ],
   controllers: [AppController],
   providers: [AppService],
