@@ -4,6 +4,7 @@ import * as session from 'express-session';
 import * as connectPgSimple from 'connect-pg-simple';
 import * as pg from 'pg';
 import * as passport from 'passport';
+import { ValidationPipe } from '@nestjs/common';
 
 const pgStore = connectPgSimple(session);
 
@@ -14,9 +15,10 @@ const pgPool = new pg.Pool({
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin : process.env.CLIENT_ORIGIN
-  })
+    origin: process.env.CLIENT_ORIGIN,
+  });
   app.setGlobalPrefix('api');
   app.use(
     session({

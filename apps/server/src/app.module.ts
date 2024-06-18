@@ -31,8 +31,8 @@ import { EventsModule } from './events/events.module';
       }),
       inject: [ConfigService],
     }),
-    PassportModule.register({ session: true }),
-    EventsModule
+    PassportModule.register({ session: true, defaultStrategy: 'local' }),
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

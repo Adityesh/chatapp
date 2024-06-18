@@ -5,11 +5,18 @@ import { GoogleStrategy } from '../strategies/google.strategy';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthSerializer } from '../serializer/AuthSerializer';
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity';
+import { LocalStrategy } from '../strategies/local.strategy';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  providers: [AuthService, GoogleStrategy, ConfigService, AuthSerializer],
+  providers: [
+    AuthService,
+    GoogleStrategy,
+    ConfigService,
+    AuthSerializer,
+    LocalStrategy,
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}

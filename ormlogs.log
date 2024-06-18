@@ -75,3 +75,66 @@
 [2024-06-15T19:05:03.003Z][QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
 [2024-06-15T19:05:03.016Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
 [2024-06-15T19:05:03.016Z]No migrations were found in the database. Nothing to revert!
+[2024-06-18T18:42:15.931Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-18T18:42:16.135Z][QUERY]: SELECT version();
+[2024-06-18T18:42:16.136Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-06-18T18:42:16.141Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-06-18T18:42:16.143Z]1 migrations are already loaded in the database.
+[2024-06-18T18:42:16.143Z]2 migrations were found in the source code.
+[2024-06-18T18:42:16.143Z]SchemaUpdate1718478442405 is the last executed migration. It was executed on Sun Jun 16 2024 00:37:22 GMT+0530 (India Standard Time).
+[2024-06-18T18:42:16.143Z]1 migrations are new migrations must be executed.
+[2024-06-18T18:42:16.143Z][QUERY]: START TRANSACTION
+[2024-06-18T18:42:16.144Z][QUERY]: ALTER TABLE "projects"."users" ADD "password" character varying NOT NULL
+[2024-06-18T18:42:16.144Z][FAILED QUERY]: ALTER TABLE "projects"."users" ADD "password" character varying NOT NULL
+[2024-06-18T18:42:16.144Z][QUERY ERROR]: error: column "password" of relation "users" contains null values
+[2024-06-18T18:42:16.145Z]Migration "SchemaUpdate1718736125701" failed, error: column "password" of relation "users" contains null values
+[2024-06-18T18:42:16.145Z][QUERY]: ROLLBACK
+[2024-06-18T18:47:07.188Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-18T18:47:07.426Z][QUERY]: SELECT version();
+[2024-06-18T18:47:07.427Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-06-18T18:47:07.432Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-06-18T18:47:07.434Z]1 migrations are already loaded in the database.
+[2024-06-18T18:47:07.434Z]SchemaUpdate1718478442405 is the last executed migration. It was executed on Sun Jun 16 2024 00:37:22 GMT+0530 (India Standard Time).
+[2024-06-18T18:47:07.434Z]Now reverting it...
+[2024-06-18T18:47:07.434Z][QUERY]: START TRANSACTION
+[2024-06-18T18:47:07.435Z][QUERY]: DROP TABLE "projects"."users"
+[2024-06-18T18:47:07.447Z][QUERY]: DELETE FROM "projects"."chatapp_migrations" WHERE "timestamp" = $1 AND "name" = $2 -- PARAMETERS: [1718478442405,"SchemaUpdate1718478442405"]
+[2024-06-18T18:47:07.450Z]Migration SchemaUpdate1718478442405 has been  reverted successfully.
+[2024-06-18T18:47:07.450Z][QUERY]: COMMIT
+[2024-06-18T18:48:02.017Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-18T18:48:02.316Z][QUERY]: SELECT version();
+[2024-06-18T18:48:02.317Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-06-18T18:48:02.322Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-06-18T18:48:02.323Z]0 migrations are already loaded in the database.
+[2024-06-18T18:48:02.323Z]3 migrations were found in the source code.
+[2024-06-18T18:48:02.324Z]3 migrations are new migrations must be executed.
+[2024-06-18T18:48:02.324Z][QUERY]: START TRANSACTION
+[2024-06-18T18:48:02.324Z][QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying NOT NULL, "email" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-18T18:48:02.334Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1718478442405,"SchemaUpdate1718478442405"]
+[2024-06-18T18:48:02.335Z]Migration SchemaUpdate1718478442405 has been  executed successfully.
+[2024-06-18T18:48:02.335Z][QUERY]: ALTER TABLE "projects"."users" ADD "password" character varying NOT NULL
+[2024-06-18T18:48:02.335Z][QUERY]: ALTER TABLE "projects"."users" ALTER COLUMN "avatar_url" DROP NOT NULL
+[2024-06-18T18:48:02.336Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1718736125701,"SchemaUpdate1718736125701"]
+[2024-06-18T18:48:02.337Z]Migration SchemaUpdate1718736125701 has been  executed successfully.
+[2024-06-18T18:48:02.337Z][QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "password" character varying, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying, "email" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-18T18:48:02.338Z][FAILED QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "password" character varying, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying, "email" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-18T18:48:02.338Z][QUERY ERROR]: error: relation "users" already exists
+[2024-06-18T18:48:02.338Z]Migration "SchemaUpdate1718736457156" failed, error: relation "users" already exists
+[2024-06-18T18:48:02.339Z][QUERY]: ROLLBACK
+[2024-06-18T18:49:11.943Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-18T18:49:12.105Z][QUERY]: SELECT version();
+[2024-06-18T18:49:12.106Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-06-18T18:49:12.113Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-06-18T18:49:12.114Z]0 migrations are already loaded in the database.
+[2024-06-18T18:49:12.114Z]1 migrations were found in the source code.
+[2024-06-18T18:49:12.114Z]1 migrations are new migrations must be executed.
+[2024-06-18T18:49:12.114Z][QUERY]: START TRANSACTION
+[2024-06-18T18:49:12.115Z][QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "password" character varying, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying, "email" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2024-06-18T18:49:12.124Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1718736541789,"SchemaUpdate1718736541789"]
+[2024-06-18T18:49:12.125Z]Migration SchemaUpdate1718736541789 has been  executed successfully.
+[2024-06-18T18:49:12.126Z][QUERY]: COMMIT
+[2024-06-18T19:33:46.396Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-18T19:33:46.642Z][QUERY]: SELECT version();
+[2024-06-18T19:33:46.644Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-06-18T19:33:46.649Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-06-18T19:33:46.651Z]No migrations are pending

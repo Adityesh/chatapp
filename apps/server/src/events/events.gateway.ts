@@ -19,17 +19,17 @@ export class EventsGateway
   server: Server;
 
   afterInit(server: any) {
-    console.log(server)
+    console.log(server);
   }
   handleDisconnect(client: any) {
-    console.log(client)
+    console.log(client);
   }
-  handleConnection(client: any, ...args: any[]) {
+  handleConnection(client: any) {
     console.log(client);
   }
 
   @SubscribeMessage('events')
-  findAll(@MessageBody() data: any): Observable<WsResponse<number>> {
+  findAll(): Observable<WsResponse<number>> {
     return from([1, 2, 3]).pipe(
       map((item) => ({ event: 'events', data: item })),
     );
@@ -39,5 +39,4 @@ export class EventsGateway
   async identity(@MessageBody() data: number): Promise<number> {
     return data;
   }
-  
 }
