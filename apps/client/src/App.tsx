@@ -2,13 +2,17 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { useAppDispatch } from "./hooks/store";
+import { INIT_SOCKET } from "./store/slice/socketSlice";
 
 function App() {
+  const dispatch = useAppDispatch();
+
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    console.log(import.meta.env.VITE_CLIENT_BASE_URL);
-  }, []);
+    dispatch(INIT_SOCKET());
+  }, [dispatch]);
 
   return (
     <>

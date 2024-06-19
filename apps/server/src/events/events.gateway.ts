@@ -11,21 +11,20 @@ import {
 import { Observable, from, map } from 'rxjs';
 import { Server } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class EventsGateway
   implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect
 {
   @WebSocketServer()
   server: Server;
 
-  afterInit(server: any) {
-    console.log(server);
+  afterInit() {}
+
+  handleDisconnect() {
+    console.log('Client disconnected');
   }
-  handleDisconnect(client: any) {
-    console.log(client);
-  }
-  handleConnection(client: any) {
-    console.log(client);
+  handleConnection() {
+    console.log('Client connected');
   }
 
   @SubscribeMessage('events')
