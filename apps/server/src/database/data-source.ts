@@ -15,6 +15,7 @@ export const dataSourceOptions: DataSourceOptions = {
   migrations: ['src/migrations/**/*.ts'],
   subscribers: ['src/subscriber/**/*.ts'],
   migrationsTableName: 'chatapp_migrations',
+  migrationsTransactionMode : "each",
 };
 
 const dataSource = new DataSource(dataSourceOptions);

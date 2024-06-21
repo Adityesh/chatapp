@@ -29,6 +29,10 @@ const socketMiddleware: Middleware = (store) => {
         socket.on(SocketEvents.DISCONNECT, () => {
           store.dispatch(SOCKET_DISCONNECTED());
         });
+
+        socket.on('message', (message) => {
+          console.log(message)
+        })
       }
     }
     next(action);

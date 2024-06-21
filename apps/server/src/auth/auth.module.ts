@@ -7,9 +7,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthSerializer } from '../serializer/AuthSerializer';
 import { User } from '../entities/user.entity';
 import { LocalStrategy } from '../strategies/local.strategy';
+import { EventsModule } from 'src/events/events.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), EventsModule],
   providers: [
     AuthService,
     GoogleStrategy,

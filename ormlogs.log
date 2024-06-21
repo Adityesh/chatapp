@@ -138,3 +138,8 @@
 [2024-06-18T19:33:46.644Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
 [2024-06-18T19:33:46.649Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
 [2024-06-18T19:33:46.651Z]No migrations are pending
+[2024-06-21T12:19:49.867Z][QUERY]: SELECT * FROM current_schema()
+[2024-06-21T12:19:50.075Z][QUERY]: SELECT version();
+[2024-06-21T12:19:50.077Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-06-21T12:19:50.081Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-06-21T12:19:50.082Z]No migrations are pending
