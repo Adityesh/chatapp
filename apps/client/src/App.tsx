@@ -5,6 +5,7 @@ import { INIT_SOCKET } from "./store/slice/socketSlice";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./routes/root";
 import Error from "./routes/error";
+import { Button } from "./components/ui/button";
 
 const router = createBrowserRouter([
   {
@@ -14,11 +15,17 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <>Index element</>,
+        element: (
+          <div className="font-poppins bg-foreground text-text">
+            Index element
+            <Button variant="link">Primary</Button>
+
+          </div>
+        ),
       },
       {
-        path : "/contacts",
-        element : <>Contacts Route</>
+        path: "/contacts",
+        element: <>Contacts Route</>,
       },
     ],
   },
