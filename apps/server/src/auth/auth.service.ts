@@ -67,7 +67,22 @@ export class AuthService {
   }
 
   async findUserById(id: number) {
-    return await this.userRepository.findOneBy({ id });
+    return await this.userRepository.findOne({
+      select: [
+        'id',
+        'avatarUrl',
+        'createdAt',
+        'email',
+        'fullName',
+        'googleId',
+        'isDeleted',
+        'updatedAt',
+        'userName',
+      ],
+      where: {
+        id,
+      },
+    });
   }
 
   async findUserByUsername(userName: string) {

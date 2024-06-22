@@ -5,7 +5,9 @@ class SocketConnection {
   public socket: Socket;
 
   constructor() {
-    this.socket = io(SOCKET_URL);
+    this.socket = io(SOCKET_URL, {
+      withCredentials: true,
+    });
   }
 }
 

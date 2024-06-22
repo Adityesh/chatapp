@@ -10,8 +10,14 @@ import {
 } from '@nestjs/websockets';
 import { Observable, from, map } from 'rxjs';
 import { Server } from 'socket.io';
+import 'dotenv/config';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({
+  cors: {
+    credentials: true,
+    origin: process.env.CLIENT_ORIGIN,
+  },
+})
 export class EventsGateway
   implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect
 {

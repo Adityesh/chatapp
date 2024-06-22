@@ -30,9 +30,9 @@ const socketMiddleware: Middleware = (store) => {
           store.dispatch(SOCKET_DISCONNECTED());
         });
 
-        socket.on('message', (message) => {
-          console.log(message)
-        })
+        socket.on("message", (message) => {
+          console.log(message);
+        });
       }
     }
     next(action);

@@ -18,8 +18,14 @@ const router = createBrowserRouter([
         element: (
           <div className="font-poppins bg-foreground text-text">
             Index element
-            <Button variant="link">Primary</Button>
-
+            <Button
+              variant="link"
+              onClick={async () => {
+                await fetch("/api/auth/logout", { method: "post" });
+              }}
+            >
+              Primary
+            </Button>
           </div>
         ),
       },
