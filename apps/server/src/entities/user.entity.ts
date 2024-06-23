@@ -1,22 +1,20 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  BeforeInsert,
-} from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { BeforeInsert, Column, Entity, Index, OneToMany } from 'typeorm';
+import { BaseEntity } from './base.entity';
+import { Channel } from './channel.entity';
+import { ChannelUser } from './channeluser.entity';
+import { Connection } from './connection.entity';
+import { Message } from './message.entity';
+import { MessageStatus } from './messagestatus.entity';
 
 @Entity({ name: 'users' })
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends BaseEntity {
+  @Index()
   @Column({ name: 'full_name' })
   fullName: string;
 
-  @Column({ name: 'user_name' })
+  @Index()
+  @Column({ name: 'user_name', unique: true })
   userName: string;
 
   @Column({ name: 'password', type: 'varchar', nullable: true })
@@ -25,20 +23,33 @@ export class User {
   @Column({ default: false, name: 'is_deleted' })
   isDeleted: boolean;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-
   @Column({ name: 'google_id', nullable: true })
   googleId: string;
 
   @Column({ name: 'avatar_url', nullable: true, default: null })
   avatarUrl: string;
 
-  @Column({ name: 'email' })
+  @Index()
+  @Column({ name: 'email', unique: true })
   email: string;
+
+  @OneToMany(() => Connection, (connection) => connection.requestedBy)
+  connectionsInitiated: Connection[];
+
+  @OneToMany(() => Connection, (connection) => connection.addressedTo)
+  connectionsReceived: Connection[];
+
+  @OneToMany(() => Channel, (channel) => channel.createdBy)
+  channelsCreated: Channel[];
+
+  @OneToMany(() => Message, (message) => message.senderId)
+  sentMessages: Message[];
+
+  @OneToMany(() => ChannelUser, (channelUser) => channelUser.userId)
+  channels: ChannelUser[];
+
+  @OneToMany(() => MessageStatus, (messageStatus) => messageStatus.userId)
+  readMessages: MessageStatus[];
 
   @BeforeInsert()
   async hashPassword(): Promise<void> {
