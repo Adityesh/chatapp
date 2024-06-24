@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  InternalServerErrorException,
   Post,
   Redirect,
   Req,
@@ -49,12 +48,12 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('local/login')
-  loginLocal(@Req() req: Request, res: Response) {
+  loginLocal(@Req() req: Request, @Res({ passthrough: true }) res: any) {
     res.cookie('valid_session', req.user !== undefined, {
       httpOnly: false,
       maxAge: Number(process.env.COOKIE_MAXAGE),
     });
-    return true;
+    res.json({ user: req.user });
   }
 
   @Get('test-protected')
@@ -63,23 +62,13 @@ export class AuthController {
     return { isLoggedIn: req.session };
   }
 
-  @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
-  async login(@Req() req) {
-    return req.user;
-  }
-
-  @Post('logout')
-  logout(@Req() req: Request, @Res() res: Response) {
-    req.logOut((err) => {
-      if (err)
-        throw new InternalServerErrorException(null, 'Internal Server Error');
-      req.session.destroy(() => {
-        res.clearCookie('valid_session');
-        res.clearCookie('connect.sid');
-        res.redirect('/');
-      });
-    });
+  @Get('logout')
+  logout(@Req() req: any, @Res({ passthrough: true }) res: Response) {
+    req.session.destroy();
+    res
+      .clearCookie('valid_session')
+      .clearCookie('connect.sid')
+      .json({ msg: true });
   }
 
   @Post('message')
