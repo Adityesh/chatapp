@@ -6,7 +6,6 @@ import * as pg from 'pg';
 import * as passport from 'passport';
 import { ValidationPipe } from '@nestjs/common';
 import { EventsAdapter } from './events/events.adapter';
-import * as cookieParser from 'cookie-parser';
 
 const pgStore = connectPgSimple(session);
 
@@ -32,7 +31,6 @@ const sessionMiddleware = session({
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  app.use(cookieParser());
   app.enableCors({
     origin: process.env.CLIENT_ORIGIN,
     credentials: true,

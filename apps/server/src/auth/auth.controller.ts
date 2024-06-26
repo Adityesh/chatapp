@@ -62,7 +62,7 @@ export class AuthController {
     return { isLoggedIn: req.session };
   }
 
-  @Get('logout')
+  @Post('logout')
   logout(@Req() req: any, @Res({ passthrough: true }) res: Response) {
     req.session.destroy();
     res

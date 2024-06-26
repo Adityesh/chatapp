@@ -33,6 +33,10 @@ const router = createBrowserRouter([
         path: "/contacts",
         element: <>Contacts Route</>,
       },
+      {
+        path: "/auth",
+        element: <>Auth Route</>,
+      },
     ],
   },
 ]);
