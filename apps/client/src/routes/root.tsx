@@ -1,13 +1,15 @@
 import AuthComponent from "@/components/page/auth";
-import { Outlet, useLocation } from "react-router-dom";
+import Sidebar from "@/components/page/sidebar";
+import { useAppSelector } from "@/hooks/store";
+import { Outlet } from "react-router-dom";
 
 export default function Root() {
-  const location = useLocation();
-
-  const isAuthRoute = location.pathname === "/auth";
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   return (
     <div className="flex h-screen text-white">
-      <div className="flex-1">{isAuthRoute && <AuthComponent />}</div>
+      <div className="flex-1">
+        {!isLoggedIn ? <AuthComponent /> : <Sidebar />}
+      </div>
       <div className="grow-[3] shrink basis-0">
         <Outlet />
       </div>

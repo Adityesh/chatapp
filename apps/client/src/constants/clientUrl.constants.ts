@@ -3,5 +3,4 @@ export const APP_URL = {
   AUTH: "/auth",
   CHAT: "/chat",
   SETTINGS: "/settings",
-  HOME: "/home",
 };

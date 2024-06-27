@@ -6,6 +6,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { EventsModule } from './events/events.module';
+import { ChatController } from './chat/chat.controller';
+import { ChatModule } from './chat/chat.module';
+import { UserController } from './user/user.controller';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -33,8 +37,10 @@ import { EventsModule } from './events/events.module';
     }),
     PassportModule.register({ session: true, defaultStrategy: 'local' }),
     EventsModule,
+    ChatModule,
+    UserModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ChatController, UserController],
   providers: [AppService],
 })
 export class AppModule {}

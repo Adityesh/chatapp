@@ -13,10 +13,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useAppDispatch } from "@/hooks/store";
+import { SET_AUTH_STATE } from "@/store/slice/authSlice";
+import { useNavigate } from "react-router-dom";
+import { APP_URL } from "@/constants/clientUrl.constants";
 
 const LoginTab: React.FC<{
   handleTabChange: (value: "login" | "register") => void;
 }> = ({ handleTabChange }) => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [loginUser] = useLoginUserMutation();
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -30,6 +36,8 @@ const LoginTab: React.FC<{
     try {
       await loginUser(values).unwrap();
       toast.success("Login successful");
+      dispatch(SET_AUTH_STATE({ key: "isLoggedIn", value: true }));
+      navigate(APP_URL.BASE);
     } catch (error) {
       console.log(error);
     }

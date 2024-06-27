@@ -1,11 +1,13 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import * as session from 'express-session';
-import * as connectPgSimple from 'connect-pg-simple';
-import * as pg from 'pg';
-import * as passport from 'passport';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import * as connectPgSimple from 'connect-pg-simple';
+import * as session from 'express-session';
+import * as passport from 'passport';
+import * as pg from 'pg';
+import { AppModule } from './app.module';
 import { EventsAdapter } from './events/events.adapter';
+import { HttpExceptionFilter } from './utils/http-exception.filter';
+import { ResponseInterceptor } from './utils/reponse-mapping';
 
 const pgStore = connectPgSimple(session);
 
@@ -31,6 +33,8 @@ const sessionMiddleware = session({
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalInterceptors(new ResponseInterceptor());
   app.enableCors({
     origin: process.env.CLIENT_ORIGIN,
     credentials: true,

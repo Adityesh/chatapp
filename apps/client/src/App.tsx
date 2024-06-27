@@ -1,52 +1,55 @@
+import Cookie from "js-cookie";
 import { useEffect } from "react";
-import "./App.css";
-import { useAppDispatch } from "./hooks/store";
-import { INIT_SOCKET } from "./store/slice/socketSlice";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Root from "./routes/root";
+import "./App.css";
+import { APP_URL } from "./constants/clientUrl.constants";
+import { useAppDispatch } from "./hooks/store";
+import AuthRoute from "./routes/auth";
 import Error from "./routes/error";
-import { Button } from "./components/ui/button";
+import ProtectedRoute from "./routes/protected-route";
+import Root from "./routes/root";
+import { SET_AUTH_STATE } from "./store/slice/authSlice";
+import { INIT_SOCKET } from "./store/slice/socketSlice";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: APP_URL.BASE,
     element: <Root />,
     errorElement: <Error />,
     children: [
       {
         index: true,
         element: (
-          <div className="font-poppins bg-foreground text-text">
-            Index element
-            <Button
-              variant="link"
-              onClick={async () => {
-                await fetch("/api/auth/logout", { method: "post" });
-              }}
-            >
-              Primary
-            </Button>
-          </div>
+          <ProtectedRoute>
+            <div>Index element</div>
+          </ProtectedRoute>
         ),
       },
       {
-        path: "/contacts",
-        element: <>Contacts Route</>,
+        path: APP_URL.CHAT,
+        element: <ProtectedRoute>Chat Route</ProtectedRoute>,
       },
       {
-        path: "/auth",
-        element: <>Auth Route</>,
+        path: APP_URL.AUTH,
+        element: <AuthRoute />,
       },
     ],
   },
 ]);
 
 function App() {
+  const SessionCookie = Cookie.get("valid_session");
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(INIT_SOCKET());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(
+      SET_AUTH_STATE({ key: "isLoggedIn", value: Boolean(SessionCookie) }),
+    );
+  }, [SessionCookie, dispatch]);
 
   return <RouterProvider router={router} />;
 }

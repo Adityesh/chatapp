@@ -31,14 +31,15 @@ export class AuthController {
   @Get('google-redirect')
   @UseGuards(GoogleOAuthGuard)
   @Redirect()
-  googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+  googleAuthRedirect(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     res.cookie('valid_session', req.user !== undefined, {
       httpOnly: false,
       maxAge: Number(process.env.COOKIE_MAXAGE),
     });
-    return {
-      url: process.env.CLIENT_ORIGIN,
-    };
+    res.redirect(process.env.CLIENT_ORIGIN + '/');
   }
 
   @Post('local/register')
@@ -68,7 +69,7 @@ export class AuthController {
     res
       .clearCookie('valid_session')
       .clearCookie('connect.sid')
-      .json({ msg: true });
+      .json({ success: true });
   }
 
   @Post('message')
