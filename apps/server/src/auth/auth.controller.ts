@@ -46,11 +46,12 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('local/login')
   loginLocal(@Req() req: Request, @Res({ passthrough: true }) res: any) {
-    res.cookie('valid_session', req.user !== undefined, {
-      httpOnly: false,
-      maxAge: Number(process.env.COOKIE_MAXAGE),
-    });
-    res.json({ user: req.user });
+    res
+      .cookie('valid_session', req.user !== undefined, {
+        httpOnly: false,
+        maxAge: Number(process.env.COOKIE_MAXAGE),
+      })
+      .json({ user: req.user });
   }
 
   @Get('test-protected')

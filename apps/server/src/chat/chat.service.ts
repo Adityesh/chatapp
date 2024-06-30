@@ -11,10 +11,12 @@ import { Message } from 'src/entities/message.entity';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { SocketService } from 'src/socket/socket.service';
 
 @Injectable()
 export class ChatService {
   constructor(
+    private readonly socketService: SocketService,
     @InjectRepository(Channel)
     private readonly channelRepository: Repository<Channel>,
     @InjectRepository(ChannelUser)

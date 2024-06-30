@@ -45,20 +45,22 @@ export type LogoutUserResponse = LogoutUserResult;
 
 /******** USER CONTROLLER ******/
 
-export type SearchUsersRequest = null;
+export type SearchUsersRequest = {
+  query?: string;
+  limit: number;
+  page: number;
+};
 
 export type SearchUserResponseType = {
   id: number;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: null;
   fullName: string;
   userName: string;
-  isDeleted: boolean;
   avatarUrl: string | null;
-  email: string;
 };
-export type SearchUsersResult = SearchUserResponseType[];
+export type SearchUsersResult = {
+  items: Array<SearchUserResponseType>;
+  meta: PaginatedResponseMetadata;
+};
 
 export type SearchUsersResponse = BaseApiResponse<SearchUsersResult>;
 

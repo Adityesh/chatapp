@@ -5,12 +5,14 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import {
   GetConnectionWithUserDto,
   GetUserDto,
+  SearchUsersDto,
   SendConnectionDto,
   UpdateConnectionDto,
 } from 'src/dto/user.dto';
@@ -23,8 +25,15 @@ export class UserController {
 
   @Get('search')
   @UseGuards(ProtectedGuard)
-  async searchUsers(@Req() req) {
-    return this.userService.searchUsers(req.user.id);
+  async searchUsers(
+    @Req() req,
+    @Query() { limit, page, query }: SearchUsersDto,
+  ) {
+    return await this.userService.searchUsers(
+      req.user.id,
+      { limit, page },
+      query,
+    );
   }
 
   @Get(':userId')

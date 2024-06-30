@@ -66,8 +66,8 @@ export const baseApi = createApi({
 
     // USER CONTROLLER
     searchUsers: builder.query<SearchUsersResponse, SearchUsersRequest>({
-      query: () => ({
-        url: USER_CONTROLLER.SEARCH_USERS,
+      query: (query) => ({
+        url: USER_CONTROLLER.SEARCH_USERS + objToQuery(query),
       }),
     }),
     getUser: builder.query<GetUserResponse, GetUserRequest>({
@@ -141,11 +141,7 @@ export const baseApi = createApi({
     }),
     getMessages: builder.query<GetMessagesResponse, GetMessagesRequest>({
       query: ({ channelId, limit = 5, page = 1 }) => ({
-        url:
-          CHAT_CONTROLLER.MESSAGE +
-          channelId +
-          "?" +
-          objToQuery({ limit, page }),
+        url: CHAT_CONTROLLER.MESSAGE + channelId + objToQuery({ limit, page }),
       }),
       providesTags: ["getMessages"],
       serializeQueryArgs: ({ endpointName }) => {

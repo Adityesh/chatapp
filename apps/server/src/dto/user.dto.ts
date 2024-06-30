@@ -1,5 +1,11 @@
 import { Transform, Type } from 'class-transformer';
-import { IsEnum, IsPositive } from 'class-validator';
+import {
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 import { ConnectionStatusEnum } from 'src/enums/connection.enum';
 
 export class GetUserDto {
@@ -32,4 +38,20 @@ export class GetConnectionWithUserDto {
   @IsPositive()
   @Type(() => Number)
   userId: number;
+}
+
+export class SearchUsersDto {
+  @IsNumber({ allowNaN: false })
+  @IsOptional()
+  @Type(() => Number)
+  limit: number;
+
+  @IsNumber({ allowNaN: false })
+  @IsOptional()
+  @Type(() => Number)
+  page: number;
+
+  @IsString()
+  @IsOptional()
+  query: string;
 }

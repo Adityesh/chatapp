@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { SendConnectionDto, UpdateConnectionDto } from 'src/dto/user.dto';
 import { Connection } from 'src/entities/connection.entity';
 import { User } from 'src/entities/user.entity';
@@ -15,22 +16,24 @@ export class UserService {
   ) {}
 
   // TODO - ADD FILTERS AND PAGINATION TO THIS SERVICE CALL
-  async searchUsers(currentUserId: number) {
-    const users = await this.userRespository.find({
-      select: {
-        avatarUrl: true,
-        createdAt: true,
-        deletedAt: true,
-        email: true,
-        fullName: true,
-        id: true,
-        isDeleted: true,
-        updatedAt: true,
-        userName: true,
-      },
-    });
+  async searchUsers(
+    currentUserId: number,
+    options: IPaginationOptions,
+    query: string,
+  ) {
+    const baseQuery = this.userRespository
+      .createQueryBuilder('users')
+      .where('users.userName ILIKE :searchTerm', { searchTerm: `%${query}%` })
+      .orWhere('users.fullName ILIKE :searchTerm', { searchTerm: `%${query}%` })
+      .andWhere('users.id <> :currentUserId', { currentUserId })
+      .select([
+        'users.id',
+        'users.userName',
+        'users.fullName',
+        'users.avatarUrl',
+      ]);
 
-    return users.filter((user) => user.id !== currentUserId);
+    return paginate<User>(baseQuery, options);
   }
 
   async getUser(userId: number) {

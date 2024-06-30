@@ -10,6 +10,8 @@ import { ChatModule } from './chat/chat.module';
 import { EventsGateway } from './events/events.gateway';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
+import { SocketService } from './socket/socket.service';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -38,8 +40,9 @@ import { UserModule } from './user/user.module';
     PassportModule.register({ session: true, defaultStrategy: 'local' }),
     ChatModule,
     UserModule,
+    SocketModule,
   ],
   controllers: [AppController, ChatController, UserController],
-  providers: [AppService, EventsGateway],
+  providers: [AppService, EventsGateway, SocketService],
 })
 export class AppModule {}
