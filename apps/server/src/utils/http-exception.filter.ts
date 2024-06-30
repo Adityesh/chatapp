@@ -21,7 +21,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       path: request.url,
       data: null,
       error: {
-        message: exception.message,
+        message: exception['response']['message'],
         cause: exception.cause,
         name: exception.name,
       },

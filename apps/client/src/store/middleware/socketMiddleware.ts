@@ -20,7 +20,7 @@ const socketMiddleware: Middleware = (store) => {
   return (next) => (action) => {
     if (INIT_SOCKET.match(action)) {
       if (!socket && typeof window !== "undefined") {
-        socket = SocketFactory.create();
+        socket = SocketFactory.getInstance().socket;
 
         socket.on(SocketEvents.CONNECT, () => {
           store.dispatch(SOCKET_CONNECTED());
@@ -28,10 +28,6 @@ const socketMiddleware: Middleware = (store) => {
 
         socket.on(SocketEvents.DISCONNECT, () => {
           store.dispatch(SOCKET_DISCONNECTED());
-        });
-
-        socket.on("message", (message) => {
-          console.log(message);
         });
       }
     }

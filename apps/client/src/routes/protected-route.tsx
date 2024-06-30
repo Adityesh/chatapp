@@ -1,15 +1,16 @@
 import { APP_URL } from "@/constants/clientUrl.constants";
-import { useAppSelector } from "@/hooks/store";
+import Cookie from "js-cookie";
 import { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ children }: PropsWithChildren) => {
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+const SessionCookie = Cookie.get("valid_session");
 
-  if (isLoggedIn) {
-    return <>{children}</>;
-  }
-  return <Navigate to={APP_URL.AUTH} replace />;
+const ProtectedRoute = ({ children }: PropsWithChildren) => {
+  return SessionCookie ? (
+    <>{children}</>
+  ) : (
+    <Navigate to={APP_URL.AUTH} replace />
+  );
 };
 
 export default ProtectedRoute;

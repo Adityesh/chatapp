@@ -40,6 +40,7 @@
     "class-validator": "^0.14.1",
     "connect-pg-simple": "^9.0.1",
     "express-session": "^1.18.0",
+    "nestjs-typeorm-paginate": "^4.0.4",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",

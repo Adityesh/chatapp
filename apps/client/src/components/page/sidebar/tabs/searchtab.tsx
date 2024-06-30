@@ -4,12 +4,20 @@ import Loader from "@/components/ui/loader";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { useSearchUsersQuery } from "@/store/slice/apiSlice";
+import { SearchUserResponseType } from "@/types/baseApi.types";
 import { getNameInitials, getRandomColor } from "@/utils";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SearchTab = () => {
+  const navigate = useNavigate();
   const [searchType, setSearchType] = useState(false);
   const { data } = useSearchUsersQuery(null);
+
+  const handleOpenUser = (user: SearchUserResponseType) => {
+    navigate("/chat/init/" + user.id);
+  };
+
   return (
     <div className="w-full h-full bg-foreground">
       <div>
@@ -37,6 +45,7 @@ const SearchTab = () => {
             <div
               className={`w-full cursor-pointer items-center justify-start p-2 flex ${index % 2 == 0 && "bg-muted-foreground"}`}
               key={user.id}
+              onClick={() => handleOpenUser(user)}
             >
               <Avatar>
                 <AvatarImage

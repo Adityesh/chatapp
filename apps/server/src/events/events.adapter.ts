@@ -12,7 +12,7 @@ export class EventsAdapter extends IoAdapter {
   }
 
   create(port: number, options?: ServerOptions): Server {
-    const server: Server = super.create(port, options);
+    const server: Server = super.createIOServer(port, options);
 
     const wrap = (middleware) => (socket, next) =>
       middleware(socket.request, {}, next);

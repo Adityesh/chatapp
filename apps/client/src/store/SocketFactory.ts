@@ -1,25 +1,34 @@
 import { io, Socket } from "socket.io-client";
-const SOCKET_URL = "http://localhost:3000";
 
-class SocketConnection {
+const SOCKET_URL = import.meta.env.DEV
+  ? "http://localhost:3000"
+  : import.meta.env.VITE_SOCKET_URL;
+
+export interface SocketInterface {
+  socket: Socket;
+}
+
+class SocketSingleton implements SocketInterface {
   public socket: Socket;
+  private static instance: SocketSingleton;
 
-  constructor() {
-    this.socket = io(SOCKET_URL, {
-      withCredentials: true,
+  private constructor() {
+    const socketEndpoint = SOCKET_URL;
+    if (!socketEndpoint) {
+      throw new Error("SOCKET_URL is not defined");
+    }
+
+    this.socket = io(socketEndpoint, {
+      withCredentials: true, // Ensure credentials are used for CORS
     });
   }
-}
 
-let socketConnection: Socket | undefined;
-
-/**
- * SocketFactory class will return only create a single socket connection and return
- * it on subsequent requests, making sure a single instance is used through out the application.
- */
-export default class SocketFactory {
-  public static create(): Socket {
-    if (!socketConnection) return new SocketConnection().socket;
-    return socketConnection;
+  public static getInstance(): SocketSingleton {
+    if (!SocketSingleton.instance) {
+      SocketSingleton.instance = new SocketSingleton();
+    }
+    return SocketSingleton.instance;
   }
 }
+
+export default SocketSingleton;

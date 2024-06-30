@@ -47,3 +47,8 @@ export function getNameInitials(fullName: string) {
   const [first, last] = fullName.split(" ");
   return (first ? first.charAt(0) : "") + (last ? last.charAt(0) : "");
 }
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export function objToQuery(obj: any) {
+  return new URLSearchParams(obj).toString();
+}

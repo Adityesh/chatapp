@@ -7,7 +7,7 @@ import { User } from './user.entity';
 export class ChannelUser extends BaseEntity {
   @ManyToOne(() => User, (user) => user.channels)
   @JoinColumn({ name: 'user_id' })
-  userId: number;
+  userId: User;
 
   @ManyToOne(() => Channel, (channel) => channel.users)
   channelId: number;

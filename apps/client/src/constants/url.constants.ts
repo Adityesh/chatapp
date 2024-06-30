@@ -6,12 +6,21 @@ export const AUTH_CONTROLLER = {
 
 export const USER_CONTROLLER = {
   SEARCH_USERS: "/user/search",
+  GET_USER: "/user",
+  CONNECTION_INVITE: "/user/connection",
+  GET_CONNECTION_WITH_USER: "/user/connection/",
+};
+
+export const CHAT_CONTROLLER = {
+  INITATE_CHAT: "/chat/init",
+  CHAT_DETAILS: "/chat/details",
+  MESSAGE: "/chat/message/",
 };
 
 export enum HTTP_METHODS {
-  GET = "get",
-  POST = "post",
-  DELETE = "delete",
-  PUT = "put",
-  PATCH = "patch",
+  GET = "GET",
+  POST = "POST",
+  DELETE = "DELETE",
+  PUT = "PUT",
+  PATCH = "PATCH",
 }

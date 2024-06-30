@@ -1,16 +1,12 @@
 import {
-  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-  WsResponse,
 } from '@nestjs/websockets';
-import { Observable, from, map } from 'rxjs';
-import { Server } from 'socket.io';
 import 'dotenv/config';
+import { Server } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
@@ -22,7 +18,7 @@ export class EventsGateway
   implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect
 {
   @WebSocketServer()
-  server: Server;
+  public server: Server;
 
   afterInit() {}
 
@@ -31,17 +27,5 @@ export class EventsGateway
   }
   handleConnection() {
     console.log('Client connected');
-  }
-
-  @SubscribeMessage('events')
-  findAll(): Observable<WsResponse<number>> {
-    return from([1, 2, 3]).pipe(
-      map((item) => ({ event: 'events', data: item })),
-    );
-  }
-
-  @SubscribeMessage('identity')
-  async identity(@MessageBody() data: number): Promise<number> {
-    return data;
   }
 }

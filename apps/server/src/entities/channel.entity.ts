@@ -31,8 +31,10 @@ export class Channel extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.channelsCreated)
   @JoinColumn({ name: 'created_by' })
-  createdBy: number;
+  createdBy: User;
 
-  @OneToMany(() => ChannelUser, (channelUser) => channelUser.channelId)
+  @OneToMany(() => ChannelUser, (channelUser) => channelUser.channelId, {
+    cascade: true,
+  })
   users: ChannelUser[];
 }

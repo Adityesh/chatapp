@@ -13,16 +13,12 @@ import { GoogleOAuthGuard } from '../guards/auth.guard';
 import { ProtectedGuard } from 'src/guards/protected.guard';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { RegisterLocalUserDto } from 'src/dto/local-user.dto';
-import { EventsGateway } from 'src/events/events.gateway';
 import { Request, Response } from 'express';
 import 'dotenv/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly eventsGateway: EventsGateway,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Get('google')
   @UseGuards(GoogleOAuthGuard)
@@ -70,14 +66,5 @@ export class AuthController {
       .clearCookie('valid_session')
       .clearCookie('connect.sid')
       .json({ success: true });
-  }
-
-  @Post('message')
-  sendMessage(@Req() request) {
-    console.log(request.body);
-    this.eventsGateway.server.emit('message', request.body);
-    return {
-      msg: request.body,
-    };
   }
 }

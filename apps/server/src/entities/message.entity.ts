@@ -12,11 +12,11 @@ export class Message extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.sentMessages)
   @JoinColumn({ name: 'sender_id' })
-  senderId: number;
+  senderId: User;
 
   @ManyToOne(() => Channel, (channel) => channel.channelMessages)
   @JoinColumn({ name: 'channel_id' })
-  channelId: number;
+  channelId: Channel;
 
   @Column({ name: 'is_deleted', type: 'boolean', default: false })
   isDeleted: boolean;

@@ -1,6 +1,21 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { UserService } from './user.service';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  GetConnectionWithUserDto,
+  GetUserDto,
+  SendConnectionDto,
+  UpdateConnectionDto,
+} from 'src/dto/user.dto';
 import { ProtectedGuard } from 'src/guards/protected.guard';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
@@ -8,7 +23,42 @@ export class UserController {
 
   @Get('search')
   @UseGuards(ProtectedGuard)
-  async searchUsers() {
-    return this.userService.searchUsers();
+  async searchUsers(@Req() req) {
+    return this.userService.searchUsers(req.user.id);
+  }
+
+  @Get(':userId')
+  @UseGuards(ProtectedGuard)
+  async getUser(@Param() { userId }: GetUserDto) {
+    return this.userService.getUser(userId);
+  }
+
+  @Post('connection')
+  @UseGuards(ProtectedGuard)
+  async sendConnectionInvite(@Body() sendConnectionDto: SendConnectionDto) {
+    return this.userService.sendConnectionInvite(sendConnectionDto);
+  }
+
+  @Patch('connection')
+  @UseGuards(ProtectedGuard)
+  async updateConnectionInvite(
+    @Body() updateConnectionInvite: UpdateConnectionDto,
+  ) {
+    return this.userService.updateConnectionInvite(updateConnectionInvite);
+  }
+
+  @Get()
+  @UseGuards(ProtectedGuard)
+  async getLoggedInUser(@Req() req) {
+    return this.userService.getUser(req.user.id);
+  }
+
+  @Get('connection/:userId')
+  @UseGuards(ProtectedGuard)
+  async getConnectionWithUser(
+    @Req() req,
+    @Param() { userId }: GetConnectionWithUserDto,
+  ) {
+    return this.userService.getConnectionWithUser(req.user.id, userId);
   }
 }

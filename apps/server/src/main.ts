@@ -32,12 +32,13 @@ const sessionMiddleware = session({
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.enableCors({
     origin: process.env.CLIENT_ORIGIN,
     credentials: true,
+    methods: ['POST', 'PATCH', 'GET', 'HEAD', 'DELETE'],
   });
   app.setGlobalPrefix('api');
   app.use(sessionMiddleware);
