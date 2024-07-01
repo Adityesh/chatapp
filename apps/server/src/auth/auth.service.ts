@@ -4,12 +4,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
-import { GoogleUserDto } from 'src/dto/google-user.dto';
 import {
+  GoogleUserDto,
   LoginUserLocalDto,
   RegisterLocalUserDto,
-} from 'src/dto/local-user.dto';
+} from '@repo/shared';
+import * as bcrypt from 'bcrypt';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 

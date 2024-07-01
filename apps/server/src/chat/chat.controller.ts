@@ -7,14 +7,14 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ProtectedGuard } from 'src/guards/protected.guard';
+import { ChatService } from './chat.service';
 import {
   GetChatDetailsDto,
   GetMessagesDto,
   InitateChatDto,
   SendMessageDto,
-} from 'src/dto/chat.dto';
-import { ProtectedGuard } from 'src/guards/protected.guard';
-import { ChatService } from './chat.service';
+} from '@repo/shared';
 
 @Controller('chat')
 export class ChatController {

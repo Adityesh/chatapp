@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BaseApiResponse } from 'src/types/baseApi.types';
+import { BaseApiResponse } from '@repo/shared';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {

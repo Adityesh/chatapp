@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { SendConnectionDto, UpdateConnectionDto } from '@repo/shared';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
-import { SendConnectionDto, UpdateConnectionDto } from 'src/dto/user.dto';
 import { Connection } from 'src/entities/connection.entity';
 import { User } from 'src/entities/user.entity';
-import { ConnectionStatusEnum } from 'src/enums/connection.enum';
+import { ConnectionStatusEnum } from '@repo/shared';
 import { Repository } from 'typeorm';
 
 @Injectable()

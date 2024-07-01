@@ -12,9 +12,9 @@ import { AuthService } from './auth.service';
 import { GoogleOAuthGuard } from '../guards/auth.guard';
 import { ProtectedGuard } from 'src/guards/protected.guard';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
-import { RegisterLocalUserDto } from 'src/dto/local-user.dto';
 import { Request, Response } from 'express';
 import 'dotenv/config';
+import { RegisterLocalUserDto } from '@repo/shared';
 
 @Controller('auth')
 export class AuthController {

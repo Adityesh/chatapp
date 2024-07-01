@@ -6,7 +6,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState: AuthSliceInitialState = {
   isLoggedIn: false,
-  user: {},
+  user: null,
 };
 
 const authSlice = createSlice({
@@ -17,7 +17,10 @@ const authSlice = createSlice({
       state,
       { payload: { key, value } }: PayloadAction<SetAuthStateAction>,
     ) => {
-      state[key] = value;
+      Object.assign(state, {
+        ...state,
+        [key]: value,
+      });
     },
   },
 });

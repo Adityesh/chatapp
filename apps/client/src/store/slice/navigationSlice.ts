@@ -16,7 +16,10 @@ const navigationSlice = createSlice({
       state,
       { payload: { key, value } }: PayloadAction<SetNavigationStateAction>,
     ) => {
-      state[key] = value;
+      Object.assign(state, {
+        ...state,
+        [key]: value,
+      });
     },
   },
 });

@@ -1,12 +1,12 @@
-import { Transform, Type } from 'class-transformer';
+import { Transform, Type } from "class-transformer";
 import {
   IsEnum,
   IsNumber,
   IsOptional,
   IsPositive,
   IsString,
-} from 'class-validator';
-import { ConnectionStatusEnum } from 'src/enums/connection.enum';
+} from "class-validator";
+import { ConnectionStatusEnum } from "../enums/connection.enum";
 
 export class GetUserDto {
   @IsPositive()
@@ -53,5 +53,5 @@ export class SearchUsersDto {
 
   @IsString()
   @IsOptional()
-  query: string;
+  query?: string;
 }

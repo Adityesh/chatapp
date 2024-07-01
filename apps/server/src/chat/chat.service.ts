@@ -1,10 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  GetChatDetailsDto,
-  InitateChatDto,
-  SendMessageDto,
-} from 'src/dto/chat.dto';
 import { Channel } from 'src/entities/channel.entity';
 import { ChannelUser } from 'src/entities/channeluser.entity';
 import { Message } from 'src/entities/message.entity';
@@ -12,6 +7,11 @@ import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { SocketService } from 'src/socket/socket.service';
+import {
+  GetChatDetailsDto,
+  InitateChatDto,
+  SendMessageDto,
+} from '@repo/shared';
 
 @Injectable()
 export class ChatService {

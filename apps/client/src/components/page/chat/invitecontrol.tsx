@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { APP_URL } from "@/constants/clientUrl.constants";
-import { ConnectionStatusEnum } from "@/enums/connection.enum";
+import { ConnectionStatusEnum } from "../../../../../../packages/shared/src/enums/connection.enum";
 import {
   useGetConnectionWithUserQuery,
   useGetLoggedInUserQuery,

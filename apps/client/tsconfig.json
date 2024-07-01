@@ -20,7 +20,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@repo/shared" : ["../../../packages/shared/src"],
+      "@shared" : ["../../../packages/shared/src"]
     }
   },
   "include": ["src"],

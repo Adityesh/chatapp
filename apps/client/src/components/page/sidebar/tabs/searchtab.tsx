@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearchUsersQuery } from "@/store/slice/apiSlice";
-import { SearchUserResponseType } from "@/types/baseApi.types";
+import { SearchUserResponseType } from "@repo/shared";
 import { getNameInitials } from "@/utils";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

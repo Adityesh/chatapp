@@ -31,7 +31,7 @@ import {
   SendMessageResponse,
   UpdateConnectionInviteRequest,
   UpdateConnectionInviteResponse,
-} from "@/types/baseApi.types";
+} from "@repo/shared";
 import { objToQuery } from "@/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 

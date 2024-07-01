@@ -1,5 +1,5 @@
 import ChatInput from "@/components/page/channel/chatinput";
-import { SocketRoom } from "@/enums/socket.enum";
+import { SocketRoom } from "../../../../packages/shared/src/enums/socket.enum";
 import SocketFactory from "@/store/SocketFactory";
 import {
   useGetChatDetailsQuery,
@@ -20,7 +20,7 @@ const Channel = () => {
     {
       limit: 1,
       page,
-      channelId: channelId!,
+      channelId: Number(channelId),
     },
     {
       skip: !channelId || isNaN(Number(channelId)),

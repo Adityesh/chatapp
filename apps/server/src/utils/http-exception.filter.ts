@@ -5,7 +5,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { BaseApiResponse } from 'src/types/baseApi.types';
+import { BaseApiResponse } from '@repo/shared';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {

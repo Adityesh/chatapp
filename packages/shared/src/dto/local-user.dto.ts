@@ -5,7 +5,7 @@ import {
   MaxLength,
   MinLength,
   IsStrongPassword,
-} from 'class-validator';
+} from "class-validator";
 
 export class RegisterLocalUserDto {
   @IsNotEmpty()

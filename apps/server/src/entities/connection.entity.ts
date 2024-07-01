@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { ConnectionStatusEnum } from '../enums/connection.enum';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
+import { ConnectionStatusEnum } from '@repo/shared';
 
 @Entity({ name: 'connections' })
 export class Connection extends BaseEntity {

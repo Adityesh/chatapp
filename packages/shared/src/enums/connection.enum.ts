@@ -4,3 +4,5 @@ export enum ConnectionStatusEnum {
   DECLINED = "declined",
   BLOCKED = "blocked",
 }
+
+export default ConnectionStatusEnum;
