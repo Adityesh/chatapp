@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ProtectedGuard } from 'src/guards/protected.guard';
@@ -48,5 +49,11 @@ export class ChatController {
     @Query() { limit, page }: GetMessagesDto,
   ) {
     return this.chatService.getMessages(channelId, { page, limit });
+  }
+
+  @Get('/channels')
+  @UseGuards(ProtectedGuard)
+  async getChannels(@Req() req) {
+    return this.chatService.getChannels(req.user.id);
   }
 }

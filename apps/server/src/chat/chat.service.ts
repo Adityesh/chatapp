@@ -11,7 +11,9 @@ import {
   GetChatDetailsDto,
   InitateChatDto,
   SendMessageDto,
+  SocketEvents,
 } from '@repo/shared';
+import dataSource from 'src/database/data-source';
 
 @Injectable()
 export class ChatService {
@@ -115,12 +117,33 @@ export class ChatService {
       },
       content,
     });
-    return await this.messageRepository.save(newMessage);
+    await this.messageRepository.save(newMessage);
+    const savedMessage = this.messageRepository
+      .createQueryBuilder('messages')
+      .where('messages.id = :messageId', { messageId: newMessage.id })
+      .select([
+        'messages.id',
+        'messages.status',
+        'messages.content',
+        'messages.createdAt',
+        'messages.updatedAt',
+      ])
+      .innerJoin('messages.channelId', 'channel')
+      .innerJoin('messages.senderId', 'sender')
+      .addSelect([
+        'sender.id',
+        'sender.userName',
+        'sender.fullName',
+        'sender.avatarUrl',
+      ])
+      .getOne();
+    return savedMessage;
   }
 
   async getMessages(channelId: number, options: IPaginationOptions) {
     const paginationQuery = this.messageRepository
       .createQueryBuilder('messages')
+      .orderBy('messages.createdAt', 'DESC')
       .where('messages.channelId.id = :channelId', { channelId })
       .select([
         'messages.id',
@@ -132,14 +155,17 @@ export class ChatService {
       .innerJoin('messages.channelId', 'channel')
       .innerJoin('messages.senderId', 'sender')
       .addSelect([
-        'channel.id',
-        'channel.topic',
-        'channel.description',
         'sender.id',
         'sender.userName',
         'sender.fullName',
         'sender.avatarUrl',
       ]);
-    return paginate<Message>(paginationQuery, options);
+    const result = paginate<Message>(paginationQuery, options);
+    (await result).items.reverse();
+    return result;
+  }
+
+  async getChannels(loggedInUserId: number) {
+      
   }
 }

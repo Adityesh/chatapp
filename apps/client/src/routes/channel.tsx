@@ -1,65 +1,34 @@
 import ChatInput from "@/components/page/channel/chatinput";
-import { SocketRoom } from "../../../../packages/shared/src/enums/socket.enum";
-import SocketFactory from "@/store/SocketFactory";
+import ChatMessage from "@/components/page/channel/chatmessage";
+import { useAppDispatch } from "@/hooks/store";
 import {
-  useGetChatDetailsQuery,
-  useGetMessagesQuery,
+  useGetChatDetailsQuery
 } from "@/store/slice/apiSlice";
-import { useEffect, useState } from "react";
+import { JOIN_CHANNEL, LEAVE_CHANNEL } from "@/store/slice/socketSlice";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-const socket = SocketFactory.getInstance().socket;
-
 const Channel = () => {
+  const dispatch = useAppDispatch();
   const { channelId } = useParams();
-  const [page, setPage] = useState(1);
   useGetChatDetailsQuery({
     channelId: Number(channelId),
   });
-  const { data: messages } = useGetMessagesQuery(
-    {
-      limit: 1,
-      page,
-      channelId: Number(channelId),
-    },
-    {
-      skip: !channelId || isNaN(Number(channelId)),
-    },
-  );
-
-  const handleNextPage = () => {
-    if (!messages || !messages.data) return;
-
-    const {
-      meta: { totalPages },
-    } = messages.data;
-    if (page === totalPages) {
-      return;
-    }
-    setPage(page + 1);
-  };
 
   useEffect(() => {
-    socket.emit(SocketRoom.JOIN_ROOM, channelId);
+    if (channelId) {
+      dispatch(JOIN_CHANNEL({ id: channelId }));
 
-    return () => {
-      socket.emit(SocketRoom.LEAVE_ROOM, channelId);
-    };
+      return () => {
+        dispatch(LEAVE_CHANNEL({ id: channelId }));
+      };
+    }
   }, [channelId]);
 
-  if (!channelId || isNaN(Number(channelId)) || !messages || !messages.data)
-    return <></>;
+  if (!channelId || isNaN(Number(channelId))) return <></>;
   return (
     <div className="h-full w-full flex flex-col items-center justify-start">
-      <p>Chat Channel Id : {channelId} </p>
-      <div>
-        {messages.data.items.map((message) => {
-          return <span key={message.id}>{message.content}</span>;
-        })}
-      </div>
-      <button className="bg-primary" onClick={handleNextPage}>
-        Next Page
-      </button>
+      <ChatMessage channelId={Number(channelId)} />
       <ChatInput channelId={Number(channelId)} />
     </div>
   );

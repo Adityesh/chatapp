@@ -43,6 +43,6 @@ import { SocketModule } from './socket/socket.module';
     SocketModule,
   ],
   controllers: [AppController, ChatController, UserController],
-  providers: [AppService, EventsGateway, SocketService],
+  providers: [AppService, EventsGateway],
 })
 export class AppModule {}

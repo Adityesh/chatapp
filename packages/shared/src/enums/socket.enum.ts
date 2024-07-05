@@ -1,6 +1,12 @@
-export enum SocketRoom {
-  JOIN_ROOM = "JOIN_ROOM",
-  LEAVE_ROOM = "LEAVE_ROOM",
-  ANNOUNCE_JOIN = "ANNOUNCE_JOIN",
-  ANNOUNCE_LEAVE = "ANNOUNCE_LEAVE",
+
+export enum SocketEvents {
+  CONNECT = 'connect',
+  DISCONNECT = 'disconnect',
+  JOIN_CHANNEL = 'join-channel',
+  LEAVE_CHANNEL = 'leave-channel',
+  ERROR = 'error',
+  SEND_MESSAGE = 'send-message',
+  RECEIVE_MESSAGE = 'receive-message',
+  USER_JOINED_CHANNEL = 'user-joined-channel',
+  USER_LEFT_CHANNEL = 'user-left-channel'
 }

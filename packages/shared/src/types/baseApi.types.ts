@@ -138,21 +138,7 @@ export type GetChatDetailsResponse = BaseApiResponse<GetChatDetailsResult>;
 export type SendMessageRequest = InstanceType<typeof SendMessageDto> &
   InstanceType<typeof GetChatDetailsDto>;
 
-export type SendMessageResult = {
-  content: string;
-  senderId: {
-    id: number;
-  };
-  channelId: {
-    id: number;
-  };
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-  isDeleted: boolean;
-  status: MessageStatusEnum;
-};
+export type SendMessageResult = GetMessageItem;
 
 export type SendMessageResponse = BaseApiResponse<SendMessageResult>;
 
@@ -165,11 +151,6 @@ export type GetMessageItem = {
   updatedAt: string;
   content: string;
   status: MessageStatusEnum;
-  channelId: {
-    id: number;
-    topic: string | null;
-    descrtipion: string | null;
-  };
   senderId: {
     id: number;
     fullName: string;

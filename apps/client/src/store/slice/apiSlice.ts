@@ -137,7 +137,31 @@ export const baseApi = createApi({
         method: HTTP_METHODS.POST,
         body,
       }),
-      invalidatesTags: ["getMessages"],
+      async onQueryStarted(
+        { channelId },
+        { dispatch, queryFulfilled, getState }
+      ) {
+        try {
+          const { data: updatedMessage } = await queryFulfilled;
+          const params = baseApi.util.selectCachedArgsForQuery(
+            getState(),
+            "getMessages"
+          );
+          const selectParams = params.find((p) => p.channelId === channelId);
+          if (!selectParams) return;
+          dispatch(
+            baseApi.util.updateQueryData(
+              "getMessages",
+              selectParams,
+              (draft) => {
+                if (updatedMessage && updatedMessage.data) {
+                  draft.data?.items.push(updatedMessage.data);
+                }
+              }
+            )
+          );
+        } catch {}
+      },
     }),
     getMessages: builder.query<GetMessagesResponse, GetMessagesRequest>({
       query: ({ channelId, limit = 5, page = 1 }) => ({
@@ -150,12 +174,12 @@ export const baseApi = createApi({
       merge(currentCacheData, responseData) {
         if (!responseData.data) return;
         const newItems = responseData.data.items;
-        currentCacheData.data?.items.push(...newItems);
+        currentCacheData.data?.items.unshift(...newItems);
       },
       // Refetch when the page arg changes
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
-      },
+      }
     }),
   }),
 });

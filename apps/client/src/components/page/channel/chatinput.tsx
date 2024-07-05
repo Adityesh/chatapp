@@ -1,12 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAppDispatch } from "@/hooks/store";
 import {
   useGetLoggedInUserQuery,
   useSendMessageMutation,
 } from "@/store/slice/apiSlice";
+import { SEND_MESSAGE } from "@/store/slice/socketSlice";
 import { useState } from "react";
 
 const ChatInput: React.FC<{ channelId: number }> = ({ channelId }) => {
+  const dispatch = useAppDispatch();
   const [content, setContent] = useState("");
   const [sendMessage] = useSendMessageMutation();
   const { data: loggedInUser } = useGetLoggedInUserQuery(null);
@@ -15,11 +18,14 @@ const ChatInput: React.FC<{ channelId: number }> = ({ channelId }) => {
     e.preventDefault();
     if (!loggedInUser || !loggedInUser.data || content.length === 0) return;
     try {
-      await sendMessage({
+      const response = await sendMessage({
         channelId,
         content,
         senderId: loggedInUser.data.id,
-      });
+      }).unwrap();
+      if (response.data) {
+        dispatch(SEND_MESSAGE({ ...response.data, channelId }));
+      }
     } catch (error) {
       console.log(error);
     }

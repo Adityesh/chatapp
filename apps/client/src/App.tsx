@@ -11,6 +11,7 @@ import Error from "./routes/error";
 import ProtectedRoute from "./routes/protected-route";
 import Root from "./routes/root";
 import { SET_AUTH_STATE } from "./store/slice/authSlice";
+import { INIT_SOCKET } from "./store/slice/socketSlice";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ function App() {
       SET_AUTH_STATE({ key: "isLoggedIn", value: Boolean(SessionCookie) }),
     );
   }, [SessionCookie, dispatch]);
+
+  useEffect(() => {
+    dispatch(INIT_SOCKET())
+  }, [])
 
   return <RouterProvider router={router} />;
 }
