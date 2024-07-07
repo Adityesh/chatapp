@@ -7,6 +7,8 @@ import {
 import {
   ConnectionInviteRequest,
   ConnectionInviteResponse,
+  GetChannelsRequest,
+  GetChannelsResponse,
   GetChatDetailsRequest,
   GetChatDetailsResponse,
   GetConnectionWithUserRequest,
@@ -40,7 +42,7 @@ const BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: "include" }),
-  tagTypes: ["getLoggedInUser", "getConnectionWithUser", "getMessages"],
+  tagTypes: ["getLoggedInUser", "getConnectionWithUser", "getMessages", "getChannels"],
   endpoints: (builder) => ({
     // AUTH CONTROLLER
     loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
@@ -181,6 +183,24 @@ export const baseApi = createApi({
         return currentArg !== previousArg;
       }
     }),
+    getChannels : builder.query<GetChannelsResponse, GetChannelsRequest>({
+      query : payload => ({
+        url : CHAT_CONTROLLER.CHANNELS + objToQuery(payload)
+      }),
+      providesTags: ["getChannels"],
+      // serializeQueryArgs: ({ endpointName }) => {
+      //   return endpointName;
+      // },
+      // merge(currentCacheData, responseData) {
+      //   if (!responseData.data) return;
+      //   const newItems = responseData.data.items;
+      //   currentCacheData.data?.items.unshift(...newItems);
+      // },
+      // // Refetch when the page arg changes
+      // forceRefetch({ currentArg, previousArg }) {
+      //   return currentArg !== previousArg;
+      // }
+    })
   }),
 });
 
@@ -199,4 +219,5 @@ export const {
   useGetChatDetailsQuery,
   useSendMessageMutation,
   useGetMessagesQuery,
+  useGetChannelsQuery
 } = baseApi;

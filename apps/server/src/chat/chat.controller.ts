@@ -15,6 +15,7 @@ import {
   GetMessagesDto,
   InitateChatDto,
   SendMessageDto,
+  GetChannelsDto,
 } from '@repo/shared';
 
 @Controller('chat')
@@ -53,7 +54,7 @@ export class ChatController {
 
   @Get('/channels')
   @UseGuards(ProtectedGuard)
-  async getChannels(@Req() req) {
-    return this.chatService.getChannels(req.user.id);
+  async getChannels(@Req() req, @Query() { limit, page }: GetChannelsDto) {
+    return this.chatService.getChannels(req.user.id, { limit, page });
   }
 }

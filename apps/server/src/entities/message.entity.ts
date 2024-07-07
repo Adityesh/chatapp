@@ -12,11 +12,11 @@ export class Message extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.sentMessages)
   @JoinColumn({ name: 'sender_id' })
-  senderId: User;
+  sender: User;
 
   @ManyToOne(() => Channel, (channel) => channel.channelMessages)
   @JoinColumn({ name: 'channel_id' })
-  channelId: Channel;
+  channel: Channel;
 
   @Column({ name: 'is_deleted', type: 'boolean', default: false })
   isDeleted: boolean;
@@ -29,6 +29,6 @@ export class Message extends BaseEntity {
   })
   status: MessageStatusEnum;
 
-  @OneToMany(() => MessageStatus, (messageStatus) => messageStatus.messageId)
+  @OneToMany(() => MessageStatus, (messageStatus) => messageStatus.message)
   readMessages: MessageStatus[];
 }

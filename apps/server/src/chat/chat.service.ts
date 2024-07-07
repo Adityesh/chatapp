@@ -36,9 +36,9 @@ export class ChatService {
       .createQueryBuilder('channel')
       .where('channel.isGroup = :isGroup', { isGroup: false })
       .innerJoinAndSelect('channel.users', 'channelmembers')
-      .innerJoinAndSelect('channelmembers.userId', 'users')
+      .innerJoinAndSelect('channelmembers.user', 'users')
       .where(
-        'channelmembers.userId = :senderId OR channelmembers.userId = :receiverId',
+        'channelmembers.user = :senderId OR channelmembers.user = :receiverId',
         { senderId, receiverId },
       )
       .getOne();
@@ -60,10 +60,10 @@ export class ChatService {
     ]);
 
     const senderChannelMember = new ChannelUser();
-    senderChannelMember.userId = sender;
+    senderChannelMember.user = sender;
 
     const receiverChannelMember = new ChannelUser();
-    receiverChannelMember.userId = receiver;
+    receiverChannelMember.user = receiver;
 
     const newChannel = this.channelRepository.create({
       isGroup: false,
@@ -91,7 +91,7 @@ export class ChatService {
         'channelusers',
       ])
       .innerJoin('channel.users', 'channelusers')
-      .innerJoin('channelusers.userId', 'users')
+      .innerJoin('channelusers.user', 'users')
       .innerJoin('channel.createdBy', 'usercreator')
       .addSelect([
         'users.id',
@@ -109,10 +109,10 @@ export class ChatService {
 
   async sendMessage({ senderId, content }: SendMessageDto, channelId: number) {
     const newMessage = this.messageRepository.create({
-      channelId: {
+      channel: {
         id: channelId,
       },
-      senderId: {
+      sender: {
         id: senderId,
       },
       content,
@@ -128,8 +128,8 @@ export class ChatService {
         'messages.createdAt',
         'messages.updatedAt',
       ])
-      .innerJoin('messages.channelId', 'channel')
-      .innerJoin('messages.senderId', 'sender')
+      .innerJoin('messages.channel', 'channel')
+      .innerJoin('messages.sender', 'sender')
       .addSelect([
         'sender.id',
         'sender.userName',
@@ -144,7 +144,7 @@ export class ChatService {
     const paginationQuery = this.messageRepository
       .createQueryBuilder('messages')
       .orderBy('messages.createdAt', 'DESC')
-      .where('messages.channelId.id = :channelId', { channelId })
+      .where('messages.channel.id = :channelId', { channelId })
       .select([
         'messages.id',
         'messages.status',
@@ -152,8 +152,8 @@ export class ChatService {
         'messages.createdAt',
         'messages.updatedAt',
       ])
-      .innerJoin('messages.channelId', 'channel')
-      .innerJoin('messages.senderId', 'sender')
+      .innerJoin('messages.channel', 'channel')
+      .innerJoin('messages.sender', 'sender')
       .addSelect([
         'sender.id',
         'sender.userName',
@@ -165,7 +165,44 @@ export class ChatService {
     return result;
   }
 
-  async getChannels(loggedInUserId: number) {
-      
+  async getChannels(loggedInUserId: number, options: IPaginationOptions) {
+    // Subquery to fetch channel IDs for the logged-in user
+    const subQuery = this.channelRepository
+      .createQueryBuilder('channel')
+      .select('channel.id')
+      .innerJoin('channel.users', 'channelUser')
+      .where('channelUser.user = :loggedInUserId', { loggedInUserId })
+      .getQuery();
+
+    // Main query to fetch all channels for the logged-in user along with the other users in those channels
+    const channels = this.channelRepository
+      .createQueryBuilder('channel')
+      .innerJoinAndSelect('channel.users', 'channelUser')
+      .innerJoinAndSelect('channelUser.user', 'user')
+      .where(`channel.id IN (${subQuery})`)
+      .setParameter('loggedInUserId', loggedInUserId)
+      .select([
+        'channel.id',
+        'channel.topic',
+        'channel.description',
+        'channel.isDeleted',
+        'channel.isGroup',
+        'channelUser.id',
+        'user.id',
+        'user.fullName',
+        'user.userName',
+        'user.avatarUrl'
+      ]);
+
+    const paginatedResult = await paginate<Channel>(channels, options);
+
+    paginatedResult.items.forEach((ch) => {
+      if (ch.isGroup) {
+        ch.users = [];
+      }
+      ch.users = ch.users.filter((cu) => cu.user.id !== loggedInUserId);
+    }, paginatedResult.items);
+
+    return paginatedResult;
   }
 }

@@ -15,6 +15,7 @@ export const CHAT_CONTROLLER = {
   INITATE_CHAT: "/chat/init",
   CHAT_DETAILS: "/chat/details",
   MESSAGE: "/chat/message/",
+  CHANNELS : "/chat/channels"
 };
 
 export enum HTTP_METHODS {

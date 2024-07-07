@@ -6,10 +6,13 @@ import {
   JOIN_CHANNEL,
   LEAVE_CHANNEL,
   SEND_MESSAGE,
+  SET_USER_TYPING,
   SOCKET_CONNECTED,
   SOCKET_DISCONNECTED,
+  USER_TYPING,
 } from "../slice/socketSlice";
 import { baseApi } from "../slice/apiSlice";
+import { UserTypingEvent } from "@repo/shared";
 
 const socketMiddleware: Middleware = (store) => {
   let socket: SocketFactory["socket"];
@@ -60,6 +63,10 @@ const socketMiddleware: Middleware = (store) => {
             )
           );
         });
+
+        socket.on(SocketEvents.USER_TYPING, (data: UserTypingEvent) => {
+          store.dispatch(SET_USER_TYPING(data))
+        });
       }
     }
 
@@ -80,6 +87,11 @@ const socketMiddleware: Middleware = (store) => {
     if (SEND_MESSAGE.match(action) && socket) {
       const { payload } = action;
       socket.emit(SocketEvents.SEND_MESSAGE, payload);
+    }
+
+    if (USER_TYPING.match(action) && socket) {
+      const { payload } = action;
+      socket.emit(SocketEvents.USER_TYPING, payload);
     }
 
     next(action);

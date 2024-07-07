@@ -34,6 +34,7 @@ import { SocketModule } from './socket/socket.module';
           migrationsDir: __dirname + '/migrations/',
         },
         migrationsRun: true,
+        logging : ["error"]
       }),
       inject: [ConfigService],
     }),

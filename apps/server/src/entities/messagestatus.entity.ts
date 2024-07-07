@@ -7,11 +7,11 @@ import { User } from './user.entity';
 export class MessageStatus extends BaseEntity {
   @ManyToOne(() => Message, (message) => message.readMessages)
   @JoinColumn({ name: 'message_id' })
-  messageId: number;
+  message: Message;
 
   @ManyToOne(() => User, (user) => user.readMessages)
   @JoinColumn({ name: 'user_id' })
-  userId: number;
+  user: User;
 
   @CreateDateColumn({ name: 'delivered_at' })
   deliveredAt: Date;

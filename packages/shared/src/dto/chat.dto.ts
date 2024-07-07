@@ -37,3 +37,15 @@ export class GetMessagesDto {
   @Type(() => Number)
   page: number;
 }
+
+export class GetChannelsDto {
+  @IsNumber({ allowNaN: false })
+  @IsOptional()
+  @Type(() => Number)
+  limit: number;
+
+  @IsNumber({ allowNaN: false })
+  @IsOptional()
+  @Type(() => Number)
+  page: number;
+}

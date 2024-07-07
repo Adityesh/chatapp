@@ -1,4 +1,5 @@
 import {
+  GetChannelsDto,
   GetChatDetailsDto,
   GetMessagesDto,
   InitateChatDto,
@@ -121,6 +122,13 @@ export type GetConnectionWithUserResponse =
 
 /******** CHAT CONTROLLER ******/
 
+export type BaseUserType = {
+  id: number;
+  userName: string;
+  fullName: string;
+  avatarUrl: string | null;
+};
+
 export type InitateChatRequest = InstanceType<typeof InitateChatDto>;
 
 export type InitateChatResult = {
@@ -131,7 +139,22 @@ export type InitateChatResponse = BaseApiResponse<InitateChatResult>;
 
 export type GetChatDetailsRequest = InstanceType<typeof GetChatDetailsDto>;
 
-export type GetChatDetailsResult = true;
+export type GetChatDetailsResult = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  topic: string | null;
+  description: string | null;
+  isGroup: boolean;
+  users: {
+    id: number;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: null;
+    user: BaseUserType;
+  }[];
+  createdBy: BaseUserType;
+};
 
 export type GetChatDetailsResponse = BaseApiResponse<GetChatDetailsResult>;
 
@@ -151,7 +174,7 @@ export type GetMessageItem = {
   updatedAt: string;
   content: string;
   status: MessageStatusEnum;
-  senderId: {
+  sender: {
     id: number;
     fullName: string;
     userName: string;
@@ -173,3 +196,37 @@ export type GetMessagesResult = {
 };
 
 export type GetMessagesResponse = BaseApiResponse<GetMessagesResult>;
+
+export type GetChannelsRequest = InstanceType<typeof GetChannelsDto>;
+
+export type GetChannelResponseType = {
+  id: number;
+  topic: string;
+  description: string;
+  isDeleted: string;
+  isGroup: boolean;
+  users: {
+    id: number;
+    user: {
+      id: number;
+      fullName: string;
+      userName: string;
+      avatarUrl: string | null;
+    };
+  }[];
+};
+
+export type GetChannelsResult = {
+  items: Array<GetChannelResponseType>;
+  meta: PaginatedResponseMetadata;
+};
+
+export type GetChannelsResponse = BaseApiResponse<GetChannelsResult>;
+
+
+///////////////// Socket Events //////////////////////////////
+export type UserTypingEvent = {
+  fullName : string,
+  typing : boolean,
+  channelId : string
+}

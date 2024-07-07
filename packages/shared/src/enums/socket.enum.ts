@@ -8,5 +8,6 @@ export enum SocketEvents {
   SEND_MESSAGE = 'send-message',
   RECEIVE_MESSAGE = 'receive-message',
   USER_JOINED_CHANNEL = 'user-joined-channel',
-  USER_LEFT_CHANNEL = 'user-left-channel'
+  USER_LEFT_CHANNEL = 'user-left-channel',
+  USER_TYPING = 'user-typing',
 }

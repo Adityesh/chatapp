@@ -1,15 +1,16 @@
+import ChatPageBox from "@/components/common/ChatPageBox";
 import {
   useGetLoggedInUserQuery,
   useGetMessagesQuery,
 } from "@/store/slice/apiSlice";
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 
 const ChatMessage: FC<{ channelId: number }> = ({ channelId }) => {
   const loggedInUser = useGetLoggedInUserQuery(null);
   const [page, setPage] = useState(1);
   const { data: messages } = useGetMessagesQuery(
     {
-      limit: 5,
+      limit: 15,
       page,
       channelId: Number(channelId),
     },
@@ -18,31 +19,32 @@ const ChatMessage: FC<{ channelId: number }> = ({ channelId }) => {
     }
   );
 
-  const handleNextPage = () => {
-    if (!messages || !messages.data) return;
-    const {
-      meta: { totalPages },
-    } = messages.data;
-    if (page === totalPages) {
-      return;
+  const handleScroll = (e: React.UIEvent<HTMLElement>) => {
+    if (e.currentTarget.scrollTop === 0) {
+      if (!messages || !messages.data) return;
+      const {
+        meta: { totalPages },
+      } = messages.data;
+      if (page === totalPages) {
+        return;
+      }
+      setPage(page + 1);
     }
-    setPage(page + 1);
   };
 
   if (!messages || !messages.data) return <></>;
   return (
-    <div className="w-full flex flex-col">
+    <div
+      className="w-full flex flex-col px-2 mt-auto mb-0 overflow-auto"
+      onScroll={handleScroll}
+    >
       {messages.data.items.map((message, index) => {
-        const isSenderLoggedIn =
-          message.senderId.id === loggedInUser.data!.data?.id;
         return (
-          <div
-            key={message.createdAt + " " + index}
-            className={`${isSenderLoggedIn && "mr-0 ml-auto text-right"} mb-2`}
-          >
-            <p className="text-primary">{message.senderId.userName}</p>
-            <p>{message.content}</p>
-          </div>
+          <ChatPageBox
+            message={message}
+            isSenderLoggedIn={message.sender.id === loggedInUser.data!.data?.id}
+            key={index}
+          />
         );
       })}
     </div>

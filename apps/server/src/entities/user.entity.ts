@@ -42,13 +42,13 @@ export class User extends BaseEntity {
   @OneToMany(() => Channel, (channel) => channel.createdBy)
   channelsCreated: Channel[];
 
-  @OneToMany(() => Message, (message) => message.senderId)
+  @OneToMany(() => Message, (message) => message.sender)
   sentMessages: Message[];
 
-  @OneToMany(() => ChannelUser, (channelUser) => channelUser.userId)
+  @OneToMany(() => ChannelUser, (channelUser) => channelUser.user)
   channels: ChannelUser[];
 
-  @OneToMany(() => MessageStatus, (messageStatus) => messageStatus.userId)
+  @OneToMany(() => MessageStatus, (messageStatus) => messageStatus.user)
   readMessages: MessageStatus[];
 
   @BeforeInsert()

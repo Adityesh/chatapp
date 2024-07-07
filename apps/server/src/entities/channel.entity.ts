@@ -26,15 +26,17 @@ export class Channel extends BaseEntity {
   @Column({ name: 'is_group', type: 'boolean', default: false })
   isGroup: boolean;
 
-  @OneToMany(() => Message, (message) => message.channelId)
+  @OneToMany(() => Message, (message) => message.channel)
   channelMessages: Message[];
 
   @ManyToOne(() => User, (user) => user.channelsCreated)
   @JoinColumn({ name: 'created_by' })
   createdBy: User;
 
-  @OneToMany(() => ChannelUser, (channelUser) => channelUser.channelId, {
+  @OneToMany(() => ChannelUser, (channelUser) => channelUser.channel, {
     cascade: true,
   })
   users: ChannelUser[];
+
+  latestMessage : Message;
 }

@@ -1,14 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { SendMessageResult } from "@repo/shared";
+import { SendMessageResult, UserTypingEvent } from "@repo/shared";
 
 export interface SocketSliceState {
   isConnected: boolean;
   channels: string[];
+  usersTyping: Record<string, string[]>;
 }
 
 const initialState: SocketSliceState = {
   isConnected: false,
   channels: [],
+  usersTyping: {},
 };
 
 const socketSlice = createSlice({
@@ -33,10 +35,40 @@ const socketSlice = createSlice({
     ) => {
       state.channels = state.channels.filter((i) => i !== id);
     },
-    SEND_MESSAGE: (state, _payload: PayloadAction<SendMessageResult & {
-      channelId : number
-    }>) => {
+    SEND_MESSAGE: (
+      state,
+      _payload: PayloadAction<
+        SendMessageResult & {
+          channelId: number;
+        }
+      >
+    ) => {
       return state;
+    },
+    USER_TYPING: (state, _payload: PayloadAction<UserTypingEvent>) => {
+      return state;
+    },
+    SET_USER_TYPING: (
+      { usersTyping, channels },
+      { payload }: PayloadAction<UserTypingEvent>
+    ) => {
+      const { channelId, fullName, typing } = payload;
+      if (!channels.find((c) => c === channelId)) return;
+      const doesHaveChannel = usersTyping[channelId] != null;
+      const userItem = usersTyping[channelId];
+      if (typing) {
+        if (!doesHaveChannel) {
+          usersTyping[channelId] = [fullName];
+          return;
+        }
+        if (userItem) {
+          usersTyping[channelId] = [...userItem, fullName];
+          return;
+        }
+      }
+      if (userItem) {
+        usersTyping[channelId] = userItem.filter((u) => u !== fullName);
+      }
     },
   },
 });
@@ -48,6 +80,8 @@ export const {
   SOCKET_CONNECTED,
   JOIN_CHANNEL,
   LEAVE_CHANNEL,
+  USER_TYPING,
+  SET_USER_TYPING,
 } = socketSlice.actions;
 
 export default socketSlice.reducer;
