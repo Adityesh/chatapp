@@ -68,8 +68,8 @@ function App() {
   }, [SessionCookie, dispatch]);
 
   useEffect(() => {
-    dispatch(INIT_SOCKET())
-  }, [])
+    dispatch(INIT_SOCKET());
+  }, [dispatch]);
 
   return <RouterProvider router={router} />;
 }

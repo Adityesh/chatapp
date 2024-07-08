@@ -38,5 +38,5 @@ export class Channel extends BaseEntity {
   })
   users: ChannelUser[];
 
-  latestMessage : Message;
+  latestMessage: Message;
 }

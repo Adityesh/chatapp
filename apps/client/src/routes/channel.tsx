@@ -33,7 +33,7 @@ const Channel = () => {
             channelId: channelId.toString(),
             fullName: loggedInUser.data.fullName,
             typing: false,
-          })
+          }),
         );
         dispatch(LEAVE_CHANNEL({ id: channelId }));
       };

@@ -12,6 +12,7 @@ import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { SocketService } from './socket/socket.service';
 import { SocketModule } from './socket/socket.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { SocketModule } from './socket/socket.module';
           migrationsDir: __dirname + '/migrations/',
         },
         migrationsRun: true,
-        logging : ["error"]
+        logging: ['error'],
       }),
       inject: [ConfigService],
     }),
@@ -42,6 +43,7 @@ import { SocketModule } from './socket/socket.module';
     ChatModule,
     UserModule,
     SocketModule,
+    CloudinaryModule,
   ],
   controllers: [AppController, ChatController, UserController],
   providers: [AppService, EventsGateway],

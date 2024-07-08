@@ -46,7 +46,7 @@ const socketMiddleware: Middleware = (store) => {
           const { channelId, ...savedMessage } = payload;
           const params = baseApi.util.selectCachedArgsForQuery(
             store.getState(),
-            "getMessages"
+            "getMessages",
           );
           const selectParams = params.find((p) => p.channelId === channelId);
           if (!selectParams) return;
@@ -59,13 +59,13 @@ const socketMiddleware: Middleware = (store) => {
                 if (savedMessage && savedMessage) {
                   draft.data?.items.push(savedMessage);
                 }
-              }
-            )
+              },
+            ),
           );
         });
 
         socket.on(SocketEvents.USER_TYPING, (data: UserTypingEvent) => {
-          store.dispatch(SET_USER_TYPING(data))
+          store.dispatch(SET_USER_TYPING(data));
         });
       }
     }

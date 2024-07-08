@@ -34,4 +34,4 @@ const ChannelTabItem: FC<GetChannelResponseType & { index: number }> = ({
   );
 };
 
-export default ChannelTabItem
+export default ChannelTabItem;

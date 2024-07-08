@@ -1,12 +1,17 @@
 import {
   Body,
   Controller,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
+  ParseFilePipe,
   Post,
   Redirect,
   Req,
   Res,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GoogleOAuthGuard } from '../guards/auth.guard';
@@ -15,10 +20,15 @@ import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { Request, Response } from 'express';
 import 'dotenv/config';
 import { RegisterLocalUserDto } from '@repo/shared';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   @Get('google')
   @UseGuards(GoogleOAuthGuard)
@@ -39,8 +49,20 @@ export class AuthController {
   }
 
   @Post('local/register')
-  registerLocal(@Body() registerLocalUserDto: RegisterLocalUserDto) {
-    return this.authService.registerLocalUser(registerLocalUserDto);
+  @UseInterceptors(FileInterceptor('avatarUrl'))
+  registerLocal(
+    @Body() registerLocalUserDto: RegisterLocalUserDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1 * 1024 * 1024 }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+        ],
+      }),
+    )
+    avatarUrl: Express.Multer.File,
+  ) {
+    return this.authService.registerLocalUser(registerLocalUserDto, avatarUrl);
   }
 
   @UseGuards(LocalAuthGuard)
@@ -67,5 +89,11 @@ export class AuthController {
       .clearCookie('valid_session')
       .clearCookie('connect.sid')
       .json({ success: true });
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return this.cloudinaryService.uploadFile(file);
   }
 }

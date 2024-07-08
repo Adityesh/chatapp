@@ -31,7 +31,7 @@ const socketSlice = createSlice({
     },
     LEAVE_CHANNEL: (
       state,
-      { payload: { id } }: PayloadAction<{ id: string }>
+      { payload: { id } }: PayloadAction<{ id: string }>,
     ) => {
       state.channels = state.channels.filter((i) => i !== id);
     },
@@ -41,7 +41,7 @@ const socketSlice = createSlice({
         SendMessageResult & {
           channelId: number;
         }
-      >
+      >,
     ) => {
       return state;
     },
@@ -50,7 +50,7 @@ const socketSlice = createSlice({
     },
     SET_USER_TYPING: (
       { usersTyping, channels },
-      { payload }: PayloadAction<UserTypingEvent>
+      { payload }: PayloadAction<UserTypingEvent>,
     ) => {
       const { channelId, fullName, typing } = payload;
       if (!channels.find((c) => c === channelId)) return;

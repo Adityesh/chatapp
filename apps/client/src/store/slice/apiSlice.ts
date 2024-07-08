@@ -42,7 +42,22 @@ const BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: "include" }),
-  tagTypes: ["getLoggedInUser", "getConnectionWithUser", "getMessages", "getChannels"],
+  tagTypes: [
+    "loginUser",
+    "registerUser",
+    "logoutUser",
+    "searchUsers",
+    "getUser",
+    "getLoggedInUser",
+    "sendConnectionInvite",
+    "updateConnectionInvite",
+    "getConnectionWithUser",
+    "initateChat",
+    "getChatDetails",
+    "sendMessage",
+    "getMessages",
+    "getChannels",
+  ],
   endpoints: (builder) => ({
     // AUTH CONTROLLER
     loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
@@ -53,11 +68,21 @@ export const baseApi = createApi({
       }),
     }),
     registerUser: builder.mutation<RegisterUserResponse, RegisterUserRequest>({
-      query: (body) => ({
-        url: AUTH_CONTROLLER.REGISTER_LOCAL,
-        body,
-        method: HTTP_METHODS.POST,
-      }),
+      query: ({ avatarUrl, userName, fullName, password, email }) => {
+        const formData = new FormData();
+        formData.append("userName", userName);
+        formData.append("fullName", fullName);
+        formData.append("password", password);
+        formData.append("email", email);
+        if (avatarUrl) {
+          formData.append("avatarUrl", avatarUrl);
+        }
+        return {
+          url: AUTH_CONTROLLER.REGISTER_LOCAL,
+          body: formData,
+          method: HTTP_METHODS.POST,
+        };
+      },
     }),
     logoutUser: builder.mutation<LogoutUserResponse, LogoutUserRequest>({
       query: () => ({
@@ -71,11 +96,13 @@ export const baseApi = createApi({
       query: (query) => ({
         url: USER_CONTROLLER.SEARCH_USERS + objToQuery(query),
       }),
+      providesTags: ["searchUsers"],
     }),
     getUser: builder.query<GetUserResponse, GetUserRequest>({
       query: ({ userId }) => ({
         url: USER_CONTROLLER.GET_USER + "/" + userId,
       }),
+      providesTags: ["getUser"],
     }),
     getLoggedInUser: builder.query<
       GetLoggedInUserResponse,
@@ -115,6 +142,7 @@ export const baseApi = createApi({
       query: ({ userId }) => ({
         url: USER_CONTROLLER.GET_CONNECTION_WITH_USER + userId,
       }),
+      providesTags: ["getConnectionWithUser"],
     }),
 
     // CHAT Controller
@@ -132,6 +160,7 @@ export const baseApi = createApi({
       query: ({ channelId }) => ({
         url: CHAT_CONTROLLER.CHAT_DETAILS + "/" + channelId,
       }),
+      providesTags: ["getChatDetails"],
     }),
     sendMessage: builder.mutation<SendMessageResponse, SendMessageRequest>({
       query: ({ channelId, ...body }) => ({
@@ -141,28 +170,22 @@ export const baseApi = createApi({
       }),
       async onQueryStarted(
         { channelId },
-        { dispatch, queryFulfilled, getState }
+        { dispatch, queryFulfilled, getState },
       ) {
-        try {
-          const { data: updatedMessage } = await queryFulfilled;
-          const params = baseApi.util.selectCachedArgsForQuery(
-            getState(),
-            "getMessages"
-          );
-          const selectParams = params.find((p) => p.channelId === channelId);
-          if (!selectParams) return;
-          dispatch(
-            baseApi.util.updateQueryData(
-              "getMessages",
-              selectParams,
-              (draft) => {
-                if (updatedMessage && updatedMessage.data) {
-                  draft.data?.items.push(updatedMessage.data);
-                }
-              }
-            )
-          );
-        } catch {}
+        const { data: updatedMessage } = await queryFulfilled;
+        const params = baseApi.util.selectCachedArgsForQuery(
+          getState(),
+          "getMessages",
+        );
+        const selectParams = params.find((p) => p.channelId === channelId);
+        if (!selectParams) return;
+        dispatch(
+          baseApi.util.updateQueryData("getMessages", selectParams, (draft) => {
+            if (updatedMessage && updatedMessage.data) {
+              draft.data?.items.push(updatedMessage.data);
+            }
+          }),
+        );
       },
     }),
     getMessages: builder.query<GetMessagesResponse, GetMessagesRequest>({
@@ -170,8 +193,11 @@ export const baseApi = createApi({
         url: CHAT_CONTROLLER.MESSAGE + channelId + objToQuery({ limit, page }),
       }),
       providesTags: ["getMessages"],
-      serializeQueryArgs: ({ endpointName }) => {
-        return endpointName;
+      serializeQueryArgs: ({ queryArgs, endpointName }) => {
+        return {
+          queryArgs,
+          endpointName,
+        };
       },
       merge(currentCacheData, responseData) {
         if (!responseData.data) return;
@@ -180,12 +206,12 @@ export const baseApi = createApi({
       },
       // Refetch when the page arg changes
       forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg;
-      }
+        return currentArg?.channelId !== previousArg?.channelId;
+      },
     }),
-    getChannels : builder.query<GetChannelsResponse, GetChannelsRequest>({
-      query : payload => ({
-        url : CHAT_CONTROLLER.CHANNELS + objToQuery(payload)
+    getChannels: builder.query<GetChannelsResponse, GetChannelsRequest>({
+      query: (payload) => ({
+        url: CHAT_CONTROLLER.CHANNELS + objToQuery(payload),
       }),
       providesTags: ["getChannels"],
       // serializeQueryArgs: ({ endpointName }) => {
@@ -200,7 +226,7 @@ export const baseApi = createApi({
       // forceRefetch({ currentArg, previousArg }) {
       //   return currentArg !== previousArg;
       // }
-    })
+    }),
   }),
 });
 
@@ -219,5 +245,5 @@ export const {
   useGetChatDetailsQuery,
   useSendMessageMutation,
   useGetMessagesQuery,
-  useGetChannelsQuery
+  useGetChannelsQuery,
 } = baseApi;

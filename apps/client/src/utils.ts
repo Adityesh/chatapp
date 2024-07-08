@@ -52,3 +52,9 @@ export function getNameInitials(fullName: string) {
 export function objToQuery(obj: any) {
   return "?" + new URLSearchParams(obj).toString();
 }
+
+export function getUsersTyping(users: string[]) {
+  if (users.length === 0) return "";
+  if (users.length === 1) return users[0] + " is typing";
+  return users.join(",") + " are typing";
+}

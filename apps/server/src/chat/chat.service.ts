@@ -35,11 +35,17 @@ export class ChatService {
     const chatExists = await this.channelRepository
       .createQueryBuilder('channel')
       .where('channel.isGroup = :isGroup', { isGroup: false })
-      .innerJoinAndSelect('channel.users', 'channelmembers')
-      .innerJoinAndSelect('channelmembers.user', 'users')
-      .where(
-        'channelmembers.user = :senderId OR channelmembers.user = :receiverId',
-        { senderId, receiverId },
+      .innerJoinAndSelect(
+        'channel.users',
+        'channelmembers1',
+        'channelmembers1.user.id = :senderId',
+        { senderId },
+      )
+      .innerJoinAndSelect(
+        'channel.users',
+        'channelmembers2',
+        'channelmembers2.user.id = :receiverId',
+        { receiverId },
       )
       .getOne();
 
@@ -191,7 +197,7 @@ export class ChatService {
         'user.id',
         'user.fullName',
         'user.userName',
-        'user.avatarUrl'
+        'user.avatarUrl',
       ]);
 
     const paginatedResult = await paginate<Channel>(channels, options);

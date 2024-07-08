@@ -1,4 +1,5 @@
 import { TooltipRoot } from "@/components/ui/tooltip";
+import { APP_URL } from "@/constants/clientUrl.constants";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
 import { useLogoutUserMutation } from "@/store/slice/apiSlice";
 import { SET_AUTH_STATE } from "@/store/slice/authSlice";
@@ -10,9 +11,11 @@ import {
   UserSearch,
   UsersRound,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const tab = useAppSelector((state) => state.navigation.tab);
   const [logoutUser] = useLogoutUserMutation();
@@ -24,14 +27,11 @@ const Navbar = () => {
   const selectedTab = "bg-foreground rounded-sm w-full";
 
   const handleLogout = async () => {
-    try {
-      const response = await logoutUser(null).unwrap();
-      if (response.success) {
-        dispatch(SET_AUTH_STATE({ key: "isLoggedIn", value: false }));
-        toast.success("Logged out successfully");
-      }
-    } catch (error) {
-      console.log(error);
+    const response = await logoutUser(null).unwrap();
+    if (response.success) {
+      dispatch(SET_AUTH_STATE({ key: "isLoggedIn", value: false }));
+      toast.success("Logged out successfully");
+      navigate(APP_URL.AUTH);
     }
   };
 

@@ -1,3 +1,4 @@
+import { MAX_PROFILE_IMAGE_SIZE } from "@/constants/common.constants";
 import { z } from "zod";
 
 export const loginFormSchema = z.object({
@@ -18,6 +19,21 @@ export const registerFormSchema = z
       .string()
       .min(1, "Password is required")
       .min(8, "Password should be atleast 8 characters"),
+    avatarUrl: z
+      .custom<FileList>()
+      .optional()
+      .transform((file) =>
+        file != null ? file.length > 0 && file.item(0) : undefined,
+      )
+      .refine(
+        (file) => !file || (!!file && file.size <= MAX_PROFILE_IMAGE_SIZE),
+        {
+          message: "Profile Picture cannot be more than 1MB in size",
+        },
+      )
+      .refine((file) => !file || (!!file && file.type?.startsWith("image")), {
+        message: "Profile picture needs to be an image",
+      }),
   })
   .superRefine(({ password }, checkPassComplexity) => {
     const containsUppercase = (ch: string) => /[A-Z]/.test(ch);

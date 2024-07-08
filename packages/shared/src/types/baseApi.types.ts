@@ -36,7 +36,9 @@ export type LoginUserResult = true;
 
 export type LoginUserResponse = BaseApiResponse<LoginUserResult>;
 
-export type RegisterUserRequest = InstanceType<typeof RegisterLocalUserDto>;
+export type RegisterUserRequest = InstanceType<typeof RegisterLocalUserDto> & {
+  avatarUrl?: any;
+};
 
 export type RegisterUserResult = true;
 
@@ -223,10 +225,9 @@ export type GetChannelsResult = {
 
 export type GetChannelsResponse = BaseApiResponse<GetChannelsResult>;
 
-
 ///////////////// Socket Events //////////////////////////////
 export type UserTypingEvent = {
-  fullName : string,
-  typing : boolean,
-  channelId : string
-}
+  fullName: string;
+  typing: boolean;
+  channelId: string;
+};

@@ -3,7 +3,7 @@ import {
   useGetLoggedInUserQuery,
   useGetMessagesQuery,
 } from "@/store/slice/apiSlice";
-import { FC, useRef, useState } from "react";
+import { FC, useState } from "react";
 
 const ChatMessage: FC<{ channelId: number }> = ({ channelId }) => {
   const loggedInUser = useGetLoggedInUserQuery(null);
@@ -16,7 +16,7 @@ const ChatMessage: FC<{ channelId: number }> = ({ channelId }) => {
     },
     {
       skip: !channelId || isNaN(Number(channelId)),
-    }
+    },
   );
 
   const handleScroll = (e: React.UIEvent<HTMLElement>) => {

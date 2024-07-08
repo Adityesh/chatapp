@@ -10,6 +10,7 @@ import {
   RegisterLocalUserDto,
 } from '@repo/shared';
 import * as bcrypt from 'bcrypt';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -17,6 +18,7 @@ import { Repository } from 'typeorm';
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async authenticateUser({
@@ -89,12 +91,15 @@ export class AuthService {
     return await this.userRepository.findOneBy({ userName });
   }
 
-  async registerLocalUser({
-    email,
-    userName,
-    fullName,
-    password,
-  }: RegisterLocalUserDto) {
+  async registerLocalUser(
+    { email, userName, fullName, password }: RegisterLocalUserDto,
+    avatarUrl?: Express.Multer.File,
+  ) {
+    let newAvatarUrl = '';
+    if (avatarUrl) {
+      newAvatarUrl = (await this.cloudinaryService.uploadFile(avatarUrl)).url;
+    }
+
     const userNameExists = await this.userRepository.findOneBy({
       userName,
     });
@@ -116,6 +121,7 @@ export class AuthService {
       fullName,
       userName,
       password,
+      avatarUrl: newAvatarUrl,
     });
 
     await this.userRepository.save(newLocalUser);

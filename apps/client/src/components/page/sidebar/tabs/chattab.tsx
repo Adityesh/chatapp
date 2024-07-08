@@ -1,10 +1,9 @@
 import ChannelTabItem from "@/components/common/ChannelTabItem";
 import { useGetChannelsQuery } from "@/store/slice/apiSlice";
 import { useState } from "react";
-import ChannelHeader from "../../channel/channelheader";
 
 const ChatTab = () => {
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const { data } = useGetChannelsQuery({
     limit: 10,
     page,

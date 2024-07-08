@@ -3,7 +3,6 @@ import Cookie from "js-cookie";
 import { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
 
-
 const ProtectedRoute = ({ children }: PropsWithChildren) => {
   const SessionCookie = Cookie.get("valid_session");
   return SessionCookie ? (

@@ -33,14 +33,10 @@ const LoginTab: React.FC<{
   });
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    try {
-      await loginUser(values).unwrap();
-      toast.success("Login successful");
-      dispatch(SET_AUTH_STATE({ key: "isLoggedIn", value: true }));
-      navigate(APP_URL.BASE);
-    } catch (error) {
-      console.log(error);
-    }
+    await loginUser(values).unwrap();
+    toast.success("Login successful");
+    dispatch(SET_AUTH_STATE({ key: "isLoggedIn", value: true }));
+    navigate(APP_URL.BASE);
   }
   return (
     <Form {...form}>

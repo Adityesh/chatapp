@@ -38,43 +38,31 @@ const InviteControl: React.FC<{ userId: number }> = ({ userId }) => {
 
   const handleSendConnection = async () => {
     if (!loggedInUser?.data) return;
-    try {
-      await sendConnectionInvite({
-        addressedTo: Number(userId),
-        requestedBy: loggedInUser.data.id,
-      }).unwrap();
-      toast.success("Invitation to connect sent!");
-    } catch (error) {
-      console.log(error);
-    }
+    await sendConnectionInvite({
+      addressedTo: Number(userId),
+      requestedBy: loggedInUser.data.id,
+    }).unwrap();
+    toast.success("Invitation to connect sent!");
   };
 
   const handleUpdateConnection = async (status: ConnectionStatusEnum) => {
     if (!connectionData || !connectionData.data) return;
     // Accept or decline a request
-    try {
-      await updateConnectionInvite({
-        status,
-        connectionId: connectionData.data?.id,
-      });
-      toast.success("Connection " + status);
-    } catch (error) {
-      console.log(error);
-    }
+    await updateConnectionInvite({
+      status,
+      connectionId: connectionData.data?.id,
+    });
+    toast.success("Connection " + status);
   };
 
   const handleInitateChat = async () => {
     if (!loggedInUser || !loggedInUser.data) return;
-    try {
-      const response = await initateChat({
-        receiverId: Number(userId),
-        senderId: loggedInUser.data.id,
-      }).unwrap();
-      if (response.data?.channelId) {
-        navigate(APP_URL.CHAT + "/" + response.data.channelId);
-      }
-    } catch (error) {
-      console.log(error);
+    const response = await initateChat({
+      receiverId: Number(userId),
+      senderId: loggedInUser.data.id,
+    }).unwrap();
+    if (response.data?.channelId) {
+      navigate(APP_URL.CHAT + "/" + response.data.channelId);
     }
   };
 

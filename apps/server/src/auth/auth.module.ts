@@ -7,9 +7,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthSerializer } from '../serializer/AuthSerializer';
 import { User } from '../entities/user.entity';
 import { LocalStrategy } from '../strategies/local.strategy';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), CloudinaryModule],
   providers: [
     AuthService,
     GoogleStrategy,

@@ -22,17 +22,15 @@ const RegisterTab: React.FC<{
     defaultValues: {
       userName: "",
       password: "",
+      fullName: "",
+      email: "",
     },
   });
+  const fileRef = form.register("avatarUrl");
 
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
-    try {
-      await registerUser(values).unwrap();
-
-      handleTabChange("login");
-    } catch (error) {
-      console.log(error);
-    }
+    await registerUser(values).unwrap();
+    handleTabChange("login");
   }
   return (
     <Form {...form}>
@@ -80,6 +78,18 @@ const RegisterTab: React.FC<{
             <FormItem className="mb-4">
               <FormControl>
                 <Input {...field} type="password" placeholder="Password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="avatarUrl"
+          render={() => (
+            <FormItem className="mb-4">
+              <FormControl>
+                <Input {...fileRef} type="file" />
               </FormControl>
               <FormMessage />
             </FormItem>

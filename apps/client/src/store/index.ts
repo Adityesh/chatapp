@@ -5,6 +5,7 @@ import { baseApi } from "./slice/apiSlice";
 import authReducer from "./slice/authSlice";
 import navigationReducer from "./slice/navigationSlice";
 import socketReducer from "./slice/socketSlice";
+import { errorMiddleware } from "./middleware/errorMiddleware";
 
 export const store = configureStore({
   reducer: {
@@ -14,7 +15,11 @@ export const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([baseApi.middleware, socketMiddleware]),
+    getDefaultMiddleware().concat([
+      baseApi.middleware,
+      socketMiddleware,
+      errorMiddleware,
+    ]),
 });
 
 // configure listeners using the provided defaults
