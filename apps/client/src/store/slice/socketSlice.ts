@@ -1,5 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { SendMessageResult, UserTypingEvent } from "@repo/shared";
+import {
+  MarkMessageAsReadEvent,
+  SendMessageResult,
+  UserTypingEvent,
+} from "@repo/shared";
 
 export interface SocketSliceState {
   isConnected: boolean;
@@ -70,6 +74,12 @@ const socketSlice = createSlice({
         usersTyping[channelId] = userItem.filter((u) => u !== fullName);
       }
     },
+    MARK_MESSAGE_AS_READ: (
+      state,
+      payload: PayloadAction<MarkMessageAsReadEvent>,
+    ) => {
+      return state;
+    },
   },
 });
 
@@ -82,6 +92,7 @@ export const {
   LEAVE_CHANNEL,
   USER_TYPING,
   SET_USER_TYPING,
+  MARK_MESSAGE_AS_READ,
 } = socketSlice.actions;
 
 export default socketSlice.reducer;

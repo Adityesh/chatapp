@@ -29,6 +29,8 @@ export class Message extends BaseEntity {
   })
   status: MessageStatusEnum;
 
-  @OneToMany(() => MessageStatus, (messageStatus) => messageStatus.message)
-  readMessages: MessageStatus[];
+  @OneToMany(() => MessageStatus, (messageStatus) => messageStatus.message, {
+    cascade: true,
+  })
+  messageStatus: MessageStatus[];
 }

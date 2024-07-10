@@ -8,3 +8,4 @@ export * from "./enums/message.enum";
 export * from "./enums/socket.enum";
 
 export * from "./types/baseApi.types";
+export * from "./types/component.types";

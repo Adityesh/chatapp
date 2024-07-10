@@ -6,9 +6,18 @@ import { Channel } from 'src/entities/channel.entity';
 import { ChannelUser } from 'src/entities/channeluser.entity';
 import { User } from 'src/entities/user.entity';
 import { Message } from 'src/entities/message.entity';
+import { MessageStatus } from 'src/entities/messagestatus.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Channel, ChannelUser, User, Message])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Channel,
+      ChannelUser,
+      User,
+      Message,
+      MessageStatus,
+    ]),
+  ],
   providers: [ChatService],
   controllers: [ChatController],
   exports: [ChatService],

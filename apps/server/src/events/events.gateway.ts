@@ -6,9 +6,15 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { SocketEvents, UserTypingEvent } from '@repo/shared';
+import {
+  MarkMessageAsReadEvent,
+  MarkMessageAsReadEventReturn,
+  SocketEvents,
+  UserTypingEvent,
+} from '@repo/shared';
 import 'dotenv/config';
 import { Server, Socket } from 'socket.io';
+import { ChatService } from 'src/chat/chat.service';
 import { SocketService } from 'src/socket/socket.service';
 
 @WebSocketGateway({
@@ -20,7 +26,10 @@ import { SocketService } from 'src/socket/socket.service';
 export class EventsGateway
   implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect
 {
-  constructor(private socketService: SocketService) {}
+  constructor(
+    private socketService: SocketService,
+    private readonly chatService: ChatService,
+  ) {}
 
   @WebSocketServer()
   public server: Server;
@@ -76,5 +85,23 @@ export class EventsGateway
   async userTyping(socket: Socket, payload: UserTypingEvent) {
     const { channelId } = payload;
     socket.broadcast.to(channelId).emit(SocketEvents.USER_TYPING, payload);
+  }
+
+  @SubscribeMessage(SocketEvents.MARK_MESSAGE_READ)
+  async markMessageAsRead(
+    socket: Socket,
+    { channelId, messageStatusId }: MarkMessageAsReadEvent,
+  ) {
+    console.log(channelId, messageStatusId);
+    const { readAt } =
+      await this.chatService.markMessageAsRead(messageStatusId);
+    const response = {
+      channelId,
+      messageStatusId,
+      readAt: readAt.toISOString(),
+    } as MarkMessageAsReadEventReturn;
+    this.server
+      .to(channelId.toString())
+      .emit(SocketEvents.MARK_MESSAGE_READ, response);
   }
 }

@@ -8,12 +8,16 @@ import {
 } from "@/store/slice/apiSlice";
 import { SEND_MESSAGE, USER_TYPING } from "@/store/slice/socketSlice";
 import { getUsersTyping } from "@/utils";
-import { SendHorizonal } from "lucide-react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { EmojiMartPickerOnClick } from "@repo/shared";
 import { useState } from "react";
+import Icon from "@/components/ui/icon";
 
 const ChatInput: React.FC<{ channelId: number }> = ({ channelId }) => {
   const dispatch = useAppDispatch();
   const [content, setContent] = useState("");
+  const [emojiPicker, setEmojiPicker] = useState(false);
   const [sendMessage] = useSendMessageMutation();
   const { data: loggedInUser } = useGetLoggedInUserQuery(null);
   const usersTyping = useAppSelector((state) => state.socket.usersTyping);
@@ -55,6 +59,10 @@ const ChatInput: React.FC<{ channelId: number }> = ({ channelId }) => {
     );
   };
 
+  const handleEmojiClick = (emoji: EmojiMartPickerOnClick) => {
+    setContent(content + emoji.native);
+  };
+
   return (
     <>
       {currentUsersTyping.length > 0 && (
@@ -63,19 +71,44 @@ const ChatInput: React.FC<{ channelId: number }> = ({ channelId }) => {
           <Typing />
         </div>
       )}
+
       <form className="w-full flex" onSubmit={handleSendMessage}>
-        <Input
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        />
+        <div className="w-full relative">
+          <Input
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            className="pr-10"
+          />
+          {emojiPicker && (
+            <div className="absolute bottom-10 right-0">
+              <Picker
+                data={data}
+                perLine={6}
+                onEmojiSelect={handleEmojiClick}
+                onClickOutside={() => setEmojiPicker(false)}
+              />
+            </div>
+          )}
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setEmojiPicker(!emojiPicker);
+            }}
+          >
+            <Icon
+              name="smile-plus"
+              className="text-primary cursor-pointer absolute right-2 top-2 bottom-0"
+            />
+          </div>
+        </div>
         <Button
           type="submit"
           className="text-primary my-auto"
           variant={"ghost"}
         >
-          <SendHorizonal />
+          <Icon name="send-horizontal" />
         </Button>
       </form>
     </>

@@ -32,7 +32,8 @@ const ChatMessage: FC<{ channelId: number }> = ({ channelId }) => {
     }
   };
 
-  if (!messages || !messages.data) return <></>;
+  if (!messages || !messages.data || !loggedInUser || !loggedInUser.data)
+    return <></>;
   return (
     <div
       className="w-full flex flex-col px-2 mt-auto mb-0 overflow-auto"
@@ -44,6 +45,8 @@ const ChatMessage: FC<{ channelId: number }> = ({ channelId }) => {
             message={message}
             isSenderLoggedIn={message.sender.id === loggedInUser.data!.data?.id}
             key={index}
+            loggedInUserId={loggedInUser.data!.data?.id!}
+            channelId={Number(channelId)}
           />
         );
       })}

@@ -1,19 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Channel } from 'src/entities/channel.entity';
-import { ChannelUser } from 'src/entities/channeluser.entity';
-import { Message } from 'src/entities/message.entity';
-import { User } from 'src/entities/user.entity';
-import { Repository } from 'typeorm';
-import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { SocketService } from 'src/socket/socket.service';
 import {
   GetChatDetailsDto,
   InitateChatDto,
   SendMessageDto,
-  SocketEvents,
 } from '@repo/shared';
-import dataSource from 'src/database/data-source';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
+import { Channel } from 'src/entities/channel.entity';
+import { ChannelUser } from 'src/entities/channeluser.entity';
+import { Message } from 'src/entities/message.entity';
+import { MessageStatus } from 'src/entities/messagestatus.entity';
+import { User } from 'src/entities/user.entity';
+import { SocketService } from 'src/socket/socket.service';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ChatService {
@@ -27,6 +26,8 @@ export class ChatService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Message)
     private readonly messageRepository: Repository<Message>,
+    @InjectRepository(MessageStatus)
+    private readonly messageStatusRepository: Repository<MessageStatus>,
   ) {}
 
   async initateChat({ receiverId, senderId }: InitateChatDto) {
@@ -114,6 +115,23 @@ export class ChatService {
   }
 
   async sendMessage({ senderId, content }: SendMessageDto, channelId: number) {
+    const channelUsers = await this.channelUserRepository
+      .createQueryBuilder('cu')
+      .where('cu.channel.id = :channelId', {
+        channelId,
+      })
+      .innerJoinAndSelect('cu.user', 'user')
+      .innerJoinAndSelect('cu.channel', 'channel')
+      .getMany();
+
+    const messageStatus = channelUsers.map((cu) => ({
+      user: {
+        id: cu.user.id,
+      },
+      deliveredAt: new Date(),
+      readAt: cu.user.id === senderId ? new Date() : null,
+    }));
+
     const newMessage = this.messageRepository.create({
       channel: {
         id: channelId,
@@ -122,6 +140,7 @@ export class ChatService {
         id: senderId,
       },
       content,
+      messageStatus: [...messageStatus],
     });
     await this.messageRepository.save(newMessage);
     const savedMessage = this.messageRepository
@@ -134,13 +153,21 @@ export class ChatService {
         'messages.createdAt',
         'messages.updatedAt',
       ])
-      .innerJoin('messages.channel', 'channel')
       .innerJoin('messages.sender', 'sender')
+      .innerJoin('messages.messageStatus', 'messageStatus')
+      .innerJoin('messageStatus.user', 'statususer')
       .addSelect([
         'sender.id',
         'sender.userName',
         'sender.fullName',
         'sender.avatarUrl',
+        'messageStatus.readAt',
+        'messageStatus.id',
+        'messageStatus.deliveredAt',
+        'statususer.id',
+        'statususer.fullName',
+        'statususer.userName',
+        'statususer.avatarUrl',
       ])
       .getOne();
     return savedMessage;
@@ -160,14 +187,23 @@ export class ChatService {
       ])
       .innerJoin('messages.channel', 'channel')
       .innerJoin('messages.sender', 'sender')
+      .innerJoin('messages.messageStatus', 'messageStatus')
+      .innerJoin('messageStatus.user', 'statususer')
       .addSelect([
         'sender.id',
         'sender.userName',
         'sender.fullName',
         'sender.avatarUrl',
+        'messageStatus.readAt',
+        'messageStatus.id',
+        'messageStatus.deliveredAt',
+        'statususer.id',
+        'statususer.fullName',
+        'statususer.userName',
+        'statususer.avatarUrl',
       ]);
-    const result = paginate<Message>(paginationQuery, options);
-    (await result).items.reverse();
+    const result = await paginate<Message>(paginationQuery, options);
+    result.items.reverse();
     return result;
   }
 
@@ -210,5 +246,13 @@ export class ChatService {
     }, paginatedResult.items);
 
     return paginatedResult;
+  }
+
+  async markMessageAsRead(messageStatusId: number) {
+    const result = await this.messageStatusRepository.save({
+      id: messageStatusId,
+      readAt: new Date(),
+    });
+    return result;
   }
 }

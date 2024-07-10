@@ -9,4 +9,5 @@ export enum SocketEvents {
   USER_JOINED_CHANNEL = "user-joined-channel",
   USER_LEFT_CHANNEL = "user-left-channel",
   USER_TYPING = "user-typing",
+  MARK_MESSAGE_READ = "mark-message-read",
 }

@@ -182,6 +182,20 @@ export type GetMessageItem = {
     userName: string;
     avatarUrl: string | null;
   };
+  messageStatus: {
+    id: number;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    deliveredAt: string | null;
+    readAt: string | null;
+    user: {
+      id: number;
+      userName: string;
+      fullName: string;
+      avatarUrl: string;
+    };
+  }[];
 };
 
 export type PaginatedResponseMetadata = {
@@ -230,4 +244,14 @@ export type UserTypingEvent = {
   fullName: string;
   typing: boolean;
   channelId: string;
+};
+
+export type MarkMessageAsReadEvent = {
+  messageStatusId: number;
+  channelId: number;
+  messageId: number;
+};
+
+export type MarkMessageAsReadEventReturn = MarkMessageAsReadEvent & {
+  readAt: string;
 };

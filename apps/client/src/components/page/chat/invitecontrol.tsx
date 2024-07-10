@@ -9,10 +9,10 @@ import {
   useSendConnectionInviteMutation,
   useUpdateConnectionInviteMutation,
 } from "@/store/slice/apiSlice";
-import { MessageSquareX, PlugZap, UserCheck } from "lucide-react";
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import Icon from "@/components/ui/icon";
 
 const InviteControl: React.FC<{ userId: number }> = ({ userId }) => {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ const InviteControl: React.FC<{ userId: number }> = ({ userId }) => {
           variant={"default"}
           onClick={handleSendConnection}
         >
-          Connect <PlugZap className="ml-2" />
+          Connect <Icon name="plug-zap" className="ml-2" />
         </Button>
       ) : (
         <>
@@ -105,7 +105,8 @@ const InviteControl: React.FC<{ userId: number }> = ({ userId }) => {
                         handleUpdateConnection(ConnectionStatusEnum.ACCEPTED)
                       }
                     >
-                      Accept <UserCheck className="ml-2" />
+                      Accept
+                      <Icon name="user-check" className="ml-2" />
                     </Button>
                     <Button
                       className="text-xl mt-8"
@@ -115,7 +116,7 @@ const InviteControl: React.FC<{ userId: number }> = ({ userId }) => {
                         handleUpdateConnection(ConnectionStatusEnum.DECLINED)
                       }
                     >
-                      Decline <MessageSquareX className="ml-2" />
+                      Decline <Icon name="message-square-x" className="ml-2" />
                     </Button>
                   </div>
                 </div>
@@ -130,7 +131,7 @@ const InviteControl: React.FC<{ userId: number }> = ({ userId }) => {
               variant={"default"}
               onClick={handleInitateChat}
             >
-              Chat now <PlugZap className="ml-2" />
+              Chat now <Icon name="plug-zap" className="ml-2" />
             </Button>
           )}
 
