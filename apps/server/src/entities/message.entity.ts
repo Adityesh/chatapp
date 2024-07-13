@@ -4,6 +4,7 @@ import { Channel } from './channel.entity';
 import { MessageStatus } from './messagestatus.entity';
 import { User } from './user.entity';
 import { MessageStatusEnum } from '@repo/shared';
+import { MessageAttachment } from './messageattachment.entity';
 
 @Entity({ name: 'messages' })
 export class Message extends BaseEntity {
@@ -33,4 +34,7 @@ export class Message extends BaseEntity {
     cascade: true,
   })
   messageStatus: MessageStatus[];
+
+  @OneToMany(() => MessageAttachment, (messageAttachment) => messageAttachment.message, { cascade : ["insert"]})
+  attachments : MessageAttachment[];
 }

@@ -5,10 +5,13 @@ import {
   InitateChatDto,
   SendMessageDto,
 } from '@repo/shared';
+import { UploadApiResponse } from 'cloudinary';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { Channel } from 'src/entities/channel.entity';
 import { ChannelUser } from 'src/entities/channeluser.entity';
 import { Message } from 'src/entities/message.entity';
+import { MessageAttachment } from 'src/entities/messageattachment.entity';
 import { MessageStatus } from 'src/entities/messagestatus.entity';
 import { User } from 'src/entities/user.entity';
 import { SocketService } from 'src/socket/socket.service';
@@ -18,6 +21,7 @@ import { Repository } from 'typeorm';
 export class ChatService {
   constructor(
     private readonly socketService: SocketService,
+    private readonly cloudinaryService: CloudinaryService,
     @InjectRepository(Channel)
     private readonly channelRepository: Repository<Channel>,
     @InjectRepository(ChannelUser)
@@ -114,7 +118,17 @@ export class ChatService {
       .getOne();
   }
 
-  async sendMessage({ senderId, content }: SendMessageDto, channelId: number) {
+  async sendMessage(
+    { senderId, content }: SendMessageDto,
+    channelId: number,
+    files?: Array<Express.Multer.File>,
+  ) {
+    let uploadedImages: UploadApiResponse[] | undefined;
+
+    if (files) {
+      uploadedImages = await this.cloudinaryService.uploadMultipeFiles(files);
+    }
+
     const channelUsers = await this.channelUserRepository
       .createQueryBuilder('cu')
       .where('cu.channel.id = :channelId', {
@@ -141,6 +155,17 @@ export class ChatService {
       },
       content,
       messageStatus: [...messageStatus],
+      attachments: uploadedImages
+        ? uploadedImages.map((image, index) => {
+            return {
+              // im assuming the uploaded files
+              // are in the same order as the files in the request
+              mimeType: files[index].mimetype,
+              url: image.url,
+              size: image.bytes,
+            } as MessageAttachment;
+          })
+        : undefined,
     });
     await this.messageRepository.save(newMessage);
     const savedMessage = this.messageRepository
@@ -155,6 +180,7 @@ export class ChatService {
       ])
       .innerJoin('messages.sender', 'sender')
       .innerJoin('messages.messageStatus', 'messageStatus')
+      .leftJoin('messages.attachments', 'attachments')
       .innerJoin('messageStatus.user', 'statususer')
       .addSelect([
         'sender.id',
@@ -168,6 +194,10 @@ export class ChatService {
         'statususer.fullName',
         'statususer.userName',
         'statususer.avatarUrl',
+        'attachments.id',
+        'attachments.url',
+        'attachments.mimeType',
+        'attachments.size',
       ])
       .getOne();
     return savedMessage;
@@ -187,6 +217,7 @@ export class ChatService {
       ])
       .innerJoin('messages.channel', 'channel')
       .innerJoin('messages.sender', 'sender')
+      .leftJoin('messages.attachments', 'attachments')
       .innerJoin('messages.messageStatus', 'messageStatus')
       .innerJoin('messageStatus.user', 'statususer')
       .addSelect([
@@ -201,9 +232,12 @@ export class ChatService {
         'statususer.fullName',
         'statususer.userName',
         'statususer.avatarUrl',
+        'attachments.id',
+        'attachments.url',
+        'attachments.mimeType',
+        'attachments.size',
       ]);
     const result = await paginate<Message>(paginationQuery, options);
-    result.items.reverse();
     return result;
   }
 

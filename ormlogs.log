@@ -209,3 +209,70 @@
 [2024-07-08T09:48:55.704Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
 [2024-07-08T09:48:55.709Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
 [2024-07-08T09:48:55.710Z]No migrations are pending
+[2024-07-10T20:04:35.205Z][QUERY]: SELECT * FROM current_schema()
+[2024-07-10T20:04:36.354Z][QUERY]: SELECT version();
+[2024-07-10T20:04:36.356Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-07-10T20:04:36.362Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-07-10T20:04:36.364Z]No migrations are pending
+[2024-07-10T20:05:41.288Z][QUERY]: SELECT * FROM current_schema()
+[2024-07-10T20:05:42.578Z][QUERY]: SELECT version();
+[2024-07-10T20:05:42.581Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-07-10T20:05:42.588Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-07-10T20:05:42.590Z]No migrations are pending
+[2024-07-10T20:07:02.576Z][QUERY]: SELECT * FROM current_schema()
+[2024-07-10T20:07:03.734Z][QUERY]: SELECT version();
+[2024-07-10T20:07:03.735Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-07-10T20:07:03.740Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-07-10T20:07:03.742Z]11 migrations are already loaded in the database.
+[2024-07-10T20:07:03.742Z]SchemaUpdate1720641931729 is the last executed migration. It was executed on Thu Jul 11 2024 01:35:31 GMT+0530 (India Standard Time).
+[2024-07-10T20:07:03.742Z]Now reverting it...
+[2024-07-10T20:07:03.742Z][QUERY]: START TRANSACTION
+[2024-07-10T20:07:03.743Z][QUERY]: ALTER TABLE "projects"."message_attachments" DROP CONSTRAINT "FK_5b4f24737fcb6b35ffdd4d16e13"
+[2024-07-10T20:07:03.750Z][QUERY]: DROP TABLE "projects"."message_attachments"
+[2024-07-10T20:07:03.757Z][QUERY]: DELETE FROM "projects"."chatapp_migrations" WHERE "timestamp" = $1 AND "name" = $2 -- PARAMETERS: [1720641931729,"SchemaUpdate1720641931729"]
+[2024-07-10T20:07:03.758Z]Migration SchemaUpdate1720641931729 has been  reverted successfully.
+[2024-07-10T20:07:03.759Z][QUERY]: COMMIT
+[2024-07-10T20:07:49.725Z][QUERY]: SELECT * FROM current_schema()
+[2024-07-10T20:07:50.904Z][QUERY]: SELECT version();
+[2024-07-10T20:07:50.910Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-07-10T20:07:50.915Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-07-10T20:10:01.218Z][QUERY]: SELECT * FROM current_schema()
+[2024-07-10T20:10:02.424Z][QUERY]: SELECT version();
+[2024-07-10T20:10:02.426Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-07-10T20:10:02.431Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-07-10T20:10:02.432Z]11 migrations are already loaded in the database.
+[2024-07-10T20:10:02.432Z]SchemaUpdate1720641931729 is the last executed migration. It was executed on Thu Jul 11 2024 01:35:31 GMT+0530 (India Standard Time).
+[2024-07-10T20:10:02.432Z]Now reverting it...
+[2024-07-10T20:10:02.432Z][QUERY]: START TRANSACTION
+[2024-07-10T20:10:02.433Z][QUERY]: ALTER TABLE "projects"."message_attachments" DROP CONSTRAINT "FK_5b4f24737fcb6b35ffdd4d16e13"
+[2024-07-10T20:10:02.434Z][QUERY]: DROP TABLE "projects"."message_attachments"
+[2024-07-10T20:10:02.436Z][QUERY]: DELETE FROM "projects"."chatapp_migrations" WHERE "timestamp" = $1 AND "name" = $2 -- PARAMETERS: [1720641931729,"SchemaUpdate1720641931729"]
+[2024-07-10T20:10:02.437Z]Migration SchemaUpdate1720641931729 has been  reverted successfully.
+[2024-07-10T20:10:02.437Z][QUERY]: COMMIT
+[2024-07-10T20:10:14.487Z][QUERY]: SELECT * FROM current_schema()
+[2024-07-10T20:10:15.645Z][QUERY]: SELECT version();
+[2024-07-10T20:10:15.646Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-07-10T20:10:15.651Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-07-10T20:10:15.653Z]10 migrations are already loaded in the database.
+[2024-07-10T20:10:15.653Z]SchemaUpdate1720641862448 is the last executed migration. It was executed on Thu Jul 11 2024 01:34:22 GMT+0530 (India Standard Time).
+[2024-07-10T20:10:15.653Z]Now reverting it...
+[2024-07-10T20:10:15.653Z][QUERY]: START TRANSACTION
+[2024-07-10T20:10:15.654Z][QUERY]: ALTER TABLE "projects"."messageattachments" DROP CONSTRAINT "FK_487fd8a35eda933db5eb241250c"
+[2024-07-10T20:10:15.655Z][QUERY]: DROP TABLE "projects"."messageattachments"
+[2024-07-10T20:10:15.658Z][QUERY]: DELETE FROM "projects"."chatapp_migrations" WHERE "timestamp" = $1 AND "name" = $2 -- PARAMETERS: [1720641862448,"SchemaUpdate1720641862448"]
+[2024-07-10T20:10:15.659Z]Migration SchemaUpdate1720641862448 has been  reverted successfully.
+[2024-07-10T20:10:15.659Z][QUERY]: COMMIT
+[2024-07-10T20:15:23.643Z][QUERY]: SELECT * FROM current_schema()
+[2024-07-10T20:15:24.729Z][QUERY]: SELECT version();
+[2024-07-10T20:15:24.731Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2024-07-10T20:15:24.737Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2024-07-10T20:15:24.739Z]9 migrations are already loaded in the database.
+[2024-07-10T20:15:24.739Z]10 migrations were found in the source code.
+[2024-07-10T20:15:24.739Z]SchemaUpdate1720432124611 is the last executed migration. It was executed on Mon Jul 08 2024 15:18:44 GMT+0530 (India Standard Time).
+[2024-07-10T20:15:24.739Z]1 migrations are new migrations must be executed.
+[2024-07-10T20:15:24.740Z][QUERY]: START TRANSACTION
+[2024-07-10T20:15:24.740Z][QUERY]: CREATE TABLE "projects"."message_attachments" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "mime_type" character varying NOT NULL, "url" character varying NOT NULL, "size" integer NOT NULL, "messageId" integer, CONSTRAINT "PK_e5085d973567c61e9306f10f95b" PRIMARY KEY ("id"))
+[2024-07-10T20:15:24.750Z][QUERY]: ALTER TABLE "projects"."message_attachments" ADD CONSTRAINT "FK_5b4f24737fcb6b35ffdd4d16e13" FOREIGN KEY ("messageId") REFERENCES "projects"."messages"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+[2024-07-10T20:15:24.753Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1720642501584,"SchemaUpdate1720642501584"]
+[2024-07-10T20:15:24.754Z][QUERY]: COMMIT
+[2024-07-10T20:15:24.756Z]Migration SchemaUpdate1720642501584 has been  executed successfully.

@@ -1,6 +1,8 @@
 import { Middleware } from "@reduxjs/toolkit";
+import { MarkMessageAsReadEventReturn, UserTypingEvent } from "@repo/shared";
 import { SocketEvents } from "../../../../../packages/shared/src/enums/socket.enum";
 import SocketFactory from "../SocketFactory";
+import { baseApi } from "../slice/apiSlice";
 import {
   INIT_SOCKET,
   JOIN_CHANNEL,
@@ -12,8 +14,6 @@ import {
   SOCKET_DISCONNECTED,
   USER_TYPING,
 } from "../slice/socketSlice";
-import { baseApi } from "../slice/apiSlice";
-import { MarkMessageAsReadEventReturn, UserTypingEvent } from "@repo/shared";
 
 const socketMiddleware: Middleware = (store) => {
   let socket: SocketFactory["socket"];
@@ -45,7 +45,7 @@ const socketMiddleware: Middleware = (store) => {
           const { channelId, ...savedMessage } = payload;
           const params = baseApi.util.selectCachedArgsForQuery(
             store.getState(),
-            "getMessages",
+            "getMessages"
           );
           const selectParams = params.find((p) => p.channelId === channelId);
           if (!selectParams) return;
@@ -56,11 +56,14 @@ const socketMiddleware: Middleware = (store) => {
               selectParams,
               (draft) => {
                 if (savedMessage && savedMessage) {
-                  draft.data?.items.push(savedMessage);
+                  draft.data?.items.unshift(savedMessage);
                 }
-              },
-            ),
+              }
+            )
           );
+          document
+            .getElementById("message-bottom")
+            ?.scrollIntoView({ behavior: "smooth" });
         });
 
         socket.on(SocketEvents.USER_TYPING, (data: UserTypingEvent) => {
@@ -77,7 +80,7 @@ const socketMiddleware: Middleware = (store) => {
           }: MarkMessageAsReadEventReturn) => {
             const params = baseApi.util.selectCachedArgsForQuery(
               store.getState(),
-              "getMessages",
+              "getMessages"
             );
             const selectParams = params.find((p) => p.channelId === channelId);
             if (!selectParams) return;
@@ -91,16 +94,16 @@ const socketMiddleware: Middleware = (store) => {
                   allMessages?.forEach((message) => {
                     if (message.id === messageId) {
                       const messageStatus = message.messageStatus.find(
-                        (ms) => ms.id === messageStatusId,
+                        (ms) => ms.id === messageStatusId
                       );
                       if (!messageStatus) return;
                       messageStatus.readAt = readAt;
                     }
                   });
-                },
-              ),
+                }
+              )
             );
-          },
+          }
         );
       }
     }

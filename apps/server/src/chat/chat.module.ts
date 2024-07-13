@@ -7,6 +7,7 @@ import { ChannelUser } from 'src/entities/channeluser.entity';
 import { User } from 'src/entities/user.entity';
 import { Message } from 'src/entities/message.entity';
 import { MessageStatus } from 'src/entities/messagestatus.entity';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MessageStatus } from 'src/entities/messagestatus.entity';
       Message,
       MessageStatus,
     ]),
+    CloudinaryModule,
   ],
   providers: [ChatService],
   controllers: [ChatController],

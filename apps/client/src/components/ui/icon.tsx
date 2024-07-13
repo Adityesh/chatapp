@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, memo, Suspense } from "react";
 import { LucideProps } from "lucide-react";
 import dynamicIconImports from "lucide-react/dynamicIconImports";
 
@@ -18,4 +18,4 @@ const Icon = ({ name, ...props }: IconProps) => {
   );
 };
 
-export default Icon;
+export default memo(Icon);

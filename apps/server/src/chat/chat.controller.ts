@@ -2,11 +2,15 @@ import {
   Body,
   Controller,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Post,
   Query,
   Req,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ProtectedGuard } from 'src/guards/protected.guard';
 import { ChatService } from './chat.service';
@@ -17,6 +21,7 @@ import {
   SendMessageDto,
   GetChannelsDto,
 } from '@repo/shared';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('chat')
 export class ChatController {
@@ -35,12 +40,23 @@ export class ChatController {
   }
 
   @Post('/message/:channelId')
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'files', maxCount: 3 }]))
   @UseGuards(ProtectedGuard)
   async sendMessage(
     @Body() sendMessageDto: SendMessageDto,
     @Param() { channelId }: GetChatDetailsDto,
+    @UploadedFiles(
+      // new ParseFilePipe({
+      //   validators: [new MaxFileSizeValidator({ maxSize: 1 * 1024 * 1024 })],
+      // }),
+    )
+    allFiles: { files?: Express.Multer.File[] },
   ) {
-    return this.chatService.sendMessage(sendMessageDto, channelId);
+    return this.chatService.sendMessage(
+      sendMessageDto,
+      channelId,
+      allFiles.files,
+    );
   }
 
   @Get('/message/:channelId')

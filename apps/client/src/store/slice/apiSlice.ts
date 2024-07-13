@@ -34,7 +34,7 @@ import {
   UpdateConnectionInviteRequest,
   UpdateConnectionInviteResponse,
 } from "@repo/shared";
-import { objToQuery } from "@/utils";
+import { convertObjectToFormData, objToQuery } from "@/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
@@ -68,12 +68,8 @@ export const baseApi = createApi({
       }),
     }),
     registerUser: builder.mutation<RegisterUserResponse, RegisterUserRequest>({
-      query: ({ avatarUrl, userName, fullName, password, email }) => {
-        const formData = new FormData();
-        formData.append("userName", userName);
-        formData.append("fullName", fullName);
-        formData.append("password", password);
-        formData.append("email", email);
+      query: ({ avatarUrl, ...payload }) => {
+        const formData = convertObjectToFormData(payload);
         if (avatarUrl) {
           formData.append("avatarUrl", avatarUrl);
         }
@@ -163,28 +159,36 @@ export const baseApi = createApi({
       providesTags: ["getChatDetails"],
     }),
     sendMessage: builder.mutation<SendMessageResponse, SendMessageRequest>({
-      query: ({ channelId, ...body }) => ({
-        url: CHAT_CONTROLLER.MESSAGE + channelId,
-        method: HTTP_METHODS.POST,
-        body,
-      }),
+      query: ({ channelId, files, ...body }) => {
+        const formData = convertObjectToFormData(body);
+        if (files) {
+          (files as File[]).forEach((file) => {
+            formData.append("files", file);
+          });
+        }
+        return {
+          url: CHAT_CONTROLLER.MESSAGE + channelId,
+          method: HTTP_METHODS.POST,
+          body: formData,
+        };
+      },
       async onQueryStarted(
         { channelId },
-        { dispatch, queryFulfilled, getState },
+        { dispatch, queryFulfilled, getState }
       ) {
         const { data: updatedMessage } = await queryFulfilled;
         const params = baseApi.util.selectCachedArgsForQuery(
           getState(),
-          "getMessages",
+          "getMessages"
         );
         const selectParams = params.find((p) => p.channelId === channelId);
         if (!selectParams) return;
         dispatch(
           baseApi.util.updateQueryData("getMessages", selectParams, (draft) => {
             if (updatedMessage && updatedMessage.data) {
-              draft.data?.items.push(updatedMessage.data);
+              draft.data?.items.unshift(updatedMessage.data);
             }
-          }),
+          })
         );
       },
     }),
@@ -193,20 +197,18 @@ export const baseApi = createApi({
         url: CHAT_CONTROLLER.MESSAGE + channelId + objToQuery({ limit, page }),
       }),
       providesTags: ["getMessages"],
-      serializeQueryArgs: ({ queryArgs, endpointName }) => {
-        return {
-          queryArgs,
-          endpointName,
-        };
+      serializeQueryArgs: ({ queryArgs }) => {
+        return queryArgs.channelId;
       },
       merge(currentCacheData, responseData) {
-        if (!responseData.data) return;
+        if (!responseData.data || !currentCacheData.data) return;
         const newItems = responseData.data.items;
-        currentCacheData.data?.items.unshift(...newItems);
+        currentCacheData.data.meta = responseData.data.meta;
+        currentCacheData.data?.items.push(...newItems);
       },
       // Refetch when the page arg changes
       forceRefetch({ currentArg, previousArg }) {
-        return currentArg?.channelId !== previousArg?.channelId;
+        return currentArg !== previousArg;
       },
     }),
     getChannels: builder.query<GetChannelsResponse, GetChannelsRequest>({

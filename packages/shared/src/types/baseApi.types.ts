@@ -161,7 +161,9 @@ export type GetChatDetailsResult = {
 export type GetChatDetailsResponse = BaseApiResponse<GetChatDetailsResult>;
 
 export type SendMessageRequest = InstanceType<typeof SendMessageDto> &
-  InstanceType<typeof GetChatDetailsDto>;
+  InstanceType<typeof GetChatDetailsDto> & {
+    files? : any;
+  };
 
 export type SendMessageResult = GetMessageItem;
 
@@ -196,6 +198,12 @@ export type GetMessageItem = {
       avatarUrl: string;
     };
   }[];
+  attachments : {
+    id : number;
+    mimeType : string,
+    size : number,
+    url : string
+  }[]
 };
 
 export type PaginatedResponseMetadata = {

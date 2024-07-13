@@ -31,7 +31,7 @@ export const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export function getRandomColor() {
@@ -57,4 +57,14 @@ export function getUsersTyping(users: string[]) {
   if (users.length === 0) return "";
   if (users.length === 1) return users[0] + " is typing";
   return users.join(",") + " are typing";
+}
+
+export function convertObjectToFormData(obj: any) {
+  const formData = new FormData();
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      formData.append(key, obj[key]);
+    }
+  }
+  return formData;
 }
