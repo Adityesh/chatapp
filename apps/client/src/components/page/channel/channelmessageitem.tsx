@@ -10,7 +10,7 @@ import { GetMessageItem } from "@repo/shared";
 import dayjs from "dayjs";
 import { FC, useEffect, useRef } from "react";
 
-const ChatPageBox: FC<{
+const ChannelMessageItem: FC<{
   message: GetMessageItem;
   isSenderLoggedIn: boolean;
   loggedInUserId: number;
@@ -86,4 +86,4 @@ const ChatPageBox: FC<{
   );
 };
 
-export default ChatPageBox;
+export default ChannelMessageItem;

@@ -13,6 +13,9 @@ import { UserModule } from './user/user.module';
 import { SocketService } from './socket/socket.service';
 import { SocketModule } from './socket/socket.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ConnectionController } from './connection/connection.controller';
+import { ConnectionService } from './connection/connection.service';
+import { ConnectionModule } from './connection/connection.module';
 
 @Module({
   imports: [
@@ -44,8 +47,9 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     UserModule,
     SocketModule,
     CloudinaryModule,
+    ConnectionModule,
   ],
-  controllers: [AppController, ChatController, UserController],
+  controllers: [AppController, ChatController, UserController, ConnectionController],
   providers: [AppService, EventsGateway],
 })
 export class AppModule {}

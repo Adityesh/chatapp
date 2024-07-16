@@ -1,6 +1,6 @@
 import ChannelHeader from "@/components/page/channel/channelheader";
-import ChatInput from "@/components/page/channel/chatinput";
-import ChatMessage from "@/components/page/channel/chatmessage";
+import ChatInput from "@/components/page/channel/channelinput";
+import ChatMessage from "@/components/page/channel/channelmessage";
 import { useAppDispatch } from "@/hooks/store";
 import {
   useGetChatDetailsQuery,

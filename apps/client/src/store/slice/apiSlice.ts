@@ -1,6 +1,7 @@
 import {
   AUTH_CONTROLLER,
   CHAT_CONTROLLER,
+  CONNECTIONS_CONTROLLER,
   HTTP_METHODS,
   USER_CONTROLLER,
 } from "@/constants/url.constants";
@@ -11,6 +12,8 @@ import {
   GetChannelsResponse,
   GetChatDetailsRequest,
   GetChatDetailsResponse,
+  GetConnectionsRequest,
+  GetConnectionsResponse,
   GetConnectionWithUserRequest,
   GetConnectionWithUserResponse,
   GetLoggedInUserRequest,
@@ -57,6 +60,7 @@ export const baseApi = createApi({
     "sendMessage",
     "getMessages",
     "getChannels",
+    "getConnections",
   ],
   endpoints: (builder) => ({
     // AUTH CONTROLLER
@@ -229,6 +233,15 @@ export const baseApi = createApi({
       //   return currentArg !== previousArg;
       // }
     }),
+    getConnections: builder.query<
+      GetConnectionsResponse,
+      GetConnectionsRequest
+    >({
+      query: (payload) => ({
+        url: CONNECTIONS_CONTROLLER.GET_CONNECTIONS + objToQuery(payload),
+      }),
+      providesTags: ["getConnections"],
+    }),
   }),
 });
 
@@ -248,4 +261,5 @@ export const {
   useSendMessageMutation,
   useGetMessagesQuery,
   useGetChannelsQuery,
+  useGetConnectionsQuery
 } = baseApi;

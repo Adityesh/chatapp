@@ -18,6 +18,10 @@ export const CHAT_CONTROLLER = {
   CHANNELS: "/chat/channels",
 };
 
+export const CONNECTIONS_CONTROLLER = {
+  GET_CONNECTIONS : "/connection/all"
+}
+
 export enum HTTP_METHODS {
   GET = "GET",
   POST = "POST",

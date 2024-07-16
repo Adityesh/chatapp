@@ -1,17 +1,13 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import UserListItem from "@/components/common/userlistitem";
 import { Input } from "@/components/ui/input";
 import Loader from "@/components/ui/loader";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearchUsersQuery } from "@/store/slice/apiSlice";
-import { SearchUserResponseType } from "@repo/shared";
-import { getNameInitials } from "@/utils";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const SearchTab = () => {
-  const navigate = useNavigate();
   const [page] = useState(1);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce<string>(search, 500);
@@ -24,12 +20,8 @@ const SearchTab = () => {
     },
     {
       skip: debouncedSearch.length === 0,
-    },
+    }
   );
-
-  const handleOpenUser = (user: SearchUserResponseType) => {
-    navigate("/chat/init/" + user.id);
-  };
 
   return (
     <div className="w-full h-full bg-foreground">
@@ -57,29 +49,7 @@ const SearchTab = () => {
       <div>
         {search.length > 0 &&
           data?.data?.items.map((user, index) => {
-            return (
-              <div
-                className={`w-full cursor-pointer items-center justify-start p-2 flex ${index % 2 == 0 && "bg-muted-foreground"}`}
-                key={user.id}
-                onClick={() => handleOpenUser(user)}
-              >
-                <Avatar>
-                  <AvatarImage
-                    src={user.avatarUrl || ""}
-                    alt={"@" + user.userName}
-                  />
-                  <AvatarFallback>
-                    {getNameInitials(user.fullName)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col ml-2">
-                  <span>{user.fullName}</span>
-                  <span className="text-muted text-sm hover:text-primary">
-                    {"@" + user.userName}
-                  </span>
-                </div>
-              </div>
-            );
+            return <UserListItem user={user} index={index} key={index} />;
           })}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import ChannelTabItem from "@/components/common/ChannelTabItem";
+import ChannelTabItem from "@/components/common/channeltabitem";
 import { useGetChannelsQuery } from "@/store/slice/apiSlice";
 import { useState } from "react";
 

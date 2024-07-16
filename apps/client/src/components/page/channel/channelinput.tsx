@@ -19,7 +19,7 @@ import Picker from "@emoji-mart/react";
 import { EmojiMartPickerOnClick } from "@repo/shared";
 import { ChangeEvent, useRef, useState } from "react";
 
-const ChatInput: React.FC<{ channelId: number }> = ({ channelId }) => {
+const ChannelInput: React.FC<{ channelId: number }> = ({ channelId }) => {
   const dispatch = useAppDispatch();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileState, setFileState] = useState(new Date().toString());
@@ -46,7 +46,9 @@ const ChatInput: React.FC<{ channelId: number }> = ({ channelId }) => {
     if (response.data) {
       setContent("");
       setAttachments({});
-      document.getElementById("message-bottom")?.scrollIntoView({ behavior : "smooth" })
+      document
+        .getElementById("message-bottom")
+        ?.scrollIntoView({ behavior: "smooth" });
       dispatch(SEND_MESSAGE({ ...response.data, channelId }));
     }
   };
@@ -98,12 +100,12 @@ const ChatInput: React.FC<{ channelId: number }> = ({ channelId }) => {
 
   return (
     <>
-      {currentUsersTyping.length > 0 && (
+        {currentUsersTyping.length > 0 && (
         <div className="w-full flex items-center justify-start font-satoshi mt-2">
-          <p className="pb-4 mx-2">{getUsersTyping(currentUsersTyping)}</p>
-          <Typing />
+            <p className="pb-4 mx-2">{getUsersTyping(currentUsersTyping)}</p>
+            <Typing />
         </div>
-      )}
+        )}
 
       <div className="w-full flex items-center justify-between">
         <Button variant="link" onClick={handleOpenFileDialog}>
@@ -170,4 +172,4 @@ const ChatInput: React.FC<{ channelId: number }> = ({ channelId }) => {
   );
 };
 
-export default ChatInput;
+export default ChannelInput;

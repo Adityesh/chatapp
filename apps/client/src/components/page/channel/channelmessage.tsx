@@ -1,12 +1,13 @@
-import ChatPageBox from "@/components/common/ChatPageBox";
-import InfiniteScroll from "react-infinite-scroll-component";
+import Circularloader from "@/components/ui/circularloader";
 import {
   useGetLoggedInUserQuery,
   useGetMessagesQuery,
 } from "@/store/slice/apiSlice";
 import { FC, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import ChannelMessageItem from "./channelmessageitem";
 
-const ChatMessage: FC<{ channelId: number }> = ({ channelId }) => {
+const ChannelMessage: FC<{ channelId: number }> = ({ channelId }) => {
   const loggedInUser = useGetLoggedInUserQuery(null);
   const [page, setPage] = useState(1);
   const { data: messages } = useGetMessagesQuery(
@@ -37,16 +38,16 @@ const ChatMessage: FC<{ channelId: number }> = ({ channelId }) => {
         hasMore={
           messages.data.meta.currentPage !== messages.data.meta.totalPages
         }
-        loader={<h4>Loading...</h4>}
+        loader={<Circularloader className="mx-auto" />}
         scrollableTarget="scrollableDiv"
         endMessage={
           <p style={{ textAlign: "center" }}>
-            <b>Yay! You have seen it all</b>
+            <b>This is the beginning of your conversation.</b>
           </p>
         }
       >
         {messages.data.items.map((message, index) => (
-          <ChatPageBox
+          <ChannelMessageItem
             message={message}
             isSenderLoggedIn={message.sender.id === loggedInUser.data!.data?.id}
             key={index}
@@ -59,4 +60,4 @@ const ChatMessage: FC<{ channelId: number }> = ({ channelId }) => {
   );
 };
 
-export default ChatMessage;
+export default ChannelMessage;

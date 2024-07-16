@@ -1,10 +1,10 @@
 import { useAppSelector } from "@/hooks/store";
 import { useMemo } from "react";
 import Navbar from "./navbar";
-import ChannelsTab from "./tabs/channelstab";
-import ChatTab from "./tabs/chattab";
-import ConnectionsTab from "./tabs/connectionstab";
-import SearchTab from "./tabs/searchtab";
+import ChannelsTab from "./tabs/channels";
+import ChatTab from "./tabs/chat";
+import ConnectionsTab from "./tabs/connections";
+import SearchTab from "./tabs/search";
 
 const Sidebar = () => {
   const tab = useAppSelector((state) => state.navigation.tab);
@@ -25,7 +25,7 @@ const Sidebar = () => {
   return (
     <div className="h-full flex items-center justify-between">
       <Navbar />
-      <div className="w-full h-full">{renderTab}</div>
+      {renderTab}
     </div>
   );
 };

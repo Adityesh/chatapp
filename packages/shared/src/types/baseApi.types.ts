@@ -5,6 +5,7 @@ import {
   InitateChatDto,
   SendMessageDto,
 } from "../dto/chat.dto";
+import { GetConnectionsDto } from "../dto/connection.dto";
 import { LoginUserLocalDto, RegisterLocalUserDto } from "../dto/local-user.dto";
 import {
   GetConnectionWithUserDto,
@@ -13,8 +14,10 @@ import {
   SendConnectionDto,
   UpdateConnectionDto,
 } from "../dto/user.dto";
-import { ConnectionStatusEnum } from "../enums/connection.enum";
+import ConnectionStatusEnum from "../enums/connection.enum";
 import { MessageStatusEnum } from "../enums/message.enum";
+
+//// Common types ////////////////
 
 export type BaseApiResponse<T = void> = {
   data?: T;
@@ -26,6 +29,24 @@ export type BaseApiResponse<T = void> = {
     cause?: string;
     name?: string;
   };
+};
+
+export type PaginatedResponse<T> = {
+  items: T[];
+  meta: {
+    totalItems: number;
+    itemCount: number;
+    itemsPerPage: number;
+    totalPages: number;
+    currentPage: number;
+  };
+};
+
+export type BaseUserResult = {
+  id: number;
+  fullName: string;
+  avatarUrl: string | null;
+  userName: string;
 };
 
 /******** AUTH CONTROLLER ******/
@@ -56,16 +77,8 @@ export type LogoutUserResponse = LogoutUserResult;
 
 export type SearchUsersRequest = InstanceType<typeof SearchUsersDto>;
 
-export type SearchUserResponseType = {
-  id: number;
-  fullName: string;
-  userName: string;
-  avatarUrl: string | null;
-};
-export type SearchUsersResult = {
-  items: Array<SearchUserResponseType>;
-  meta: PaginatedResponseMetadata;
-};
+export type SearchUserResponseType = BaseUserResult;
+export type SearchUsersResult = PaginatedResponse<SearchUserResponseType>;
 
 export type SearchUsersResponse = BaseApiResponse<SearchUsersResult>;
 
@@ -105,31 +118,14 @@ export type GetConnectionWithUserResult = {
   createdAt: string;
   updatedAt: string;
   status: string;
-  addressedTo: {
-    id: number;
-    fullName: string;
-    userName: string;
-    avatarUrl: string;
-  };
-  requestedBy: {
-    id: number;
-    fullName: string;
-    userName: string;
-    avatarUrl: string;
-  };
+  addressedTo: BaseUserResult;
+  requestedBy: BaseUserResult;
 };
 
 export type GetConnectionWithUserResponse =
   BaseApiResponse<GetConnectionWithUserResult>;
 
 /******** CHAT CONTROLLER ******/
-
-export type BaseUserType = {
-  id: number;
-  userName: string;
-  fullName: string;
-  avatarUrl: string | null;
-};
 
 export type InitateChatRequest = InstanceType<typeof InitateChatDto>;
 
@@ -153,16 +149,16 @@ export type GetChatDetailsResult = {
     createdAt: string;
     updatedAt: string;
     deletedAt: null;
-    user: BaseUserType;
+    user: BaseUserResult;
   }[];
-  createdBy: BaseUserType;
+  createdBy: BaseUserResult;
 };
 
 export type GetChatDetailsResponse = BaseApiResponse<GetChatDetailsResult>;
 
 export type SendMessageRequest = InstanceType<typeof SendMessageDto> &
   InstanceType<typeof GetChatDetailsDto> & {
-    files? : any;
+    files?: any;
   };
 
 export type SendMessageResult = GetMessageItem;
@@ -178,12 +174,7 @@ export type GetMessageItem = {
   updatedAt: string;
   content: string;
   status: MessageStatusEnum;
-  sender: {
-    id: number;
-    fullName: string;
-    userName: string;
-    avatarUrl: string | null;
-  };
+  sender: BaseUserResult;
   messageStatus: {
     id: number;
     createdAt: string;
@@ -191,33 +182,17 @@ export type GetMessageItem = {
     deletedAt: string | null;
     deliveredAt: string | null;
     readAt: string | null;
-    user: {
-      id: number;
-      userName: string;
-      fullName: string;
-      avatarUrl: string;
-    };
+    user: BaseUserResult;
   }[];
-  attachments : {
-    id : number;
-    mimeType : string,
-    size : number,
-    url : string
-  }[]
+  attachments: {
+    id: number;
+    mimeType: string;
+    size: number;
+    url: string;
+  }[];
 };
 
-export type PaginatedResponseMetadata = {
-  totalItems: number;
-  itemCount: number;
-  itemsPerPage: number;
-  totalPages: number;
-  currentPage: number;
-};
-
-export type GetMessagesResult = {
-  items: Array<GetMessageItem>;
-  meta: PaginatedResponseMetadata;
-};
+export type GetMessagesResult = PaginatedResponse<GetMessageItem>;
 
 export type GetMessagesResponse = BaseApiResponse<GetMessagesResult>;
 
@@ -231,19 +206,11 @@ export type GetChannelResponseType = {
   isGroup: boolean;
   users: {
     id: number;
-    user: {
-      id: number;
-      fullName: string;
-      userName: string;
-      avatarUrl: string | null;
-    };
+    user: BaseUserResult;
   }[];
 };
 
-export type GetChannelsResult = {
-  items: Array<GetChannelResponseType>;
-  meta: PaginatedResponseMetadata;
-};
+export type GetChannelsResult = PaginatedResponse<GetChannelResponseType>;
 
 export type GetChannelsResponse = BaseApiResponse<GetChannelsResult>;
 
@@ -263,3 +230,20 @@ export type MarkMessageAsReadEvent = {
 export type MarkMessageAsReadEventReturn = MarkMessageAsReadEvent & {
   readAt: string;
 };
+
+//////////// Connections Controller ////////////////
+export type GetConnectionsRequest = InstanceType<typeof GetConnectionsDto>;
+
+export type GetConnectionsItem = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  status: ConnectionStatusEnum;
+  requestedBy: BaseUserResult;
+  addressedTo: BaseUserResult;
+};
+
+export type GetConnectionsResult = PaginatedResponse<GetConnectionsItem>;
+
+export type GetConnectionsResponse = BaseApiResponse<GetConnectionsResult>;
