@@ -8,6 +8,8 @@ import {
 import {
   ConnectionInviteRequest,
   ConnectionInviteResponse,
+  CreateChannelRequest,
+  CreateChannelResponse,
   GetChannelsRequest,
   GetChannelsResponse,
   GetChatDetailsRequest,
@@ -242,6 +244,17 @@ export const baseApi = createApi({
       }),
       providesTags: ["getConnections"],
     }),
+
+    createChannel : builder.mutation<CreateChannelResponse, CreateChannelRequest>({
+      query : (payload) => {
+        const formData = convertObjectToFormData(payload)
+        return {
+          url : CHAT_CONTROLLER.CREATE_CHANNEL,
+          method : HTTP_METHODS.POST,
+          body : formData,
+        }
+      }
+    })
   }),
 });
 
@@ -261,5 +274,6 @@ export const {
   useSendMessageMutation,
   useGetMessagesQuery,
   useGetChannelsQuery,
-  useGetConnectionsQuery
+  useGetConnectionsQuery,
+  useCreateChannelMutation
 } = baseApi;

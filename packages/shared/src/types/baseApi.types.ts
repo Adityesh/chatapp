@@ -1,4 +1,5 @@
 import {
+  CreateChannelDto,
   GetChannelsDto,
   GetChatDetailsDto,
   GetMessagesDto,
@@ -213,6 +214,14 @@ export type GetChannelResponseType = {
 export type GetChannelsResult = PaginatedResponse<GetChannelResponseType>;
 
 export type GetChannelsResponse = BaseApiResponse<GetChannelsResult>;
+
+export type CreateChannelRequest = InstanceType<typeof CreateChannelDto> & {
+  channelAvatar? : any;
+};
+
+export type CreateChannelResult = {};
+
+export type CreateChannelResponse = BaseApiResponse<CreateChannelResult>;
 
 ///////////////// Socket Events //////////////////////////////
 export type UserTypingEvent = {

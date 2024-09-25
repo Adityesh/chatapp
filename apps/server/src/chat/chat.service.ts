@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  CreateChannelDto,
   GetChatDetailsDto,
   InitateChatDto,
   SendMessageDto,
@@ -287,6 +288,39 @@ export class ChatService {
       id: messageStatusId,
       readAt: new Date(),
     });
+    return result;
+  }
+
+  async createChannel(
+    loggedInUserId: number,
+    { description, topic, channelUsers, isGroup }: CreateChannelDto,
+    channelAvatar?: Express.Multer.File,
+  ) {
+    let uploadedAvatar: UploadApiResponse | undefined;
+
+    if (channelAvatar) {
+      uploadedAvatar = await this.cloudinaryService.uploadFile(channelAvatar);
+    }
+
+    const loggedInUser = await this.userRepository.findOne({
+      where: {
+        id: loggedInUserId,
+      },
+    });
+
+    if (!loggedInUser) {
+      throw new BadRequestException('User creating the channel is not found.');
+    }
+
+    const newChannel = new Channel();
+    newChannel.isGroup = isGroup;
+    newChannel.createdBy = loggedInUser;
+    newChannel.description = description;
+    newChannel.topic = topic;
+    newChannel.channelAvatar = uploadedAvatar.url;
+    newChannel.users = [{ user : loggedInUser, isAdmin : true } as ChannelUser]
+    // add logic for adding channel users later
+    const result = await this.channelRepository.save(newChannel);
     return result;
   }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  FileTypeValidator,
   Get,
   MaxFileSizeValidator,
   Param,
@@ -8,6 +9,7 @@ import {
   Post,
   Query,
   Req,
+  UploadedFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -20,8 +22,12 @@ import {
   InitateChatDto,
   SendMessageDto,
   GetChannelsDto,
+  CreateChannelDto,
 } from '@repo/shared';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
 
 @Controller('chat')
 export class ChatController {
@@ -45,11 +51,10 @@ export class ChatController {
   async sendMessage(
     @Body() sendMessageDto: SendMessageDto,
     @Param() { channelId }: GetChatDetailsDto,
-    @UploadedFiles(
-      // new ParseFilePipe({
-      //   validators: [new MaxFileSizeValidator({ maxSize: 1 * 1024 * 1024 })],
-      // }),
-    )
+    @UploadedFiles()
+    // new ParseFilePipe({
+    //   validators: [new MaxFileSizeValidator({ maxSize: 1 * 1024 * 1024 })],
+    // }),
     allFiles: { files?: Express.Multer.File[] },
   ) {
     return this.chatService.sendMessage(
@@ -72,5 +77,24 @@ export class ChatController {
   @UseGuards(ProtectedGuard)
   async getChannels(@Req() req, @Query() { limit, page }: GetChannelsDto) {
     return this.chatService.getChannels(req.user.id, { limit, page });
+  }
+
+  @Post('/channel/create')
+  @UseGuards(ProtectedGuard)
+  @UseInterceptors(FileInterceptor('channelAvatar'))
+  async createChannel(
+    @Req() req,
+    @Body() createChannelDto: CreateChannelDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1 * 1024 * 1024 }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+        ],
+      }),
+    )
+    channelAvatar?: Express.Multer.File,
+  ) {
+    return this.chatService.createChannel(req.user.id, createChannelDto, channelAvatar);
   }
 }

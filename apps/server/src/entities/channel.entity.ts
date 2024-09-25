@@ -26,6 +26,9 @@ export class Channel extends BaseEntity {
   @Column({ name: 'is_group', type: 'boolean', default: false })
   isGroup: boolean;
 
+  @Column({ name : "channel_avatar", nullable : true })
+  channelAvatar : string;
+
   @OneToMany(() => Message, (message) => message.channel)
   channelMessages: Message[];
 

@@ -16,6 +16,7 @@ export const CHAT_CONTROLLER = {
   CHAT_DETAILS: "/chat/details",
   MESSAGE: "/chat/message/",
   CHANNELS: "/chat/channels",
+  CREATE_CHANNEL : "/chat/channel/create"
 };
 
 export const CONNECTIONS_CONTROLLER = {

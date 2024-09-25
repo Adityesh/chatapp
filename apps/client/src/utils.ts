@@ -50,7 +50,11 @@ export function getNameInitials(fullName: string) {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function objToQuery(obj: any) {
-  return "?" + new URLSearchParams(obj).toString();
+  let objCopy = structuredClone(obj)
+  for (let key in obj) {
+    if (objCopy[key] == null) delete objCopy[key];
+  }
+  return "?" + new URLSearchParams(objCopy).toString();
 }
 
 export function getUsersTyping(users: string[]) {
