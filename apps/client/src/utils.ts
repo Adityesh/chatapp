@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -50,8 +50,8 @@ export function getNameInitials(fullName: string) {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function objToQuery(obj: any) {
-  let objCopy = structuredClone(obj)
-  for (let key in obj) {
+  const objCopy = structuredClone(obj)
+  for (const key in obj) {
     if (objCopy[key] == null) delete objCopy[key];
   }
   return "?" + new URLSearchParams(objCopy).toString();

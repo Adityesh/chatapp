@@ -16,7 +16,7 @@ export default function Root() {
       <div className="flex-1">
         {!isLoggedIn ? <AuthComponent /> : <Sidebar />}
       </div>
-      <div className="grow-[3] shrink basis-0">
+      <div className="grow-3 shrink basis-0">
         <Outlet />
       </div>
     </div>
