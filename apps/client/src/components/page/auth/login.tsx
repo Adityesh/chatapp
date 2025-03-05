@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
-import { useAppDispatch } from "@/hooks/store";
+import { useAppDispatch } from "@/store/store.ts";
 import { SET_AUTH_STATE } from "@/store/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 import { APP_URL } from "@/constants/clientUrl.constants";

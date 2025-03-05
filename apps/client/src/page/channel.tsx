@@ -1,7 +1,7 @@
 import ChannelHeader from "@/components/page/channel/channelheader";
 import ChatInput from "@/components/page/channel/channelinput";
 import ChatMessage from "@/components/page/channel/channelmessage";
-import { useAppDispatch } from "@/hooks/store";
+import { useAppDispatch } from "@/store/store.ts";
 import {
   useGetChatDetailsQuery,
   useGetLoggedInUserQuery,
@@ -13,8 +13,12 @@ import {
 } from "@/store/slice/socketSlice";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import useTitle from '@/hooks/useTitle.ts';
 
 const Channel = () => {
+
+  useTitle("Channel");
+
   const dispatch = useAppDispatch();
   const { channelId } = useParams();
   const { data } = useGetChatDetailsQuery({

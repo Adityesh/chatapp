@@ -3,7 +3,7 @@ import {
   MESSAGE_PAST_FORMAT,
   MESSAGE_TODAY_FORMAT,
 } from "@/constants/common.constants";
-import { useAppDispatch } from "@/hooks/store";
+import { useAppDispatch } from "@/store/store.ts";
 import { useIsVisible } from "@/hooks/useIsVisible";
 import { MARK_MESSAGE_AS_READ } from "@/store/slice/socketSlice";
 import { GetMessageItem } from "@repo/shared";

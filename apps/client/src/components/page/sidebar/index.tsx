@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/hooks/store";
+import { useAppSelector } from "@/store/store.ts";
 import { useMemo } from "react";
 import Navbar from "./navbar";
 import ChannelsTab from "./tabs/channels";

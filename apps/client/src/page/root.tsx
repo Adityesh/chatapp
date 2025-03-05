@@ -1,11 +1,12 @@
 import AuthComponent from "@/components/page/auth";
 import Sidebar from "@/components/page/sidebar";
-import { useAppSelector } from "@/hooks/store";
+import { useAppSelector } from "@/store/store.ts";
 import { useGetLoggedInUserQuery } from "@/store/slice/apiSlice";
 import { Outlet } from "react-router-dom";
 
 export default function Root() {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+
   useGetLoggedInUserQuery(null, {
     skip: !isLoggedIn,
   });

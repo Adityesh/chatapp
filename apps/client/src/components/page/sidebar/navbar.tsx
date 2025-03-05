@@ -1,7 +1,7 @@
 import Icon from "@/components/ui/icon";
 import { TooltipRoot } from "@/components/ui/tooltip";
 import { APP_URL } from "@/constants/clientUrl.constants";
-import { useAppDispatch, useAppSelector } from "@/hooks/store";
+import { useAppDispatch, useAppSelector } from "@/store/store.ts";
 import { useLogoutUserMutation } from "@/store/slice/apiSlice";
 import { SET_AUTH_STATE } from "@/store/slice/authSlice";
 import { SET_NAVIGATION_STATE } from "@/store/slice/navigationSlice";

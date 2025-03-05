@@ -281,3 +281,211 @@
 [2024-07-22T16:04:21.781Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
 [2024-07-22T16:04:21.793Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
 [2024-07-22T16:04:21.795Z]No migrations are pending
+[2025-03-04T10:42:43.505Z][QUERY]: SELECT * FROM current_schema()
+[2025-03-04T10:42:54.470Z][QUERY]: SELECT version();
+[2025-03-04T10:42:54.478Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2025-03-04T10:42:54.497Z][QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2025-03-04T10:42:54.512Z][FAILED QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2025-03-04T10:42:54.512Z][QUERY ERROR]: error: schema "projects" does not exist
+[2025-03-04T10:44:10.210Z][QUERY]: SELECT * FROM current_schema()
+[2025-03-04T10:44:21.053Z][QUERY]: SELECT version();
+[2025-03-04T10:44:21.059Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2025-03-04T10:44:21.074Z][QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2025-03-04T10:44:21.076Z][FAILED QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2025-03-04T10:44:21.076Z][QUERY ERROR]: error: schema "projects" does not exist
+[2025-03-04T10:46:38.128Z][QUERY]: SELECT * FROM current_schema()
+[2025-03-04T10:46:45.188Z][QUERY]: SELECT version();
+[2025-03-04T10:46:45.193Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2025-03-04T10:46:45.209Z][QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2025-03-04T10:46:45.270Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2025-03-04T10:46:45.272Z]0 migrations are already loaded in the database.
+[2025-03-04T10:46:45.273Z]11 migrations were found in the source code.
+[2025-03-04T10:46:45.273Z]11 migrations are new migrations must be executed.
+[2025-03-04T10:46:45.274Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.275Z][QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "password" character varying, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying, "email" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2025-03-04T10:46:45.284Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1718736541789,"SchemaUpdate1718736541789"]
+[2025-03-04T10:46:45.290Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.294Z]Migration SchemaUpdate1718736541789 has been  executed successfully.
+[2025-03-04T10:46:45.294Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.296Z][QUERY]: ALTER TABLE "projects"."users" ALTER COLUMN "google_id" DROP NOT NULL
+[2025-03-04T10:46:45.299Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1718739215366,"SchemaUpdate1718739215366"]
+[2025-03-04T10:46:45.300Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.301Z]Migration SchemaUpdate1718739215366 has been  executed successfully.
+[2025-03-04T10:46:45.301Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.302Z][QUERY]: CREATE TYPE "projects"."connections_status_enum" AS ENUM('pending', 'accepted', 'declined', 'blocked')
+[2025-03-04T10:46:45.308Z][QUERY]: CREATE TABLE "projects"."connections" ("id" SERIAL NOT NULL, "status" "projects"."connections_status_enum" NOT NULL DEFAULT 'pending', "created_at" TIMESTAMP NOT NULL DEFAULT now(), "requested_by" integer, "addressed_to" integer, CONSTRAINT "PK_0a1f844af3122354cbd487a8d03" PRIMARY KEY ("id"))
+[2025-03-04T10:46:45.312Z][QUERY]: ALTER TABLE "projects"."connections" ADD CONSTRAINT "FK_07ef035181c8897a846fde4a735" FOREIGN KEY ("requested_by") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:46:45.323Z][QUERY]: ALTER TABLE "projects"."connections" ADD CONSTRAINT "FK_9b7bb27b4207ce4ab4ae7718312" FOREIGN KEY ("addressed_to") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:46:45.325Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1719135445032,"SchemaUpdate1719135445032"]
+[2025-03-04T10:46:45.326Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.329Z]Migration SchemaUpdate1719135445032 has been  executed successfully.
+[2025-03-04T10:46:45.330Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.331Z][QUERY]: ALTER TABLE "projects"."connections" ADD "accepted_at" TIMESTAMP NOT NULL DEFAULT now()
+[2025-03-04T10:46:45.333Z][QUERY]: CREATE INDEX "IDX_0adc0a8834ea0f252e96d154de" ON "projects"."users" ("full_name") 
+[2025-03-04T10:46:45.336Z][QUERY]: CREATE INDEX "IDX_074a1f262efaca6aba16f7ed92" ON "projects"."users" ("user_name") 
+[2025-03-04T10:46:45.338Z][QUERY]: CREATE INDEX "IDX_97672ac88f789774dd47f7c8be" ON "projects"."users" ("email") 
+[2025-03-04T10:46:45.341Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1719135697984,"SchemaUpdate1719135697984"]
+[2025-03-04T10:46:45.342Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.343Z]Migration SchemaUpdate1719135697984 has been  executed successfully.
+[2025-03-04T10:46:45.344Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.345Z][QUERY]: CREATE TABLE "projects"."channel_users" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "user_id" integer, "channelIdId" integer, CONSTRAINT "PK_2237cedc2591a4ad08535ec0f9c" PRIMARY KEY ("id"))
+[2025-03-04T10:46:45.349Z][QUERY]: CREATE TABLE "projects"."channels" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "topic" character varying, "description" character varying, "is_deleted" boolean NOT NULL DEFAULT false, "created_by" integer, CONSTRAINT "UQ_069b6c9c74fb42c2e31a8987592" UNIQUE ("topic"), CONSTRAINT "PK_bc603823f3f741359c2339389f9" PRIMARY KEY ("id"))
+[2025-03-04T10:46:45.356Z][QUERY]: CREATE INDEX "IDX_069b6c9c74fb42c2e31a898759" ON "projects"."channels" ("topic") 
+[2025-03-04T10:46:45.358Z][QUERY]: CREATE TYPE "projects"."messages_status_enum" AS ENUM('sent', 'delivered', 'read')
+[2025-03-04T10:46:45.359Z][QUERY]: CREATE TABLE "projects"."messages" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "content" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "status" "projects"."messages_status_enum" NOT NULL DEFAULT 'sent', "sender_id" integer, "channel_id" integer, CONSTRAINT "PK_18325f38ae6de43878487eff986" PRIMARY KEY ("id"))
+[2025-03-04T10:46:45.364Z][QUERY]: CREATE TABLE "projects"."message_status" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "delivered_at" TIMESTAMP NOT NULL DEFAULT now(), "read_at" TIMESTAMP DEFAULT now(), "message_id" integer, "user_id" integer, CONSTRAINT "PK_fd8b82470959145fdf427784046" PRIMARY KEY ("id"))
+[2025-03-04T10:46:45.369Z][QUERY]: ALTER TABLE "projects"."connections" DROP COLUMN "accepted_at"
+[2025-03-04T10:46:45.377Z][QUERY]: ALTER TABLE "projects"."connections" ADD "updated_at" TIMESTAMP NOT NULL DEFAULT now()
+[2025-03-04T10:46:45.378Z][QUERY]: ALTER TABLE "projects"."connections" ADD "deleted_at" TIMESTAMP
+[2025-03-04T10:46:45.379Z][QUERY]: ALTER TABLE "projects"."users" ADD "deleted_at" TIMESTAMP
+[2025-03-04T10:46:45.380Z][QUERY]: ALTER TABLE "projects"."users" ADD CONSTRAINT "UQ_074a1f262efaca6aba16f7ed920" UNIQUE ("user_name")
+[2025-03-04T10:46:45.382Z][QUERY]: ALTER TABLE "projects"."users" ADD CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email")
+[2025-03-04T10:46:45.384Z][QUERY]: ALTER TABLE "projects"."channel_users" ADD CONSTRAINT "FK_a7a2db7198d61d6a301fdfeb3ed" FOREIGN KEY ("user_id") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:46:45.390Z][QUERY]: ALTER TABLE "projects"."channel_users" ADD CONSTRAINT "FK_d9f902e1b324ee3f35807599206" FOREIGN KEY ("channelIdId") REFERENCES "projects"."channels"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:46:45.393Z][QUERY]: ALTER TABLE "projects"."channels" ADD CONSTRAINT "FK_2573c3526ed4a83cc830762012e" FOREIGN KEY ("created_by") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:46:45.395Z][QUERY]: ALTER TABLE "projects"."messages" ADD CONSTRAINT "FK_22133395bd13b970ccd0c34ab22" FOREIGN KEY ("sender_id") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:46:45.398Z][QUERY]: ALTER TABLE "projects"."messages" ADD CONSTRAINT "FK_86b9109b155eb70c0a2ca3b4b6d" FOREIGN KEY ("channel_id") REFERENCES "projects"."channels"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:46:45.399Z][QUERY]: ALTER TABLE "projects"."message_status" ADD CONSTRAINT "FK_ff8dd09dba401134707f7fdafd1" FOREIGN KEY ("message_id") REFERENCES "projects"."messages"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:46:45.402Z][QUERY]: ALTER TABLE "projects"."message_status" ADD CONSTRAINT "FK_4ae52d84e883c882b2f964d852f" FOREIGN KEY ("user_id") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:46:45.404Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1719153773700,"SchemaUpdate1719153773700"]
+[2025-03-04T10:46:45.405Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.409Z]Migration SchemaUpdate1719153773700 has been  executed successfully.
+[2025-03-04T10:46:45.409Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.411Z][QUERY]: ALTER TABLE "projects"."channels" ADD "is_group" boolean NOT NULL DEFAULT false
+[2025-03-04T10:46:45.412Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1719154185363,"SchemaUpdate1719154185363"]
+[2025-03-04T10:46:45.413Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.414Z]Migration SchemaUpdate1719154185363 has been  executed successfully.
+[2025-03-04T10:46:45.414Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.415Z][QUERY]: ALTER TABLE "projects"."channel_users" DROP CONSTRAINT "FK_d9f902e1b324ee3f35807599206"
+[2025-03-04T10:46:45.417Z][QUERY]: ALTER TABLE "projects"."channel_users" RENAME COLUMN "channelIdId" TO "channel_id"
+[2025-03-04T10:46:45.418Z][QUERY]: ALTER TABLE "projects"."channel_users" ADD CONSTRAINT "FK_172af4652df61837a64d5e79955" FOREIGN KEY ("channel_id") REFERENCES "projects"."channels"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:46:45.422Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1720213359058,"SchemaUpdate1720213359058"]
+[2025-03-04T10:46:45.423Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.425Z]Migration SchemaUpdate1720213359058 has been  executed successfully.
+[2025-03-04T10:46:45.425Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.426Z][QUERY]: ALTER TABLE "projects"."message_status" ADD "sent_at" TIMESTAMP NOT NULL DEFAULT now()
+[2025-03-04T10:46:45.427Z][QUERY]: ALTER TABLE "projects"."message_status" ALTER COLUMN "delivered_at" DROP NOT NULL
+[2025-03-04T10:46:45.428Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1720430140194,"SchemaUpdate1720430140194"]
+[2025-03-04T10:46:45.429Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.431Z]Migration SchemaUpdate1720430140194 has been  executed successfully.
+[2025-03-04T10:46:45.432Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.432Z][QUERY]: ALTER TABLE "projects"."message_status" DROP COLUMN "sent_at"
+[2025-03-04T10:46:45.434Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1720432124611,"SchemaUpdate1720432124611"]
+[2025-03-04T10:46:45.436Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.439Z]Migration SchemaUpdate1720432124611 has been  executed successfully.
+[2025-03-04T10:46:45.439Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.440Z][QUERY]: CREATE TABLE "projects"."message_attachments" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "mime_type" character varying NOT NULL, "url" character varying NOT NULL, "size" integer NOT NULL, "messageId" integer, CONSTRAINT "PK_e5085d973567c61e9306f10f95b" PRIMARY KEY ("id"))
+[2025-03-04T10:46:45.446Z][QUERY]: ALTER TABLE "projects"."message_attachments" ADD CONSTRAINT "FK_5b4f24737fcb6b35ffdd4d16e13" FOREIGN KEY ("messageId") REFERENCES "projects"."messages"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+[2025-03-04T10:46:45.449Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1720642501584,"SchemaUpdate1720642501584"]
+[2025-03-04T10:46:45.450Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.453Z]Migration SchemaUpdate1720642501584 has been  executed successfully.
+[2025-03-04T10:46:45.454Z][QUERY]: START TRANSACTION
+[2025-03-04T10:46:45.455Z][QUERY]: ALTER TABLE "projects"."channel_users" ADD "is_admin" boolean NOT NULL DEFAULT false
+[2025-03-04T10:46:45.456Z][QUERY]: ALTER TABLE "projects"."channels" ADD "channel_avatar" character varying
+[2025-03-04T10:46:45.457Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1721664225707,"SchemaUpdate1721664225707"]
+[2025-03-04T10:46:45.458Z][QUERY]: COMMIT
+[2025-03-04T10:46:45.460Z]Migration SchemaUpdate1721664225707 has been  executed successfully.
+[2025-03-04T10:48:06.950Z][QUERY]: SELECT * FROM current_schema()
+[2025-03-04T10:48:15.148Z][QUERY]: SELECT version();
+[2025-03-04T10:48:15.151Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2025-03-04T10:48:15.163Z][QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2025-03-04T10:48:15.165Z][FAILED QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2025-03-04T10:48:15.165Z][QUERY ERROR]: error: schema "projects" does not exist
+[2025-03-04T10:49:05.443Z][QUERY]: SELECT * FROM current_schema()
+[2025-03-04T10:49:12.991Z][QUERY]: SELECT version();
+[2025-03-04T10:49:13.004Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2025-03-04T10:49:13.018Z][QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2025-03-04T10:49:13.020Z][FAILED QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2025-03-04T10:49:13.020Z][QUERY ERROR]: error: schema "projects" does not exist
+[2025-03-04T10:49:35.489Z][QUERY]: SELECT * FROM current_schema()
+[2025-03-04T10:49:42.610Z][QUERY]: SELECT version();
+[2025-03-04T10:49:42.615Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2025-03-04T10:49:42.627Z][QUERY]: CREATE TABLE "projects"."chatapp_migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_0c3f1d0a9736987a313a735fcc6" PRIMARY KEY ("id"))
+[2025-03-04T10:49:42.655Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2025-03-04T10:49:42.658Z]0 migrations are already loaded in the database.
+[2025-03-04T10:49:42.659Z]11 migrations were found in the source code.
+[2025-03-04T10:49:42.659Z]11 migrations are new migrations must be executed.
+[2025-03-04T10:49:42.660Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.661Z][QUERY]: CREATE TABLE "projects"."users" ("id" SERIAL NOT NULL, "full_name" character varying NOT NULL, "user_name" character varying NOT NULL, "password" character varying, "is_deleted" boolean NOT NULL DEFAULT false, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "google_id" character varying NOT NULL, "avatar_url" character varying, "email" character varying NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2025-03-04T10:49:42.672Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1718736541789,"SchemaUpdate1718736541789"]
+[2025-03-04T10:49:42.675Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.679Z]Migration SchemaUpdate1718736541789 has been  executed successfully.
+[2025-03-04T10:49:42.680Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.681Z][QUERY]: ALTER TABLE "projects"."users" ALTER COLUMN "google_id" DROP NOT NULL
+[2025-03-04T10:49:42.683Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1718739215366,"SchemaUpdate1718739215366"]
+[2025-03-04T10:49:42.684Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.687Z]Migration SchemaUpdate1718739215366 has been  executed successfully.
+[2025-03-04T10:49:42.687Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.688Z][QUERY]: CREATE TYPE "projects"."connections_status_enum" AS ENUM('pending', 'accepted', 'declined', 'blocked')
+[2025-03-04T10:49:42.692Z][QUERY]: CREATE TABLE "projects"."connections" ("id" SERIAL NOT NULL, "status" "projects"."connections_status_enum" NOT NULL DEFAULT 'pending', "created_at" TIMESTAMP NOT NULL DEFAULT now(), "requested_by" integer, "addressed_to" integer, CONSTRAINT "PK_0a1f844af3122354cbd487a8d03" PRIMARY KEY ("id"))
+[2025-03-04T10:49:42.699Z][QUERY]: ALTER TABLE "projects"."connections" ADD CONSTRAINT "FK_07ef035181c8897a846fde4a735" FOREIGN KEY ("requested_by") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:49:42.705Z][QUERY]: ALTER TABLE "projects"."connections" ADD CONSTRAINT "FK_9b7bb27b4207ce4ab4ae7718312" FOREIGN KEY ("addressed_to") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:49:42.707Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1719135445032,"SchemaUpdate1719135445032"]
+[2025-03-04T10:49:42.708Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.711Z]Migration SchemaUpdate1719135445032 has been  executed successfully.
+[2025-03-04T10:49:42.712Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.713Z][QUERY]: ALTER TABLE "projects"."connections" ADD "accepted_at" TIMESTAMP NOT NULL DEFAULT now()
+[2025-03-04T10:49:42.714Z][QUERY]: CREATE INDEX "IDX_0adc0a8834ea0f252e96d154de" ON "projects"."users" ("full_name") 
+[2025-03-04T10:49:42.717Z][QUERY]: CREATE INDEX "IDX_074a1f262efaca6aba16f7ed92" ON "projects"."users" ("user_name") 
+[2025-03-04T10:49:42.719Z][QUERY]: CREATE INDEX "IDX_97672ac88f789774dd47f7c8be" ON "projects"."users" ("email") 
+[2025-03-04T10:49:42.722Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1719135697984,"SchemaUpdate1719135697984"]
+[2025-03-04T10:49:42.723Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.726Z]Migration SchemaUpdate1719135697984 has been  executed successfully.
+[2025-03-04T10:49:42.727Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.728Z][QUERY]: CREATE TABLE "projects"."channel_users" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "user_id" integer, "channelIdId" integer, CONSTRAINT "PK_2237cedc2591a4ad08535ec0f9c" PRIMARY KEY ("id"))
+[2025-03-04T10:49:42.732Z][QUERY]: CREATE TABLE "projects"."channels" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "topic" character varying, "description" character varying, "is_deleted" boolean NOT NULL DEFAULT false, "created_by" integer, CONSTRAINT "UQ_069b6c9c74fb42c2e31a8987592" UNIQUE ("topic"), CONSTRAINT "PK_bc603823f3f741359c2339389f9" PRIMARY KEY ("id"))
+[2025-03-04T10:49:42.741Z][QUERY]: CREATE INDEX "IDX_069b6c9c74fb42c2e31a898759" ON "projects"."channels" ("topic") 
+[2025-03-04T10:49:42.743Z][QUERY]: CREATE TYPE "projects"."messages_status_enum" AS ENUM('sent', 'delivered', 'read')
+[2025-03-04T10:49:42.744Z][QUERY]: CREATE TABLE "projects"."messages" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "content" character varying NOT NULL, "is_deleted" boolean NOT NULL DEFAULT false, "status" "projects"."messages_status_enum" NOT NULL DEFAULT 'sent', "sender_id" integer, "channel_id" integer, CONSTRAINT "PK_18325f38ae6de43878487eff986" PRIMARY KEY ("id"))
+[2025-03-04T10:49:42.751Z][QUERY]: CREATE TABLE "projects"."message_status" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "delivered_at" TIMESTAMP NOT NULL DEFAULT now(), "read_at" TIMESTAMP DEFAULT now(), "message_id" integer, "user_id" integer, CONSTRAINT "PK_fd8b82470959145fdf427784046" PRIMARY KEY ("id"))
+[2025-03-04T10:49:42.757Z][QUERY]: ALTER TABLE "projects"."connections" DROP COLUMN "accepted_at"
+[2025-03-04T10:49:42.759Z][QUERY]: ALTER TABLE "projects"."connections" ADD "updated_at" TIMESTAMP NOT NULL DEFAULT now()
+[2025-03-04T10:49:42.760Z][QUERY]: ALTER TABLE "projects"."connections" ADD "deleted_at" TIMESTAMP
+[2025-03-04T10:49:42.761Z][QUERY]: ALTER TABLE "projects"."users" ADD "deleted_at" TIMESTAMP
+[2025-03-04T10:49:42.762Z][QUERY]: ALTER TABLE "projects"."users" ADD CONSTRAINT "UQ_074a1f262efaca6aba16f7ed920" UNIQUE ("user_name")
+[2025-03-04T10:49:42.765Z][QUERY]: ALTER TABLE "projects"."users" ADD CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email")
+[2025-03-04T10:49:42.767Z][QUERY]: ALTER TABLE "projects"."channel_users" ADD CONSTRAINT "FK_a7a2db7198d61d6a301fdfeb3ed" FOREIGN KEY ("user_id") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:49:42.774Z][QUERY]: ALTER TABLE "projects"."channel_users" ADD CONSTRAINT "FK_d9f902e1b324ee3f35807599206" FOREIGN KEY ("channelIdId") REFERENCES "projects"."channels"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:49:42.778Z][QUERY]: ALTER TABLE "projects"."channels" ADD CONSTRAINT "FK_2573c3526ed4a83cc830762012e" FOREIGN KEY ("created_by") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:49:42.780Z][QUERY]: ALTER TABLE "projects"."messages" ADD CONSTRAINT "FK_22133395bd13b970ccd0c34ab22" FOREIGN KEY ("sender_id") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:49:42.782Z][QUERY]: ALTER TABLE "projects"."messages" ADD CONSTRAINT "FK_86b9109b155eb70c0a2ca3b4b6d" FOREIGN KEY ("channel_id") REFERENCES "projects"."channels"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:49:42.784Z][QUERY]: ALTER TABLE "projects"."message_status" ADD CONSTRAINT "FK_ff8dd09dba401134707f7fdafd1" FOREIGN KEY ("message_id") REFERENCES "projects"."messages"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:49:42.787Z][QUERY]: ALTER TABLE "projects"."message_status" ADD CONSTRAINT "FK_4ae52d84e883c882b2f964d852f" FOREIGN KEY ("user_id") REFERENCES "projects"."users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:49:42.789Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1719153773700,"SchemaUpdate1719153773700"]
+[2025-03-04T10:49:42.790Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.795Z]Migration SchemaUpdate1719153773700 has been  executed successfully.
+[2025-03-04T10:49:42.796Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.798Z][QUERY]: ALTER TABLE "projects"."channels" ADD "is_group" boolean NOT NULL DEFAULT false
+[2025-03-04T10:49:42.800Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1719154185363,"SchemaUpdate1719154185363"]
+[2025-03-04T10:49:42.801Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.803Z]Migration SchemaUpdate1719154185363 has been  executed successfully.
+[2025-03-04T10:49:42.804Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.805Z][QUERY]: ALTER TABLE "projects"."channel_users" DROP CONSTRAINT "FK_d9f902e1b324ee3f35807599206"
+[2025-03-04T10:49:42.806Z][QUERY]: ALTER TABLE "projects"."channel_users" RENAME COLUMN "channelIdId" TO "channel_id"
+[2025-03-04T10:49:42.807Z][QUERY]: ALTER TABLE "projects"."channel_users" ADD CONSTRAINT "FK_172af4652df61837a64d5e79955" FOREIGN KEY ("channel_id") REFERENCES "projects"."channels"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-03-04T10:49:42.812Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1720213359058,"SchemaUpdate1720213359058"]
+[2025-03-04T10:49:42.813Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.816Z]Migration SchemaUpdate1720213359058 has been  executed successfully.
+[2025-03-04T10:49:42.816Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.817Z][QUERY]: ALTER TABLE "projects"."message_status" ADD "sent_at" TIMESTAMP NOT NULL DEFAULT now()
+[2025-03-04T10:49:42.819Z][QUERY]: ALTER TABLE "projects"."message_status" ALTER COLUMN "delivered_at" DROP NOT NULL
+[2025-03-04T10:49:42.820Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1720430140194,"SchemaUpdate1720430140194"]
+[2025-03-04T10:49:42.821Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.822Z]Migration SchemaUpdate1720430140194 has been  executed successfully.
+[2025-03-04T10:49:42.823Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.824Z][QUERY]: ALTER TABLE "projects"."message_status" DROP COLUMN "sent_at"
+[2025-03-04T10:49:42.826Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1720432124611,"SchemaUpdate1720432124611"]
+[2025-03-04T10:49:42.827Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.829Z]Migration SchemaUpdate1720432124611 has been  executed successfully.
+[2025-03-04T10:49:42.829Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.830Z][QUERY]: CREATE TABLE "projects"."message_attachments" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "mime_type" character varying NOT NULL, "url" character varying NOT NULL, "size" integer NOT NULL, "messageId" integer, CONSTRAINT "PK_e5085d973567c61e9306f10f95b" PRIMARY KEY ("id"))
+[2025-03-04T10:49:42.836Z][QUERY]: ALTER TABLE "projects"."message_attachments" ADD CONSTRAINT "FK_5b4f24737fcb6b35ffdd4d16e13" FOREIGN KEY ("messageId") REFERENCES "projects"."messages"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+[2025-03-04T10:49:42.840Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1720642501584,"SchemaUpdate1720642501584"]
+[2025-03-04T10:49:42.842Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.845Z]Migration SchemaUpdate1720642501584 has been  executed successfully.
+[2025-03-04T10:49:42.846Z][QUERY]: START TRANSACTION
+[2025-03-04T10:49:42.847Z][QUERY]: ALTER TABLE "projects"."channel_users" ADD "is_admin" boolean NOT NULL DEFAULT false
+[2025-03-04T10:49:42.848Z][QUERY]: ALTER TABLE "projects"."channels" ADD "channel_avatar" character varying
+[2025-03-04T10:49:42.850Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1721664225707,"SchemaUpdate1721664225707"]
+[2025-03-04T10:49:42.851Z][QUERY]: COMMIT
+[2025-03-04T10:49:42.852Z]Migration SchemaUpdate1721664225707 has been  executed successfully.

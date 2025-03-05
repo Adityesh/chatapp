@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Typing from "@/components/ui/typing";
-import { useAppDispatch, useAppSelector } from "@/hooks/store";
+import { useAppDispatch, useAppSelector } from "@/store/store.ts";
 import {
   useGetLoggedInUserQuery,
   useSendMessageMutation,
