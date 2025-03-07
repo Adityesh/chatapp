@@ -1,6 +1,7 @@
 import { cva } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import Cookie from 'js-cookie'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -71,4 +72,8 @@ export function convertObjectToFormData(obj: any) {
     }
   }
   return formData;
+}
+
+export function checkAuthenticatedUser() {
+  return !!Cookie.get('valid_session')
 }

@@ -1,19 +1,17 @@
 import { APP_URL } from "@/constants/clientUrl.constants.ts";
 import { useAppSelector } from "@/store/store.ts";
-import { useNavigate } from "react-router-dom";
-import { useDocumentTitle } from 'usehooks-ts';
+import { Outlet, useNavigate } from "react-router-dom";
 import "./style.css"
-import { Button } from '@/components/ui/button.tsx';
 
 export default function AuthRoute() {
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
-  useDocumentTitle("Register or Login to the app")
+  if (isLoggedIn) navigate(APP_URL.BASE);
 
-  if(isLoggedIn) navigate(APP_URL.BASE);
-
-  return <div className={"background h-100"}>
-    Auth <Button className='mt'>Click me</Button>
+  return <div className={"background h-screen w-screen flex items-center justify-center"}>
+    <div className={"w-[90%] h-3/4 overflow-auto md:h-fit md:w-1/3 card px-4 py-8"}>
+      <Outlet />
+    </div>
   </div>;
 }
