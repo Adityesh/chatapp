@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import Cookie from 'js-cookie'
+import Cookie from "js-cookie";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,7 +32,7 @@ export const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export function getRandomColor() {
@@ -51,7 +51,7 @@ export function getNameInitials(fullName: string) {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function objToQuery(obj: any) {
-  const objCopy = structuredClone(obj)
+  const objCopy = structuredClone(obj);
   for (const key in obj) {
     if (objCopy[key] == null) delete objCopy[key];
   }
@@ -67,15 +67,13 @@ export function getUsersTyping(users: string[]) {
 export function convertObjectToFormData(obj: any) {
   const formData = new FormData();
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      formData.append(key, obj[key]);
-    }
+    formData.append(key, obj[key]);
   }
   return formData;
 }
 
 export function checkAuthenticatedUser() {
-  return !!Cookie.get('valid_session')
+  return !!Cookie.get("valid_session");
 }
 
 export function stringToCapitalize(s: string) {
