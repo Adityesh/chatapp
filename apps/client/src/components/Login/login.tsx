@@ -49,7 +49,7 @@ export default function Login() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="h-full w-full">
-        <h1 className="font-poppins-bold text-white text-2xl md:text-center">
+        <h1 className="font-poppins-bold text-white text-xl md:text-center">
           Sign in to our platform
         </h1>
         <h3 className="font-satoshi font-medium text-gray-400 mb-4 md:text-center">

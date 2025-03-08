@@ -77,3 +77,7 @@ export function convertObjectToFormData(obj: any) {
 export function checkAuthenticatedUser() {
   return !!Cookie.get('valid_session')
 }
+
+export function stringToCapitalize(s: string) {
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}

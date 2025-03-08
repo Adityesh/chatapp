@@ -1,29 +1,33 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   NavigationSliceInitialState,
-  SetNavigationStateAction,
-} from "@/types/navigationSlice.types";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+  TabValues,
+} from "@/types/navigationSlice.types.ts";
 
 const initialState: NavigationSliceInitialState = {
-  tab: "chat",
+  tab: "CHATS",
+  tabSearch : ""
 };
 
 const navigationSlice = createSlice({
   name: "navigation",
   initialState,
   reducers: {
-    SET_NAVIGATION_STATE: (
-      state,
-      { payload: { key, value } }: PayloadAction<SetNavigationStateAction>,
-    ) => {
+    SET_NAVIGATION_TAB: (state, { payload }: PayloadAction<TabValues>) => {
       Object.assign(state, {
         ...state,
-        [key]: value,
+        tab: payload,
       });
     },
+    UPDATE_TAB_SEARCH: (state, { payload }: PayloadAction<string>) => {
+      Object.assign(state, {
+        ...state,
+        tabSearch: payload,
+      })
+    }
   },
 });
 
-export const { SET_NAVIGATION_STATE } = navigationSlice.actions;
+export const { SET_NAVIGATION_TAB, UPDATE_TAB_SEARCH } = navigationSlice.actions;
 
 export default navigationSlice.reducer;

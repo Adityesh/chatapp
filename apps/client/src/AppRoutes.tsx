@@ -3,9 +3,9 @@ import { APP_URL } from "@/constants/clientUrl.constants.ts";
 import ProtectedRoute from "@/page/protected-route.tsx";
 import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AppSidebar from "./components/AppSidebar";
-import AppSidebarToggle from "./components/AppSidebar/AppSidebarToggle";
 import { SidebarProvider } from "./components/ui/sidebar";
+import Index from "@/page";
+import Error from "@/page/error";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -15,28 +15,31 @@ const Auth = lazy(() => import("@/page/auth"));
 
 export default function () {
   return (
-    <div className={"h-screen w-screen relative"}>
-      <SidebarProvider>
-        <AppSidebarToggle />
-        <BrowserRouter
-          future={{
-            v7_startTransition: true,
-          }}
-        >
-          <AppSidebar />
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+      }}
+    >
+      <div className={"h-screen w-screen relative"}>
+        <SidebarProvider>
           <Routes>
-            <Route path={APP_URL.AUTH} element={<Auth />}>
+            <Route
+              path={APP_URL.AUTH}
+              element={<Auth />}
+              errorElement={<Error />}
+            >
               <Route index element={<Login />} />
               <Route path={APP_URL.REGISTER} element={<Register />} />
             </Route>
-            <Route element={<ProtectedRoute />} >
-              <Route index element={<div>Index element</div>} />
+            <Route element={<ProtectedRoute />} errorElement={<Error />}>
+              <Route index element={<Index />} />
               <Route path={APP_URL.SETTINGS} element={<Settings />} />
               <Route path={APP_URL.CHAT} element={<Chat />} />
             </Route>
+            <Route path={"*"} element={<Error notFound />} />
           </Routes>
-        </BrowserRouter>
-      </SidebarProvider>
-    </div>
+        </SidebarProvider>
+      </div>
+    </BrowserRouter>
   );
 }
