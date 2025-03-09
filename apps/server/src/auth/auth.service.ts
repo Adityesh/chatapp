@@ -11,7 +11,7 @@ import {
 } from '@repo/shared';
 import * as bcrypt from 'bcrypt';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { User } from 'src/entities/user.entity';
+import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

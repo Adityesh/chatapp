@@ -1,11 +1,11 @@
 import * as bcrypt from 'bcrypt';
 import { BeforeInsert, Column, Entity, Index, OneToMany } from 'typeorm';
-import { BaseEntity } from './base.entity';
-import { Channel } from './channel.entity';
-import { ChannelUser } from './channeluser.entity';
-import { Connection } from './connection.entity';
-import { Message } from './message.entity';
-import { MessageStatus } from './messagestatus.entity';
+import { BaseEntity } from '../common/entities/base.entity';
+import { Channel } from '../channel/channel.entity';
+import { ChannelUser } from '../channeluser/channeluser.entity';
+import { Connection } from '../connection/connection.entity';
+import { Message } from '../message/message.entity';
+import { MessageStatus } from '../messagestatus/messagestatus.entity';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -20,9 +20,6 @@ export class User extends BaseEntity {
   @Column({ name: 'password', type: 'varchar', nullable: true })
   password: string;
 
-  @Column({ default: false, name: 'is_deleted' })
-  isDeleted: boolean;
-
   @Column({ name: 'google_id', nullable: true })
   googleId: string;
 
@@ -33,10 +30,10 @@ export class User extends BaseEntity {
   @Column({ name: 'email', unique: true })
   email: string;
 
-  @OneToMany(() => Connection, (connection) => connection.requestedBy)
-  connectionsInitiated: Connection[];
+  @OneToMany(() => Connection, (connection) => connection.requester)
+  connectionsRequested: Connection[];
 
-  @OneToMany(() => Connection, (connection) => connection.addressedTo)
+  @OneToMany(() => Connection, (connection) => connection.recipient)
   connectionsReceived: Connection[];
 
   @OneToMany(() => Channel, (channel) => channel.createdBy)

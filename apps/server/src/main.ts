@@ -9,6 +9,7 @@ import { SocketAdapter } from './socket/socket.adapter';
 import { HttpExceptionFilter } from './common/filters/httpexception.filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import configuration from './configuration/configuration';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const validatedEnv = configuration();
 const pgStore = connectPgSimple(session);
@@ -47,6 +48,16 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
   app.useWebSocketAdapter(new SocketAdapter(app, sessionMiddleware));
+
+  const config = new DocumentBuilder()
+    .setTitle('ChatApp')
+    .setDescription('The ChatApp API description')
+    .setVersion('0.1')
+    .addTag('Chat App')
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, documentFactory);
+
   await app.listen(3000);
 }
 

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Server } from 'socket.io';
-import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class SocketService {

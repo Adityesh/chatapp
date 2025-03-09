@@ -6,10 +6,11 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { BaseEntity } from './base.entity';
-import { ChannelUser } from './channeluser.entity';
-import { Message } from './message.entity';
-import { User } from './user.entity';
+import { BaseEntity } from '../common/entities/base.entity';
+import { ChannelUser } from '../channeluser/channeluser.entity';
+import { Message } from '../message/message.entity';
+import { User } from '../user/user.entity';
+import { ChannelTypeEnum } from './enums/channel-type.enum';
 
 @Entity({ name: 'channels' })
 export class Channel extends BaseEntity {
@@ -20,11 +21,13 @@ export class Channel extends BaseEntity {
   @Column({ name: 'description', nullable: true })
   description: string;
 
-  @Column({ name: 'is_deleted', type: 'boolean', default: false })
-  isDeleted: boolean;
-
-  @Column({ name: 'is_group', type: 'boolean', default: false })
-  isGroup: boolean;
+  @Column({
+    type: 'enum',
+    enum: ChannelTypeEnum,
+    default: ChannelTypeEnum.DIRECT,
+    name: 'channel_type',
+  })
+  channelType: ChannelTypeEnum;
 
   @Column({ name: 'channel_avatar', nullable: true })
   channelAvatar: string;

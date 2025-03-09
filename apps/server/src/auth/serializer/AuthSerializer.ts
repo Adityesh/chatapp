@@ -2,7 +2,7 @@ import { PassportSerializer } from '@nestjs/passport';
 import { AuthService } from '../auth.service';
 import { Injectable } from '@nestjs/common';
 import { VerifyCallback } from 'passport-google-oauth20';
-import { User } from 'src/entities/user.entity';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class AuthSerializer extends PassportSerializer {

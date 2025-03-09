@@ -5,7 +5,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthSerializer } from './serializer/AuthSerializer';
-import { User } from '../entities/user.entity';
+import { User } from '../user/user.entity';
 import { LocalStrategy } from './strategies/local.strategy';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 import { ConfigurationModule } from '../configuration/configuration.module';

@@ -1,10 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { BaseEntity } from './base.entity';
-import { Channel } from './channel.entity';
-import { MessageStatus } from './messagestatus.entity';
-import { User } from './user.entity';
-import { MessageStatusEnum } from '@repo/shared';
-import { MessageAttachment } from './messageattachment.entity';
+import { BaseEntity } from '../common/entities/base.entity';
+import { Channel } from '../channel/channel.entity';
+import { MessageStatus } from '../messagestatus/messagestatus.entity';
+import { User } from '../user/user.entity';
+import { MessageAttachment } from '../messageattachment/messageattachment.entity';
 
 @Entity({ name: 'messages' })
 export class Message extends BaseEntity {
@@ -19,16 +18,16 @@ export class Message extends BaseEntity {
   @JoinColumn({ name: 'channel_id' })
   channel: Channel;
 
-  @Column({ name: 'is_deleted', type: 'boolean', default: false })
-  isDeleted: boolean;
-
   @Column({
-    name: 'status',
-    type: 'enum',
-    enum: MessageStatusEnum,
-    default: MessageStatusEnum.SENT,
+    name: 'is_edited',
+    type: 'boolean',
+    default: false,
   })
-  status: MessageStatusEnum;
+  isEdited: boolean;
+
+  @ManyToOne(() => Message, (message) => message, { nullable: true })
+  @JoinColumn({ name: 'reply_to' })
+  replyTo: Message;
 
   @OneToMany(() => MessageStatus, (messageStatus) => messageStatus.message, {
     cascade: true,
