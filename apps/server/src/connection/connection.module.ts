@@ -5,9 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'src/entities/connection.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Connection])],
-    providers: [ConnectionService],
-    controllers: [ConnectionController],
-    exports: [ConnectionService],
-  })
+  imports: [TypeOrmModule.forFeature([Connection])],
+  providers: [ConnectionService],
+  controllers: [ConnectionController],
+  exports: [ConnectionService],
+})
 export class ConnectionModule {}

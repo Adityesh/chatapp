@@ -14,15 +14,15 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProtectedGuard } from 'src/guards/protected.guard';
+import { ProtectedGuard } from 'src/auth/guards/protected.guard';
 import { ChatService } from './chat.service';
 import {
+  CreateChannelDto,
+  GetChannelsDto,
   GetChatDetailsDto,
   GetMessagesDto,
   InitateChatDto,
   SendMessageDto,
-  GetChannelsDto,
-  CreateChannelDto,
 } from '@repo/shared';
 import {
   FileFieldsInterceptor,
@@ -51,11 +51,10 @@ export class ChatController {
   async sendMessage(
     @Body() sendMessageDto: SendMessageDto,
     @Param() { channelId }: GetChatDetailsDto,
-    @UploadedFiles()
-    // new ParseFilePipe({
+    @UploadedFiles() // new ParseFilePipe({
     //   validators: [new MaxFileSizeValidator({ maxSize: 1 * 1024 * 1024 })],
-    // }),
-    allFiles: { files?: Express.Multer.File[] },
+    allFiles // }),
+    : { files?: Express.Multer.File[] },
   ) {
     return this.chatService.sendMessage(
       sendMessageDto,
@@ -95,6 +94,10 @@ export class ChatController {
     )
     channelAvatar?: Express.Multer.File,
   ) {
-    return this.chatService.createChannel(req.user.id, createChannelDto, channelAvatar);
+    return this.chatService.createChannel(
+      req.user.id,
+      createChannelDto,
+      channelAvatar,
+    );
   }
 }

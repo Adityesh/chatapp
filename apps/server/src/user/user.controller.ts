@@ -9,7 +9,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ProtectedGuard } from 'src/guards/protected.guard';
+import { ProtectedGuard } from 'src/auth/guards/protected.guard';
 import { UserService } from './user.service';
 import {
   GetConnectionWithUserDto,

@@ -1,7 +1,7 @@
-import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
-import { ProtectedGuard } from 'src/guards/protected.guard';
+import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
+import { ProtectedGuard } from 'src/auth/guards/protected.guard';
 import { ConnectionService } from './connection.service';
-import { GetConnectionWithUserDto, GetConnectionsDto } from '@repo/shared';
+import { GetConnectionsDto } from '@repo/shared';
 
 @Controller('connection')
 export class ConnectionController {

@@ -14,20 +14,22 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { GoogleOAuthGuard } from '../guards/auth.guard';
-import { ProtectedGuard } from 'src/guards/protected.guard';
-import { LocalAuthGuard } from 'src/guards/local-auth.guard';
+import { GoogleOAuthGuard } from './guards/auth.guard';
+import { ProtectedGuard } from 'src/auth/guards/protected.guard';
+import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
 import { Request, Response } from 'express';
 import 'dotenv/config';
 import { RegisterLocalUserDto } from '@repo/shared';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { ConfigurationService } from '../configuration/configuration.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly configService: ConfigurationService,
   ) {}
 
   @Get('google')
@@ -43,9 +45,9 @@ export class AuthController {
   ) {
     res.cookie('valid_session', req.user !== undefined, {
       httpOnly: false,
-      maxAge: Number(process.env.COOKIE_MAXAGE),
+      maxAge: this.configService.get('COOKIE_MAXAGE'),
     });
-    res.redirect(process.env.CLIENT_ORIGIN + '/');
+    res.redirect(this.configService.get('CLIENT_ORIGIN') + '/');
   }
 
   @Post('local/register')
@@ -55,7 +57,7 @@ export class AuthController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: 1 * 1024 * 1024 }),
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 }),
           new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
         ],
       }),
@@ -71,7 +73,7 @@ export class AuthController {
     res
       .cookie('valid_session', req.user !== undefined, {
         httpOnly: false,
-        maxAge: Number(process.env.COOKIE_MAXAGE),
+        maxAge: this.configService.get('COOKIE_MAXAGE'),
       })
       .json({ user: req.user });
   }

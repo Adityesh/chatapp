@@ -1,14 +1,16 @@
 import { ConfigOptions, v2 } from 'cloudinary';
+import { ConfigurationService } from '../configuration/configuration.service';
 
 export const CLOUDINARY = 'CLOUDINARY';
 
 export const CloudinaryProvider = {
   provide: CLOUDINARY,
-  useFactory: (): ConfigOptions => {
+  inject: [ConfigurationService],
+  useFactory: (config: ConfigurationService): ConfigOptions => {
     return v2.config({
-      cloud_name: process.env.CLOUDINARY_CLOUDNAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_SECRET,
+      cloud_name: config.get('CLOUDINARY_CLOUDNAME'),
+      api_key: config.get('CLOUDINARY_API_KEY'),
+      api_secret: config.get('CLOUDINARY_SECRET'),
     });
   },
 };

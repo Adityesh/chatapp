@@ -5,14 +5,16 @@ import * as session from 'express-session';
 import * as passport from 'passport';
 import * as pg from 'pg';
 import { AppModule } from './app.module';
-import { EventsAdapter } from './events/events.adapter';
-import { HttpExceptionFilter } from './utils/http-exception.filter';
-import { ResponseInterceptor } from './utils/reponse-mapping';
+import { SocketAdapter } from './socket/socket.adapter';
+import { HttpExceptionFilter } from './common/filters/httpexception.filter';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import configuration from './configuration/configuration';
 
+const validatedEnv = configuration();
 const pgStore = connectPgSimple(session);
 
 const pgPool = new pg.Pool({
-  connectionString: process.env.DB_CONNECTION_STRING,
+  connectionString: validatedEnv.DB_CONNECTION_STRING,
   database: 'postgres',
 });
 
@@ -21,12 +23,12 @@ const sessionMiddleware = session({
     pool: pgPool,
     tableName: 'user_sessions',
     createTableIfMissing: true,
-    conString: process.env.DB_CONNECTION_STRING,
-    schemaName: process.env.DB_SCHEMA,
+    conString: validatedEnv.DB_CONNECTION_STRING,
+    schemaName: validatedEnv.DB_SCHEMA,
   }),
-  secret: process.env.SESSION_SECRET,
+  secret: validatedEnv.SESSION_SECRET,
   resave: false,
-  cookie: { maxAge: Number(process.env.COOKIE_MAXAGE) },
+  cookie: { maxAge: Number(validatedEnv.COOKIE_MAXAGE) },
   saveUninitialized: false,
 });
 
@@ -36,7 +38,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.enableCors({
-    origin: process.env.CLIENT_ORIGIN,
+    origin: validatedEnv.CLIENT_ORIGIN,
     credentials: true,
     methods: ['POST', 'PATCH', 'GET', 'HEAD', 'DELETE'],
   });
@@ -44,7 +46,8 @@ async function bootstrap() {
   app.use(sessionMiddleware);
   app.use(passport.initialize());
   app.use(passport.session());
-  app.useWebSocketAdapter(new EventsAdapter(app, sessionMiddleware));
+  app.useWebSocketAdapter(new SocketAdapter(app, sessionMiddleware));
   await app.listen(3000);
 }
+
 bootstrap();

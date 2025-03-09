@@ -16,14 +16,17 @@ import 'dotenv/config';
 import { Server, Socket } from 'socket.io';
 import { ChatService } from 'src/chat/chat.service';
 import { SocketService } from 'src/socket/socket.service';
+import configuration from '../configuration/configuration';
+
+const validatedEnv = configuration();
 
 @WebSocketGateway({
   cors: {
     credentials: true,
-    origin: process.env.CLIENT_ORIGIN,
+    origin: validatedEnv.CLIENT_ORIGIN,
   },
 })
-export class EventsGateway
+export class SocketGateway
   implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect
 {
   constructor(
@@ -42,6 +45,7 @@ export class EventsGateway
     console.log('Client disconnected');
     this.socketService.users.delete(client.id);
   }
+
   handleConnection(client: any) {
     this.socketService.users.set(client.id, client.request.user);
   }

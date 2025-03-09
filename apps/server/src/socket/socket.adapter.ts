@@ -4,8 +4,9 @@ import { Server, ServerOptions } from 'socket.io';
 import type { RequestHandler } from 'express';
 import * as passport from 'passport';
 
-export class EventsAdapter extends IoAdapter {
+export class SocketAdapter extends IoAdapter {
   private session: RequestHandler;
+
   constructor(app: INestApplicationContext, session: RequestHandler) {
     super(app);
     this.session = session;
