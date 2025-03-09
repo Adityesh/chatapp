@@ -35,6 +35,10 @@ export class Message extends BaseEntity {
   })
   messageStatus: MessageStatus[];
 
-  @OneToMany(() => MessageAttachment, (messageAttachment) => messageAttachment.message, { cascade : ["insert"]})
-  attachments : MessageAttachment[];
+  @OneToMany(
+    () => MessageAttachment,
+    (messageAttachment) => messageAttachment.message,
+    { cascade: ['insert'] },
+  )
+  attachments: MessageAttachment[];
 }

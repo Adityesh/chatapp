@@ -169,7 +169,7 @@ export class ChatService {
         : undefined,
     });
     await this.messageRepository.save(newMessage);
-    const savedMessage = this.messageRepository
+    return this.messageRepository
       .createQueryBuilder('messages')
       .where('messages.id = :messageId', { messageId: newMessage.id })
       .select([
@@ -201,7 +201,6 @@ export class ChatService {
         'attachments.size',
       ])
       .getOne();
-    return savedMessage;
   }
 
   async getMessages(channelId: number, options: IPaginationOptions) {
@@ -238,8 +237,7 @@ export class ChatService {
         'attachments.mimeType',
         'attachments.size',
       ]);
-    const result = await paginate<Message>(paginationQuery, options);
-    return result;
+    return await paginate<Message>(paginationQuery, options);
   }
 
   async getChannels(loggedInUserId: number, options: IPaginationOptions) {
@@ -284,16 +282,15 @@ export class ChatService {
   }
 
   async markMessageAsRead(messageStatusId: number) {
-    const result = await this.messageStatusRepository.save({
+    return await this.messageStatusRepository.save({
       id: messageStatusId,
       readAt: new Date(),
     });
-    return result;
   }
 
   async createChannel(
     loggedInUserId: number,
-    { description, topic, channelUsers, isGroup }: CreateChannelDto,
+    { description, topic, isGroup }: CreateChannelDto,
     channelAvatar?: Express.Multer.File,
   ) {
     let uploadedAvatar: UploadApiResponse | undefined;
@@ -318,9 +315,8 @@ export class ChatService {
     newChannel.description = description;
     newChannel.topic = topic;
     newChannel.channelAvatar = uploadedAvatar.url;
-    newChannel.users = [{ user : loggedInUser, isAdmin : true } as ChannelUser]
+    newChannel.users = [{ user: loggedInUser, isAdmin: true } as ChannelUser];
     // add logic for adding channel users later
-    const result = await this.channelRepository.save(newChannel);
-    return result;
+    return await this.channelRepository.save(newChannel);
   }
 }
