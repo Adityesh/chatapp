@@ -19,10 +19,10 @@ import { ProtectedGuard } from 'src/auth/guards/protected.guard';
 import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
 import { Request, Response } from 'express';
 import 'dotenv/config';
-import { RegisterLocalUserDto } from '@repo/shared';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ConfigurationService } from '../configuration/configuration.service';
+import { RegisterLocalUserDto } from './dtos/register-local-user.dto';
 
 @Controller('auth')
 export class AuthController {

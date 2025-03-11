@@ -4,15 +4,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  GoogleUserDto,
-  LoginUserLocalDto,
-  RegisterLocalUserDto,
-} from '@repo/shared';
 import * as bcrypt from 'bcrypt';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
+import { GoogleUserDto } from './dtos/google-user.dto';
+import { RegisterLocalUserDto } from './dtos/register-local-user.dto';
+import { LoginUserLocalDto } from './dtos/login-local-user.dto';
 
 @Injectable()
 export class AuthService {

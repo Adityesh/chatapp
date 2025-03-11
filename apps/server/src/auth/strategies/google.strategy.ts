@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
 import { AuthService } from '../auth.service';
-import { GoogleUserDto } from '@repo/shared';
 import { ConfigurationService } from '../../configuration/configuration.service';
+import { GoogleUserDto } from '../dtos/google-user.dto';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
-    private readonly authSerive: AuthService,
+    private readonly authService: AuthService,
     private readonly configService: ConfigurationService,
   ) {
     super({
@@ -34,6 +34,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       accessToken,
       refreshToken,
     } as GoogleUserDto;
-    return this.authSerive.authenticateUser(user);
+    return this.authService.authenticateUser(user);
   }
 }
