@@ -1,5 +1,5 @@
 import { APP_URL } from "@/constants/clientUrl.constants.ts";
-import { useAppSelector } from "@/store/store.ts";
+import { useAppSelector } from "@/hooks/useStore.ts";
 import { Outlet, useNavigate } from "react-router-dom";
 import "./style.css"
 

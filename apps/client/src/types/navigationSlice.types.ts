@@ -1,4 +1,4 @@
-import {ObjectValue} from "@/types/utilt.types.ts";
+import {ObjectValue} from "@/types/util.types.ts";
 
 export const TAB_TYPE = {
     CHATS : 'CHATS',

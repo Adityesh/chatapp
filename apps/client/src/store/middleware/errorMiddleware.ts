@@ -1,6 +1,6 @@
 import { isRejectedWithValue } from "@reduxjs/toolkit";
 import type { Middleware } from "@reduxjs/toolkit";
-import { BaseApiResponse } from "@repo/shared";
+import { BaseApiResponse } from "shared";
 import { toast } from "sonner";
 
 /**
@@ -10,7 +10,7 @@ export const errorMiddleware: Middleware = () => (next) => (action) => {
   if (isRejectedWithValue(action)) {
     console.error(action.payload);
     toast.error(
-      ((action.payload as any).data as BaseApiResponse)?.error?.message ||
+      ((action.payload as { data : BaseApiResponse }).data as BaseApiResponse)?.error?.message ||
         "Failed to perform request.",
     );
   }

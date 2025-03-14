@@ -9,7 +9,7 @@ import { BaseEntity } from '../common/entities/base.entity';
 import { Message } from '../message/message.entity';
 import { User } from '../user/user.entity';
 import { IsEnum } from 'class-validator';
-import { MessageStatusEnum } from './enums/messagestatus.enum';
+import { MessageStatusEnum } from 'shared';
 
 @Entity({ name: 'message_status' })
 export class MessageStatus extends BaseEntity {

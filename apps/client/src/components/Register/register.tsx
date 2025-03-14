@@ -16,7 +16,7 @@ import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { RegisterFormSchema, registerSchema } from "./registerSchema";
-import { useRegisterUserMutation } from "@/store/slice/apiSlice";
+import { useRegisterUserMutation } from "@/store/api/authApi.ts";
 
 export default function Register() {
   const [registerUser] = useRegisterUserMutation();
@@ -36,8 +36,8 @@ export default function Register() {
 
   const onSubmit = async (values: RegisterFormSchema) => {
     const result = await registerUser(values).unwrap();
-    if(!result.error) {
-      navigate(APP_URL.AUTH)
+    if (!result.error) {
+      navigate(APP_URL.AUTH);
     }
   };
 
@@ -123,7 +123,7 @@ export default function Register() {
         <FormField
           control={form.control}
           name="avatarUrl"
-          render={({ field: { value, onChange, ...field } }) => (
+          render={({ field: { onChange, ...field } }) => (
             <FormItem className="mb-4">
               <FormLabel className="text-white">Avatar</FormLabel>
               <FormControl>

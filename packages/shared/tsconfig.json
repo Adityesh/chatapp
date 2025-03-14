@@ -2,10 +2,12 @@
   "extends": "@repo/typescript-config/base.json",
   "compilerOptions": {
     "lib": ["ES2019"],
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "outDir": "dist",
+    "rootDir": "src",
     "experimentalDecorators": true,
     "strictNullChecks": false,
+    "moduleResolution": "bundler",
+    "module": "ES6",
   },
   "include": ["*.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["dist", "build", "node_modules"]

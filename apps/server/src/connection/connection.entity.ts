@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 import { BaseEntity } from '../common/entities/base.entity';
 import { User } from '../user/user.entity';
-import { ConnectionStatusEnum } from './enums/connection-status.enum';
+import { ConnectionStatusEnum } from 'shared';
 
 @Entity({ name: 'connections' })
 @Unique(['requester', 'recipient'])

@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import socketMiddleware from "./middleware/socketMiddleware";
-import { baseApi } from "./slice/apiSlice";
 import authReducer from "./slice/authSlice";
 import navigationReducer from "./slice/navigationSlice";
 import socketReducer from "./slice/socketSlice";
 import { errorMiddleware } from "./middleware/errorMiddleware";
+import { baseApi } from "@/store/api/baseApi.ts";
 
 export const store = configureStore({
   reducer: {

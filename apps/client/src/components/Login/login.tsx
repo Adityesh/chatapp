@@ -6,9 +6,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { APP_URL } from "@/constants/clientUrl.constants";
-import { useLoginUserMutation } from "@/store/slice/apiSlice";
 import { SET_AUTH_STATE } from "@/store/slice/authSlice";
-import { useAppDispatch } from "@/store/store";
+import { useAppDispatch } from "@/hooks/useStore.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,6 +19,7 @@ import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { LoginFormSchema, loginSchema } from "./loginSchema";
+import { useLoginUserMutation } from '@/store/api/authApi.ts';
 
 export default function Login() {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/store/store.ts";
+import { useAppSelector } from "@/hooks/useStore.ts";
 import { useMemo } from "react";
 import Channels from "@/components/AppSidebar/AppSidebarContent/Tabs/Channels.tsx";
 import Users from "@/components/AppSidebar/AppSidebarContent/Tabs/Users.tsx";

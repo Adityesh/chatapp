@@ -2,9 +2,9 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import { BellRing, BookCopy, MessagesSquare, Users } from "lucide-react";
 import { Separator } from "@/components/ui/separator.tsx";
 import WithToolTip from "@/components/common/WithTooltip";
-import { useIsMobile } from "@/hooks/use-mobile.ts";
+import { useIsMobile } from "@/hooks/useIsMobile.ts";
 import { Fragment, ReactNode } from "react";
-import {useAppDispatch, useAppSelector} from "@/store/store.ts";
+import {useAppDispatch, useAppSelector} from "@/hooks/useStore.ts";
 import { TabValues } from "@/types/navigationSlice.types.ts";
 import { SET_NAVIGATION_TAB } from "@/store/slice/navigationSlice.ts";
 

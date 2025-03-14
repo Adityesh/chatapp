@@ -10,7 +10,7 @@ import { BaseEntity } from '../common/entities/base.entity';
 import { ChannelUser } from '../channeluser/channeluser.entity';
 import { Message } from '../message/message.entity';
 import { User } from '../user/user.entity';
-import { ChannelTypeEnum } from './enums/channel-type.enum';
+import { ChannelTypeEnum } from 'shared';
 
 @Entity({ name: 'channels' })
 export class Channel extends BaseEntity {

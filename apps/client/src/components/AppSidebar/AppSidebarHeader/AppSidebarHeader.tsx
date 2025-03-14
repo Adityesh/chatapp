@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input.tsx";
-import { useAppDispatch, useAppSelector } from "@/store/store.ts";
-import { stringToCapitalize } from "@/utils.ts";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStore.ts";
 import { UPDATE_TAB_SEARCH } from "@/store/slice/navigationSlice.ts";
+import { stringToCapitalize } from '@/utils';
 
 export default function AppSidebarHeader() {
   const dispatch = useAppDispatch();
