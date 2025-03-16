@@ -14,7 +14,7 @@ export default function AppSidebarHeader() {
   return (
     <>
       <h1 className={"text-white text-4xl font-satoshi px-4"}>
-        {tabFormatted} (4)
+        {tabFormatted}
       </h1>
       <div className={"px-4"}>
         <Input

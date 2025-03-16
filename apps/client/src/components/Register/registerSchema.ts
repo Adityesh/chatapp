@@ -15,7 +15,7 @@ export const registerSchema = z
       .min(1, "Password is required")
       .min(8, "Password should be atleast 8 characters"),
     avatarUrl: z
-      .instanceof(File, {
+      .instanceof(FileList, {
         message: "Please select a file",
       })
       .refine((file) => !!file, "Please select a file.")

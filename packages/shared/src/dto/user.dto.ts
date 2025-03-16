@@ -1,57 +1,23 @@
-import { Transform, Type } from "class-transformer";
-import {
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  IsString,
-} from "class-validator";
-import { ConnectionStatusEnum } from "../enums/connection.enum";
+import { AutoMap } from "@automapper/classes";
+import { BaseApiResponseDto, BaseEntityDto } from "./common.dto";
+import { Paginated } from "nestjs-paginate";
 
-export class GetUserDto {
-  @IsPositive()
-  @Type(() => Number)
-  userId: number;
+export class BaseUserDto extends BaseEntityDto {
+  @AutoMap()
+  fullName: string;
+
+  @AutoMap()
+  userName: string;
+
+  @AutoMap({ type: () => String })
+  avatarUrl?: string | null;
+
+  @AutoMap()
+  email: string;
 }
 
-export class SendConnectionDto {
-  @IsPositive()
-  @Type(() => Number)
-  requestedBy: number;
+export class GetUserDto extends BaseApiResponseDto<BaseUserDto> {}
 
-  @IsPositive()
-  @Type(() => Number)
-  addressedTo: number;
-}
-
-export class UpdateConnectionDto {
-  @IsEnum(ConnectionStatusEnum)
-  @Transform(({ value }) => value.toLowerCase())
-  status: ConnectionStatusEnum;
-
-  @IsPositive()
-  @Type(() => Number)
-  connectionId: number;
-}
-
-export class GetConnectionWithUserDto {
-  @IsPositive()
-  @Type(() => Number)
-  userId: number;
-}
-
-export class SearchUsersDto {
-  @IsNumber({ allowNaN: false })
-  @IsOptional()
-  @Type(() => Number)
-  limit: number;
-
-  @IsNumber({ allowNaN: false })
-  @IsOptional()
-  @Type(() => Number)
-  page: number;
-
-  @IsString()
-  @IsOptional()
-  query?: string;
-}
+export class GetUsersPaginatedDto extends BaseApiResponseDto<
+  Paginated<BaseUserDto>
+> {}

@@ -8,6 +8,8 @@
     "strictNullChecks": false,
     "moduleResolution": "bundler",
     "module": "ES6",
+    "strict": true,
+    "emitDecoratorMetadata": true,
   },
   "include": ["*.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["dist", "build", "node_modules"]

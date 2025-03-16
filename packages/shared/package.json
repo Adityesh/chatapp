@@ -29,8 +29,10 @@
     "tsup": "^8.4.0"
   },
   "dependencies": {
+    "@automapper/classes": "^8.8.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "nestjs-paginate": "^11.1.0",
     "nestjs-zod": "^4.3.1",
     "zod": "^3.23.8"
   }

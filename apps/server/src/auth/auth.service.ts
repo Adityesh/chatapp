@@ -9,8 +9,7 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { GoogleUserDto } from './dtos/google-user.dto';
-import { RegisterLocalUserDto } from './dtos/register-local-user.dto';
-import { LoginUserLocalDto } from './dtos/login-local-user.dto';
+import { LoginUserDto, RegisterUserDto } from 'shared';
 
 @Injectable()
 export class AuthService {
@@ -45,7 +44,7 @@ export class AuthService {
     return await this.userRepository.save(createdUser);
   }
 
-  async authenticateUserLocal({ userName, password }: LoginUserLocalDto) {
+  async authenticateUserLocal({ userName, password }: LoginUserDto) {
     const userExists = await this.userRepository.findOneBy({
       userName,
     });
@@ -85,12 +84,8 @@ export class AuthService {
     });
   }
 
-  async findUserByUsername(userName: string) {
-    return await this.userRepository.findOneBy({ userName });
-  }
-
-  async registerLocalUser(
-    { email, userName, fullName, password }: RegisterLocalUserDto,
+  async registerUser(
+    { email, userName, fullName, password }: RegisterUserDto,
     avatarUrl?: Express.Multer.File,
   ) {
     let newAvatarUrl = '';
@@ -122,7 +117,7 @@ export class AuthService {
       avatarUrl: newAvatarUrl,
     });
 
-    await this.userRepository.save(newLocalUser);
-    return true;
+    const result = await this.userRepository.save(newLocalUser);
+    return !!result;
   }
 }

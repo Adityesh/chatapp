@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { SidebarProvider } from "./components/ui/sidebar";
 import Index from "@/page";
 import Error from "@/page/error";
+import User from "@/page/user";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -35,6 +36,9 @@ export default function () {
               <Route index element={<Index />} />
               <Route path={APP_URL.SETTINGS} element={<Settings />} />
               <Route path={APP_URL.CHAT} element={<Chat />} />
+              <Route path={APP_URL.USER}>
+                <Route path=":id" element={<User />} />
+              </Route>
             </Route>
             <Route path={"*"} element={<Error notFound />} />
           </Routes>

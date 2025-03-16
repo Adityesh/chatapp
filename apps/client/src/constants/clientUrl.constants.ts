@@ -5,5 +5,6 @@ export const APP_URL = {
   SETTINGS: "/settings",
   CHAT_INIT: "init/:id",
   CHAT_CHANNEL: ":channelId",
-  REGISTER : "register"
+  REGISTER : "register",
+  USER: "/user",
 };

@@ -14,14 +14,18 @@ import { MessageModule } from './message/message.module';
 import { MessageattachmentModule } from './messageattachment/messageattachment.module';
 import { MessagestatusModule } from './messagestatus/messagestatus.module';
 import { ChanneluserController } from './channeluser/channeluser.controller';
-import { ChanneluserService } from './channeluser/channeluser.service';
 import { ChanneluserModule } from './channeluser/channeluser.module';
 import { ChannelModule } from './channel/channel.module';
 import { MessageController } from './message/message.controller';
-import { MessageService } from './message/message.service';
+import { AutomapperModule } from '@automapper/nestjs';
+import { classes } from '@automapper/classes';
+import { DtoMapper } from './common/dtomapper';
 
 @Module({
   imports: [
+    AutomapperModule.forRoot({
+      strategyInitializer: classes(),
+    }),
     ConfigurationModule,
     AuthModule,
     PassportModule.register({ session: true, defaultStrategy: 'local' }),
@@ -42,6 +46,6 @@ import { MessageService } from './message/message.service';
     MessageController,
     ChanneluserController,
   ],
-  providers: [SocketGateway, MessageService, ChanneluserService],
+  providers: [SocketGateway, DtoMapper],
 })
 export class AppModule {}

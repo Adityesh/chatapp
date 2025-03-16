@@ -1,14 +1,12 @@
 export const AUTH_CONTROLLER = {
-  LOGIN_LOCAL: "/auth/local/login",
-  REGISTER_LOCAL: "/auth/local/register",
+  LOGIN_LOCAL: "/auth/login",
+  REGISTER_LOCAL: "/auth/register",
   LOGOUT: "/auth/logout",
 };
 
 export const USER_CONTROLLER = {
-  SEARCH_USERS: "/user/search",
-  GET_USER: "/user",
-  CONNECTION_INVITE: "/user/connection",
-  GET_CONNECTION_WITH_USER: "/user/connection/",
+  GET_USER_BY_ID: "/user/{0}",
+  GET_USERS: "/user",
 };
 
 export const CHAT_CONTROLLER = {

@@ -6,7 +6,6 @@ import {
   MaxFileSizeValidator,
   ParseFilePipe,
   Post,
-  Redirect,
   Req,
   Res,
   UploadedFile,
@@ -15,14 +14,13 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GoogleOAuthGuard } from './guards/auth.guard';
-import { ProtectedGuard } from 'src/auth/guards/protected.guard';
 import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
 import { Request, Response } from 'express';
 import 'dotenv/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ConfigurationService } from '../configuration/configuration.service';
-import { RegisterLocalUserDto } from './dtos/register-local-user.dto';
+import { RegisterUserDto } from 'shared';
 
 @Controller('auth')
 export class AuthController {
@@ -38,22 +36,18 @@ export class AuthController {
 
   @Get('google-redirect')
   @UseGuards(GoogleOAuthGuard)
-  @Redirect()
-  googleAuthRedirect(
-    @Req() req: Request,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     res.cookie('valid_session', req.user !== undefined, {
       httpOnly: false,
       maxAge: this.configService.get('COOKIE_MAXAGE'),
     });
-    res.redirect(this.configService.get('CLIENT_ORIGIN') + '/');
+    return res.redirect(302, this.configService.get('CLIENT_ORIGIN') + '/');
   }
 
-  @Post('local/register')
+  @Post('register')
   @UseInterceptors(FileInterceptor('avatarUrl'))
   registerLocal(
-    @Body() registerLocalUserDto: RegisterLocalUserDto,
+    @Body() registerLocalUserDto: RegisterUserDto,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -64,24 +58,18 @@ export class AuthController {
     )
     avatarUrl: Express.Multer.File,
   ) {
-    return this.authService.registerLocalUser(registerLocalUserDto, avatarUrl);
+    return this.authService.registerUser(registerLocalUserDto, avatarUrl);
   }
 
   @UseGuards(LocalAuthGuard)
-  @Post('local/login')
-  loginLocal(@Req() req: Request, @Res({ passthrough: true }) res: any) {
+  @Post('login')
+  loginLocal(@Req() req: Request, @Res() res: Response) {
     res
       .cookie('valid_session', req.user !== undefined, {
         httpOnly: false,
         maxAge: this.configService.get('COOKIE_MAXAGE'),
       })
-      .json({ user: req.user });
-  }
-
-  @Get('test-protected')
-  @UseGuards(ProtectedGuard)
-  protectedRoute(@Req() req) {
-    return { isLoggedIn: req.session };
+      .end();
   }
 
   @Post('logout')
@@ -91,11 +79,5 @@ export class AuthController {
       .clearCookie('valid_session')
       .clearCookie('connect.sid')
       .json({ success: true });
-  }
-
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return this.cloudinaryService.uploadFile(file);
   }
 }

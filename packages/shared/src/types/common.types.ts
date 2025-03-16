@@ -1,15 +1,21 @@
-export type SearchPaginationQuery = {
-  page?: number;
-  limit?: number;
-  sortBy?: [string, string][];
-  searchBy?: string[];
-  search?: string;
-  filter?: {
-    [column: string]: string | string[];
-  };
-  select?: string[];
-  cursor?: string;
-  cursorColumn?: string;
-  cursorDirection?: 'before' | 'after';
-  path: string;
+import { BaseApiResponseDto } from "../dto";
+import { z } from "zod";
+import { getByIdSchema } from "../schema";
+import { PaginateQuery } from "nestjs-paginate";
+
+type Newable = { new(...args: readonly unknown[]): unknown }
+type AnyFn = (...args: unknown[]) => unknown
+export type ClassProperties<C extends Newable> = {
+  [
+  K in keyof InstanceType<C>
+    as InstanceType<C>[K] extends AnyFn
+    ? never
+    : K
+  ]: InstanceType<C>[K]
 }
+
+export type PaginatedSearchQuery = PaginateQuery;
+
+export type BaseApiResponse<T> = InstanceType<typeof BaseApiResponseDto<T>>;
+
+export type GetByIdType = z.infer<typeof getByIdSchema>;

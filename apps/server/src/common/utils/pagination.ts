@@ -6,7 +6,6 @@ export const USER_PAGINATION_CONFIG: PaginateConfig<User> = {
   nullSort: 'last',
   defaultSortBy: [['id', 'DESC']],
   searchableColumns: ['fullName', 'email', 'userName'],
-  select: ['id', 'userName', 'fullName', 'avatarUrl', 'email'],
-  defaultLimit: 5,
+  defaultLimit: 10,
   cursorableColumns: ['id'],
 };

@@ -2,12 +2,12 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
-  IsStrongPassword,
   MaxLength,
   MinLength,
-} from 'class-validator';
+  IsStrongPassword,
+} from "class-validator";
 
-export class RegisterLocalUserDto {
+export class RegisterUserDto {
   @IsNotEmpty()
   @MinLength(4)
   @MaxLength(20)
@@ -31,4 +31,12 @@ export class RegisterLocalUserDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
+}
+
+export class LoginUserDto {
+  @IsNotEmpty()
+  userName: string;
+
+  @IsNotEmpty()
+  password: string;
 }
