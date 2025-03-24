@@ -16,8 +16,10 @@ export class BaseUserDto extends BaseEntityDto {
   email: string;
 }
 
-export class GetUserDto extends BaseApiResponseDto<BaseUserDto> {}
+export class GetUserResponseDto extends BaseApiResponseDto<BaseUserDto> {}
 
-export class GetUsersPaginatedDto extends BaseApiResponseDto<
+export class GetUsersPaginatedResponseDto extends BaseApiResponseDto<
   Paginated<BaseUserDto>
 > {}
+
+export class GetCurrentUserResponseDto extends BaseApiResponseDto<BaseUserDto> {}

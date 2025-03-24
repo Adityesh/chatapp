@@ -1,5 +1,3 @@
-import { User } from 'passport';
-
 declare global {
   namespace Express {
     interface Request {

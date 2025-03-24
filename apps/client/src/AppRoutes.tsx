@@ -35,9 +35,11 @@ export default function () {
             <Route element={<ProtectedRoute />} errorElement={<Error />}>
               <Route index element={<Index />} />
               <Route path={APP_URL.SETTINGS} element={<Settings />} />
-              <Route path={APP_URL.CHAT} element={<Chat />} />
               <Route path={APP_URL.USER}>
                 <Route path=":id" element={<User />} />
+              </Route>
+              <Route path={APP_URL.CHAT}>
+                <Route path=":id" element={<Chat />} />
               </Route>
             </Route>
             <Route path={"*"} element={<Error notFound />} />

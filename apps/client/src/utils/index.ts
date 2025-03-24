@@ -2,6 +2,8 @@ import { cva } from "class-variance-authority";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import Cookie from "js-cookie";
+import { InfiniteQueryConfigOptions } from "@reduxjs/toolkit/query";
+import { PaginatedSearchQuery } from "shared";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -80,3 +82,37 @@ export function stringToCapitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
 }
 
+export function getInfiniteQueryOptions<
+  T extends {
+    data: any;
+  },
+>(): InfiniteQueryConfigOptions<T, number> {
+  return {
+    initialPageParam: 1,
+    getNextPageParam: ({ data }, _allPages, lastPageParam) => {
+      const totalPages = data && data?.meta?.totalPages;
+      const currentPage = data && data?.meta?.currentPage;
+      if (totalPages && totalPages === currentPage) {
+        return undefined;
+      }
+      return lastPageParam + 1;
+    },
+    getPreviousPageParam: (firstPage, _allPages, firstPageParam) => {
+      const currentPage = firstPage && firstPage?.data?.meta?.currentPage;
+      if (currentPage === 1) return undefined;
+      return firstPageParam - 1;
+    },
+  };
+}
+
+export function generatePaginationFilterObj(
+  obj: PaginatedSearchQuery["filter"],
+) {
+  const newObj = {} as PaginatedSearchQuery["filter"];
+  for (const key in obj) {
+    if (newObj) {
+      newObj['filter.' + key] = obj[key];
+    }
+  }
+  return newObj;
+}

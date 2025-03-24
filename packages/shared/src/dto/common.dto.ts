@@ -19,7 +19,7 @@ export class BaseErrorDto {
 }
 
 export class BaseApiResponseDto<T> {
-  data?: T;
+  data: T;
 
   @IsNumber()
   statusCode: number;

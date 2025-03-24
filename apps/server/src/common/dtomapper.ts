@@ -1,9 +1,24 @@
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { createMap, extend, Mapper } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
-import { BaseEntityDto, BaseUserDto } from 'shared';
+import {
+  BaseConnectionDto,
+  BaseEntityDto,
+  BaseUserDto,
+  BaseChannelDto,
+  BaseMessageDto,
+  BaseMessageStatusDto,
+  BaseMessageAttachmentDto,
+  BaseChannelUserDto,
+} from 'shared';
 import { BaseEntity } from './entities/base.entity';
 import { User } from '../user/user.entity';
+import { Connection } from '../connection/connection.entity';
+import { Channel } from '../channel/channel.entity';
+import { ChannelUser } from '../channeluser/channeluser.entity';
+import { MessageAttachment } from '../messageattachment/messageattachment.entity';
+import { MessageStatus } from '../messagestatus/messagestatus.entity';
+import { Message } from '../message/message.entity';
 
 @Injectable()
 export class DtoMapper extends AutomapperProfile {
@@ -15,6 +30,42 @@ export class DtoMapper extends AutomapperProfile {
     return (mapper: Mapper) => {
       createMap(mapper, BaseEntity, BaseEntityDto);
       createMap(mapper, User, BaseUserDto, extend(BaseEntity, BaseEntityDto));
+      createMap(
+        mapper,
+        Connection,
+        BaseConnectionDto,
+        extend(BaseEntity, BaseEntityDto),
+      );
+      createMap(
+        mapper,
+        Channel,
+        BaseChannelDto,
+        extend(BaseEntity, BaseEntityDto),
+      );
+      createMap(
+        mapper,
+        ChannelUser,
+        BaseChannelUserDto,
+        extend(BaseEntity, BaseEntityDto),
+      );
+      createMap(
+        mapper,
+        Message,
+        BaseMessageDto,
+        extend(BaseEntity, BaseEntityDto),
+      );
+      createMap(
+        mapper,
+        MessageStatus,
+        BaseMessageStatusDto,
+        extend(BaseEntity, BaseEntityDto),
+      );
+      createMap(
+        mapper,
+        MessageAttachment,
+        BaseMessageAttachmentDto,
+        extend(BaseEntity, BaseEntityDto),
+      );
     };
   }
 }

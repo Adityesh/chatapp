@@ -14,12 +14,12 @@ import { MessageModule } from './message/message.module';
 import { MessageattachmentModule } from './messageattachment/messageattachment.module';
 import { MessagestatusModule } from './messagestatus/messagestatus.module';
 import { ChanneluserController } from './channeluser/channeluser.controller';
-import { ChanneluserModule } from './channeluser/channeluser.module';
 import { ChannelModule } from './channel/channel.module';
 import { MessageController } from './message/message.controller';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
 import { DtoMapper } from './common/dtomapper';
+import { ChannelUserModule } from './channeluser/channeluser.module';
 
 @Module({
   imports: [
@@ -37,7 +37,7 @@ import { DtoMapper } from './common/dtomapper';
     MessageModule,
     MessageattachmentModule,
     MessagestatusModule,
-    ChanneluserModule,
+    ChannelUserModule,
     ChannelModule,
   ],
   controllers: [

@@ -5,20 +5,21 @@ export const AUTH_CONTROLLER = {
 };
 
 export const USER_CONTROLLER = {
-  GET_USER_BY_ID: "/user/{0}",
+  GET_USER_BY_ID: "/user/{userId}",
   GET_USERS: "/user",
-};
-
-export const CHAT_CONTROLLER = {
-  INITATE_CHAT: "/chat/init",
-  CHAT_DETAILS: "/chat/details",
-  MESSAGE: "/chat/message/",
-  CHANNELS: "/chat/channels",
-  CREATE_CHANNEL : "/chat/channel/create"
+  GET_CURRENT_USER: "/user/current"
 };
 
 export const CONNECTIONS_CONTROLLER = {
-  GET_CONNECTIONS : "/connection/all"
+  GET_CONNECTION : "/connection/{userId}",
+  CREATE_CONNECTION : "/connection",
+  UPDATE_CONNECTION : "/connection",
+  GET_ALL_CONNECTIONS : "/connection",
+  DELETE_CONNECTION : "/connection/{connectionId}",
+}
+
+export const CHANNEL_CONTROLLER = {
+  GET_CHANNELS : "/channel"
 }
 
 export enum HTTP_METHODS {

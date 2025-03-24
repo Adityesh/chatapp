@@ -3,3 +3,8 @@ export * from "./chat.dto";
 export * from "./connection.dto";
 export * from "./user.dto";
 export * from "./auth.dto";
+export * from './channeluser.dto'
+export * from './channel.dto'
+export * from './message.dto'
+export * from './messagestatus.dto'
+export * from './messageattachment.dto'

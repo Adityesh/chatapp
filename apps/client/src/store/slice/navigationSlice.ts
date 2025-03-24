@@ -9,6 +9,9 @@ const initialState: NavigationSliceInitialState = {
   tab: "CHATS",
   tabSearch: "",
   selectedItem: null,
+  usersTab: {
+    searchType: "connections",
+  }
 };
 
 const navigationSlice = createSlice({
@@ -30,10 +33,22 @@ const navigationSlice = createSlice({
     ) => {
       state.selectedItem = value;
     },
+    SET_USERS_TAB_SEARCH_TYPE: (
+      state,
+      {
+        payload,
+      }: PayloadAction<NavigationSliceInitialState["usersTab"]["searchType"]>,
+    ) => {
+      state.usersTab.searchType = payload;
+    },
   },
 });
 
-export const { SET_NAVIGATION_TAB, UPDATE_TAB_SEARCH, SET_TAB_SELECTED_ITEM } =
-  navigationSlice.actions;
+export const {
+  SET_NAVIGATION_TAB,
+  UPDATE_TAB_SEARCH,
+  SET_TAB_SELECTED_ITEM,
+  SET_USERS_TAB_SEARCH_TYPE,
+} = navigationSlice.actions;
 
 export default navigationSlice.reducer;
