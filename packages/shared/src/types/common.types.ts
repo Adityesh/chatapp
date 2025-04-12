@@ -1,22 +1,26 @@
 import { BaseApiResponseDto } from "../dto";
 import { z } from "zod";
 import { getByIdSchema } from "../schema";
-import { PaginateQuery } from "nestjs-paginate";
+import { PaginateConfig, PaginateQuery } from 'nestjs-paginate';
 
-type Newable = { new(...args: readonly unknown[]): unknown }
-type AnyFn = (...args: unknown[]) => unknown
+type Newable = { new (...args: readonly unknown[]): unknown };
+type AnyFn = (...args: unknown[]) => unknown;
 
 export type ClassProperties<C extends Newable> = {
-  [
-  K in keyof InstanceType<C>
-    as InstanceType<C>[K] extends AnyFn
+  [K in keyof InstanceType<C> as InstanceType<C>[K] extends AnyFn
     ? never
-    : K
-  ]: InstanceType<C>[K]
-}
+    : K]: InstanceType<C>[K];
+};
 
 export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
+export type NestedTypeKeys<T> = T extends object
+  ? {
+      [K in keyof T]: `${Exclude<K, symbol>}${NestedTypeKeys<T[K]> extends never ? "" : `.${NestedTypeKeys<T[K]>}`}`;
+    }[keyof T]
+  : never;
+
+export type ts<T> = PaginateConfig<T>["filterableColumns"]
 
 export type PaginatedSearchQuery = PaginateQuery;
 

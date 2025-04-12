@@ -12,7 +12,7 @@ export default function AppSidebarHeader() {
     dispatch(UPDATE_TAB_SEARCH(tabSearch));
   };
 
-  const disabledSearch = usersTab.searchType === "connections"
+  const disabledSearch = tab === "USERS" && usersTab.searchType === "connections";
   return (
     <>
       <h1 className={"text-white text-4xl font-satoshi px-4"}>

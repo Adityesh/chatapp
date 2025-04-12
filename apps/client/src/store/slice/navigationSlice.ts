@@ -22,6 +22,7 @@ const navigationSlice = createSlice({
       Object.assign(state, {
         ...state,
         tab: payload,
+        tabSearch: ""
       });
     },
     UPDATE_TAB_SEARCH: (state, { payload }: PayloadAction<string>) => {

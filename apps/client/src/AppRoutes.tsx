@@ -7,6 +7,7 @@ import { SidebarProvider } from "./components/ui/sidebar";
 import Index from "@/page";
 import Error from "@/page/error";
 import User from "@/page/user";
+import CommonHeader from "@/components/common/CommonHeader";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -35,11 +36,13 @@ export default function () {
             <Route element={<ProtectedRoute />} errorElement={<Error />}>
               <Route index element={<Index />} />
               <Route path={APP_URL.SETTINGS} element={<Settings />} />
-              <Route path={APP_URL.USER}>
-                <Route path=":id" element={<User />} />
-              </Route>
-              <Route path={APP_URL.CHAT}>
-                <Route path=":id" element={<Chat />} />
+              <Route element={<CommonHeader />}>
+                <Route path={APP_URL.USER}>
+                  <Route path=":id" element={<User />} />
+                </Route>
+                <Route path={APP_URL.CHAT}>
+                  <Route path=":id" element={<Chat />} />
+                </Route>
               </Route>
             </Route>
             <Route path={"*"} element={<Error notFound />} />

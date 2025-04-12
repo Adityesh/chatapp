@@ -14,9 +14,11 @@ import ConnectionSelectFilter from "@/components/AppSidebar/AppSidebarContent/Ta
 import { useGetAllConnectionsInfiniteQuery } from "@/store/api/connectionApi.ts";
 import { useMemo, useState } from "react";
 import ConnectionItemRow from "@/components/AppSidebar/AppSidebarContent/Tabs/ConnectionItemRow";
+import { useParams } from "react-router-dom";
 
 export default function Users() {
   useDocumentTitle("Users");
+  const { id } = useParams();
   const tabSearch = useAppSelector((state) => state.navigation.tabSearch);
   const searchType = useAppSelector(
     (state) => state.navigation.usersTab.searchType,
@@ -121,7 +123,13 @@ export default function Users() {
         users &&
         searchDebounce.length > 0 &&
         users.map((item, index) => {
-          return <UserItemRow user={item} key={index} />;
+          return (
+            <UserItemRow
+              user={item}
+              key={index}
+              selectedIndex={id ? Number(id) : undefined}
+            />
+          );
         })}
       <div ref={ref}></div>
     </>

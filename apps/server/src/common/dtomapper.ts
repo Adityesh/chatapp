@@ -1,5 +1,11 @@
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
-import { createMap, extend, Mapper } from '@automapper/core';
+import {
+  createMap,
+  extend,
+  forMember,
+  mapFrom,
+  Mapper,
+} from '@automapper/core';
 import { Injectable } from '@nestjs/common';
 import {
   BaseConnectionDto,
@@ -40,6 +46,10 @@ export class DtoMapper extends AutomapperProfile {
         mapper,
         Channel,
         BaseChannelDto,
+        forMember<Channel, BaseChannelDto>(
+          (d) => d.totalUsers,
+          mapFrom((s) => s.users.length),
+        ),
         extend(BaseEntity, BaseEntityDto),
       );
       createMap(

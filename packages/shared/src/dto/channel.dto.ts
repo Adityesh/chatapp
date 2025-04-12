@@ -29,8 +29,12 @@ export class BaseChannelDto extends BaseEntityDto {
 
   @AutoMap(() => [BaseChannelUserDto])
   users: BaseChannelUserDto[];
+
+  totalUsers: number;
 }
 
 export class GetChannelsPaginatedResponseDto extends BaseApiResponseDto<
   Paginated<BaseChannelDto>
 > {}
+
+export class GetChannelResponseDto extends BaseApiResponseDto<BaseChannelDto> {}

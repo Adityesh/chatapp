@@ -19,7 +19,9 @@ export const CONNECTIONS_CONTROLLER = {
 }
 
 export const CHANNEL_CONTROLLER = {
-  GET_CHANNELS : "/channel"
+  GET_CHANNELS : "/channel",
+  GET_CHANNEL_BY_ID: "/channel/{channelId}",
+  GET_CHANNELS_FOR_CURRENT_USER : "/channel/current",
 }
 
 export enum HTTP_METHODS {

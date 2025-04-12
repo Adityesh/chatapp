@@ -29,7 +29,10 @@ export class UserController {
   }
 
   @Get('')
-  async getAll(@Paginate(ValidationPipe) query: PaginatedSearchQuery) {
-    return this.userService.getUsers(query);
+  async getAll(
+    @Paginate(ValidationPipe) query: PaginatedSearchQuery,
+    @Req() req: Request,
+  ) {
+    return this.userService.getUsers(query, req.user['id']);
   }
 }

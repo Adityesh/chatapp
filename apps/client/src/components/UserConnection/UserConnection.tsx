@@ -2,6 +2,7 @@ import {
   BaseConnectionDto,
   BaseUserDto,
   ClassProperties,
+  ConnectionStatusEnum,
 } from "shared";
 import { getNameInitials } from "@/utils";
 import {
@@ -10,7 +11,11 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar.tsx";
 import dayjs from "dayjs";
-import { useCreateConnectionMutation } from "@/store/api/connectionApi.ts";
+import {
+  useCreateConnectionMutation,
+  useDeleteConnectionMutation,
+  useUpdateConnectionMutation,
+} from "@/store/api/connectionApi.ts";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button.tsx";
 
@@ -26,10 +31,12 @@ export default function UserConnection({
   currentUser,
 }: UserConnectionProps) {
   const [createConnection] = useCreateConnectionMutation();
+  const [updateConnection] = useUpdateConnectionMutation();
+  const [deleteConnection] = useDeleteConnectionMutation();
   const isRequesterCurrentUser = currentUser.id === connection?.requester.id;
   const nameInitials = getNameInitials(user.fullName);
 
-  async function handleCreateConnection() {
+  const handleCreateConnection = async () => {
     const result = await createConnection({
       recipient: user.id,
     }).unwrap();
@@ -38,7 +45,29 @@ export default function UserConnection({
       return;
     }
     toast.error("Invite failed, please try again!");
-  }
+  };
+
+  const handleConnectionStatusChange = async (status: ConnectionStatusEnum) => {
+    if (!connection) return;
+    const result = await updateConnection({
+      id: connection.id,
+      status,
+    }).unwrap();
+
+    if (result.data) {
+      toast.success(`Connection ${status} successfully.`);
+    }
+  };
+
+  const handleDeleteConnection = async () => {
+    if (!connection) return;
+    const result = await deleteConnection({
+      id: connection.id,
+    }).unwrap();
+    if (result.data) {
+      toast.success("Connection deleted successfully.");
+    }
+  };
 
   return (
     <div className={"w-full text-white"}>
@@ -63,6 +92,9 @@ export default function UserConnection({
             Waiting for {connection.recipient.fullName} to accept your
             connection
           </p>
+          <div>
+            <Button onClick={handleDeleteConnection}>Delete</Button>
+          </div>
         </div>
       )}
       {!isRequesterCurrentUser && connection && (
@@ -70,8 +102,20 @@ export default function UserConnection({
           <p>{connection.requester.fullName} wants to connect.</p>
           <p>To begin chatting, click accept</p>
           <div>
-            <Button>Accept</Button>
-            <Button>Decline</Button>
+            <Button
+              onClick={() =>
+                handleConnectionStatusChange(ConnectionStatusEnum.ACCEPTED)
+              }
+            >
+              Accept
+            </Button>
+            <Button
+              onClick={() =>
+                handleConnectionStatusChange(ConnectionStatusEnum.DECLINED)
+              }
+            >
+              Decline
+            </Button>
           </div>
         </div>
       )}

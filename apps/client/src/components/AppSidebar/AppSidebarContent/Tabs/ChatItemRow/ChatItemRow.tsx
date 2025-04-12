@@ -20,6 +20,7 @@ import { TAB_TYPE } from "@/types/navigationSlice.types.ts";
 type ChatItemRowProps = {
   channel: ClassProperties<typeof BaseChannelDto>;
   currentUser: ClassProperties<typeof BaseUserDto>;
+  selectedIndex?: number;
 };
 
 // function getColor(status: ChatItemRowProps["status"]) {
@@ -35,9 +36,9 @@ type ChatItemRowProps = {
 //   }
 // }
 
-const ChatItemRow: FC<ChatItemRowProps> = ({ channel, currentUser }) => {
+const ChatItemRow: FC<ChatItemRowProps> = ({ channel, currentUser, selectedIndex }) => {
   const dispatch = useAppDispatch();
-  const { tab, selectedItem } = useAppSelector((state) => state.navigation);
+  const { tab } = useAppSelector((state) => state.navigation);
   const navigate = useNavigate();
   const channelDetails = useMemo(() => {
     if (channel.channelType === ChannelTypeEnum.DIRECT) {
@@ -60,7 +61,7 @@ const ChatItemRow: FC<ChatItemRowProps> = ({ channel, currentUser }) => {
     };
   }, [currentUser, channel]);
   const isItemSelected =
-    tab === TAB_TYPE.CHATS && selectedItem?.id === channel.id;
+    tab === TAB_TYPE.CHATS && selectedIndex === channel.id;
 
   const handleChannelSelect = () => {
     dispatch(SET_TAB_SELECTED_ITEM({ value: channel }));

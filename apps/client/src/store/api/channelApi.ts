@@ -1,6 +1,11 @@
 import { baseApi } from "@/store/api/baseApi.ts";
 import { CHANNEL_CONTROLLER } from "@/constants/url.constants.ts";
-import { GetChannelsRequest, GetChannelsResponse } from "shared";
+import {
+  GetChannelRequest,
+  GetChannelResponse,
+  GetChannelsRequest,
+  GetChannelsResponse,
+} from "shared";
 import {
   generatePaginationFilterObj,
   getInfiniteQueryOptions,
@@ -15,18 +20,29 @@ const channelApi = baseApi.injectEndpoints({
       number
     >({
       infiniteQueryOptions: getInfiniteQueryOptions<GetChannelsResponse>(),
-      query({ queryArg: { filter, ...rest }, pageParam }) {
+      query({ queryArg: { filter, currentUser, ...rest }, pageParam }) {
         const queryObj = {
           ...rest,
           page: pageParam,
         } as GetChannelsRequest;
         return (
-          CHANNEL_CONTROLLER.GET_CHANNELS +
+          (currentUser
+            ? CHANNEL_CONTROLLER.GET_CHANNELS_FOR_CURRENT_USER
+            : CHANNEL_CONTROLLER.GET_CHANNELS) +
           objToQuery({ ...queryObj, ...generatePaginationFilterObj(filter) })
         );
       },
     }),
+    getChannelById: builder.query<GetChannelResponse, GetChannelRequest>({
+      query: ({ id }) => ({
+        url: CHANNEL_CONTROLLER.GET_CHANNEL_BY_ID.replace(
+          "{channelId}",
+          id!.toString(),
+        ),
+      }),
+    }),
   }),
 });
 
-export const { useGetChannelsInfiniteQuery } = channelApi;
+export const { useGetChannelsInfiniteQuery, useGetChannelByIdQuery } =
+  channelApi;

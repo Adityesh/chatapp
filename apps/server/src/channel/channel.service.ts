@@ -41,8 +41,8 @@ export class ChannelService {
     return await this.channelRepository.save(channel);
   }
 
-  async getAllChannels(query: PaginatedSearchQuery) {
-    const baseQuery = this.channelRepository
+  async getAllChannels(query: PaginatedSearchQuery, userId?: number) {
+    let baseQuery = this.channelRepository
       .createQueryBuilder('channel')
       .innerJoin('channel.users', 'cu')
       .innerJoin('cu.user', 'user')
@@ -63,6 +63,21 @@ export class ChannelService {
         'user.avatarUrl',
       ]);
 
+    if (userId) {
+      const userChannels = await this.channelUserRepository
+        .createQueryBuilder('cs')
+        .innerJoin('cs.channel', 'c')
+        .innerJoin('cs.user', 'u')
+        .select(['cs.id', 'c.id', 'u.id'])
+        .where('u.id = :userId', { userId })
+        .getMany();
+      const channelIds = userChannels.map((c) => c.channel.id);
+
+      baseQuery = baseQuery.where('channel.id IN (:...channelIds)', {
+        channelIds,
+      });
+    }
+
     const result = await paginate(query, baseQuery, CHANNEL_PAGINATION_CONFIG);
     return {
       ...result,
@@ -73,4 +88,31 @@ export class ChannelService {
       ),
     };
   }
+
+  async getChannel(id: number) {
+    const channelEntity = await this.channelRepository
+      .createQueryBuilder('channel')
+      .innerJoin('channel.users', 'cu')
+      .innerJoin('cu.user', 'user')
+      .where('channel.id = :id', { id })
+      .select([
+        'channel.id',
+        'channel.updatedAt',
+        'channel.channelType',
+        'channel.createdAt',
+        'channel.createdBy',
+        'channel.createdAt',
+        'channel.channelAvatar',
+        'channel.topic',
+        'channel.description',
+        'cu.id',
+        'user.id',
+        'user.userName',
+        'user.fullName',
+        'user.avatarUrl',
+      ])
+      .getOne();
+    return await this.mapper.mapAsync(channelEntity, Channel, BaseChannelDto);
+  }
+
 }
