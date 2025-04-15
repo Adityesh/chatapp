@@ -24,6 +24,13 @@ export const CHANNEL_CONTROLLER = {
   GET_CHANNELS_FOR_CURRENT_USER : "/channel/current",
 }
 
+export const MESSAGE_CONTROLLER = {
+  CREATE_MESSAGE : "/message",
+  DELETE_MESSAGE : "/message",
+  EDIT_MESSAGE : "/message",
+  GET_MESSAGES : "/message/{channelId}",
+}
+
 export enum HTTP_METHODS {
   GET = "GET",
   POST = "POST",

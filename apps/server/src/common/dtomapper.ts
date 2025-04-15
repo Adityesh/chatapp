@@ -48,7 +48,7 @@ export class DtoMapper extends AutomapperProfile {
         BaseChannelDto,
         forMember<Channel, BaseChannelDto>(
           (d) => d.totalUsers,
-          mapFrom((s) => s.users.length),
+          mapFrom((s) => (s?.users ? s.users.length : undefined)),
         ),
         extend(BaseEntity, BaseEntityDto),
       );
