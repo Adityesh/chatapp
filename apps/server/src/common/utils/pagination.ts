@@ -35,5 +35,5 @@ export const CHANNEL_PAGINATION_CONFIG: PaginateConfig<Channel> = {
 
 export const MESSAGE_PAGINATION_CONFIG: PaginateConfig<Message> = {
   sortableColumns: ['id', 'createdAt', 'updatedAt'],
-  defaultSortBy: [['updatedAt', 'DESC']],
+  defaultSortBy: [['createdAt', 'DESC']],
 };

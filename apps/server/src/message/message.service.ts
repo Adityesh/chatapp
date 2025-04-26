@@ -82,6 +82,7 @@ export class MessageService {
       .innerJoin('message.channel', 'channel')
       .innerJoinAndSelect('message.sender', 'sender')
       .leftJoinAndSelect('message.replyTo', 'replyTo')
+      .leftJoinAndSelect('replyTo.sender', 'replySender')
       .leftJoinAndSelect('message.attachments', 'attachments')
       .leftJoinAndSelect('message.messageStatus', 'messageStatus');
 

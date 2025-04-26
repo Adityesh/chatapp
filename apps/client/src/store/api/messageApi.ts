@@ -45,9 +45,9 @@ const messageApi = baseApi.injectEndpoints({
             "getAllMessages",
             cacheKey,
             (draft) => {
-              const lastPage = draft.pages.at(-1);
+              const lastPage = draft.pages.at(0);
               if (lastPage) {
-                lastPage.data.data.push(newMessage);
+                lastPage.data.data.unshift(newMessage);
               }
             },
           ),
@@ -61,17 +61,17 @@ const messageApi = baseApi.injectEndpoints({
         method: HTTP_METHODS.PATCH,
       }),
       async onQueryStarted(
-        { messageId, content },
+        { messageId },
         { dispatch, queryFulfilled, getState },
       ) {
         const { data: editMessageResponse } = await queryFulfilled;
-        const editSuccess = editMessageResponse.data;
+        const editedMessage = editMessageResponse.data;
         const params = messageApi.util.selectCachedArgsForQuery(
           getState(),
           "getAllMessages",
         );
         const cacheKey = params.find(
-          (s) => s.channelId === editSuccess.channel.id,
+          (s) => s.channelId === editedMessage.channel.id,
         );
         if (!cacheKey) return;
         dispatch(
@@ -79,11 +79,11 @@ const messageApi = baseApi.injectEndpoints({
             "getAllMessages",
             cacheKey,
             (draft) => {
-              if (!editSuccess) return;
+              if (!editedMessage) return;
               const allMessages = draft.pages.flatMap((p) => p.data.data);
               allMessages.forEach((message) => {
                 if (message.id === messageId) {
-                  message.content = content;
+                  Object.assign(message, editedMessage);
                 }
               });
             },

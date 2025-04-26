@@ -22,33 +22,31 @@ export default function () {
         v7_startTransition: true,
       }}
     >
-      <div className={"h-screen w-screen relative"}>
-        <SidebarProvider>
-          <Routes>
-            <Route
-              path={APP_URL.AUTH}
-              element={<Auth />}
-              errorElement={<Error />}
-            >
-              <Route index element={<Login />} />
-              <Route path={APP_URL.REGISTER} element={<Register />} />
-            </Route>
-            <Route element={<ProtectedRoute />} errorElement={<Error />}>
-              <Route index element={<Index />} />
-              <Route path={APP_URL.SETTINGS} element={<Settings />} />
-              <Route element={<CommonHeader />}>
-                <Route path={APP_URL.USER}>
-                  <Route path=":id" element={<User />} />
-                </Route>
-                <Route path={APP_URL.CHAT}>
-                  <Route path=":id" element={<Chat />} />
-                </Route>
+      <SidebarProvider>
+        <Routes>
+          <Route
+            path={APP_URL.AUTH}
+            element={<Auth />}
+            errorElement={<Error />}
+          >
+            <Route index element={<Login />} />
+            <Route path={APP_URL.REGISTER} element={<Register />} />
+          </Route>
+          <Route element={<ProtectedRoute />} errorElement={<Error />}>
+            <Route index element={<Index />} />
+            <Route path={APP_URL.SETTINGS} element={<Settings />} />
+            <Route element={<CommonHeader />}>
+              <Route path={APP_URL.USER}>
+                <Route path=":id" element={<User />} />
+              </Route>
+              <Route path={APP_URL.CHAT}>
+                <Route path=":id" element={<Chat />} />
               </Route>
             </Route>
-            <Route path={"*"} element={<Error notFound />} />
-          </Routes>
-        </SidebarProvider>
-      </div>
+          </Route>
+          <Route path={"*"} element={<Error notFound />} />
+        </Routes>
+      </SidebarProvider>
     </BrowserRouter>
   );
 }

@@ -22,7 +22,7 @@ export class BaseMessageDto extends BaseEntityDto {
   isEdited: boolean;
 
   @AutoMap(() => BaseMessageDto)
-  replyTo: BaseMessageDto;
+  replyTo: BaseMessageDto | null;
 
   @AutoMap(() => [BaseMessageStatusDto])
   messageStatus: BaseMessageStatusDto[];

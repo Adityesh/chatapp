@@ -4,6 +4,7 @@ import socketMiddleware from "./middleware/socketMiddleware";
 import authReducer from "./slice/authSlice";
 import navigationReducer from "./slice/navigationSlice";
 import socketReducer from "./slice/socketSlice";
+import chatReducer from "./slice/chatSlice";
 import { errorMiddleware } from "./middleware/errorMiddleware";
 import { baseApi } from "@/store/api/baseApi.ts";
 
@@ -12,6 +13,7 @@ export const store = configureStore({
     socket: socketReducer,
     auth: authReducer,
     navigation: navigationReducer,
+    chat: chatReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

@@ -239,3 +239,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+body, #root {
+  height: 100svh;
+  width: 100svw;
+}

@@ -31,7 +31,6 @@ export class SocketGateway
   }
 
   handleDisconnect(client: any) {
-    console.log('Client disconnected');
     this.socketService.users.delete(client.id);
   }
 

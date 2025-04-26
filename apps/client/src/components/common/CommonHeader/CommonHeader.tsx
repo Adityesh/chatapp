@@ -43,8 +43,6 @@ export default function CommonHeader() {
     },
   );
 
-  console.log(channel?.data, "channel", user?.data, "user");
-
   const renderHeader = useMemo(() => {
     if (!currentUser) return null;
     if (channel?.data) {
@@ -73,11 +71,11 @@ export default function CommonHeader() {
   }, [currentUser, channel?.data, user?.data]);
 
   return (
-    <div className={"w-full h-full flex-col justify-start"}>
+    <div className={"w-full h-full flex-col flex justify-start"}>
       {renderHeader && (
         <div
           className={
-            "w-full flex items-center justify-items-start bg-sidebar-foreground py-4 px-2 text-white"
+            "w-full h-20 flex items-center justify-items-start bg-sidebar-foreground py-4 px-2 text-white"
           }
         >
           {!isMobile && (
