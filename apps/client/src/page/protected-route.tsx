@@ -7,11 +7,13 @@ import AppSidebarToggle from "@/components/AppSidebar/AppSidebarToggle";
 const ProtectedRoute = () => {
   const SessionCookie = checkAuthenticatedUser();
   if (SessionCookie) {
-    return <>
-      <AppSidebarToggle />
-      <AppSidebar />
-      <Outlet />
-    </>;
+    return (
+      <>
+        <AppSidebarToggle />
+        <AppSidebar />
+        <Outlet />
+      </>
+    );
   }
 
   return <Navigate to={APP_URL.AUTH} replace />;

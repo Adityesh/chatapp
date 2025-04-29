@@ -1,1 +1,1 @@
-export { default } from './settings.tsx'
+export { default } from "./settings.tsx";

@@ -2,8 +2,6 @@ import { baseApi } from "@/store/api/baseApi.ts";
 import {
   LoginUserRequest,
   LoginUserResponse,
-  LogoutUserRequest,
-  LogoutUserResponse,
   RegisterUserRequest,
   RegisterUserResponse,
 } from "shared";
@@ -20,10 +18,10 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
     registerUser: builder.mutation<RegisterUserResponse, RegisterUserRequest>({
-      query: ({ avatarUrl, ...payload }) => {
+      query: ({ avatar, ...payload }) => {
         const formData = convertObjectToFormData(payload);
-        if (avatarUrl) {
-          formData.append("avatarUrl", avatarUrl);
+        if (avatar) {
+          formData.append("avatar", avatar);
         }
         return {
           url: AUTH_CONTROLLER.REGISTER_LOCAL,
@@ -32,7 +30,7 @@ const authApi = baseApi.injectEndpoints({
         };
       },
     }),
-    logoutUser: builder.mutation<LogoutUserResponse, LogoutUserRequest>({
+    logoutUser: builder.mutation<void, void>({
       query: () => ({
         url: AUTH_CONTROLLER.LOGOUT,
         method: HTTP_METHODS.POST,

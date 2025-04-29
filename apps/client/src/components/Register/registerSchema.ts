@@ -14,19 +14,14 @@ export const registerSchema = z
       .string()
       .min(1, "Password is required")
       .min(8, "Password should be atleast 8 characters"),
-    avatarUrl: z
-      .instanceof(FileList, {
-        message: "Please select a file",
-      })
-      .refine((file) => !!file, "Please select a file.")
-      .refine(
-        (file) => file && file.size <= MAX_PROFILE_IMAGE_SIZE,
-        `Profile picture must be less than 1MB`
-      )
-      .refine(
-        (file) => file && file.type.startsWith("image"),
-        "Profile picture must be an image"
-      )
+    avatar: z
+      .instanceof(File)
+      .refine((file) => {
+        return file.size <= MAX_PROFILE_IMAGE_SIZE;
+      }, "File must be less than 1MB")
+      .refine((file) => {
+        return file!.type.startsWith("image/");
+      }, "File must be an image")
       .optional(),
   })
   .superRefine(({ password }, checkPassComplexity) => {

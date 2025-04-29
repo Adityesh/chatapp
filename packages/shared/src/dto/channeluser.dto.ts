@@ -1,7 +1,7 @@
-import { BaseEntityDto } from './common.dto';
-import { AutoMap } from '@automapper/classes';
-import { BaseUserDto } from './user.dto';
-import { BaseChannelDto } from './channel.dto';
+import { BaseEntityDto } from "./common.dto";
+import { AutoMap } from "@automapper/classes";
+import { BaseUserDto } from "./user.dto";
+import { BaseChannelDto } from "./channel.dto";
 
 export class BaseChannelUserDto extends BaseEntityDto {
   @AutoMap(() => BaseUserDto)

@@ -45,20 +45,20 @@ export class AuthController {
   }
 
   @Post('register')
-  @UseInterceptors(FileInterceptor('avatarUrl'))
+  @UseInterceptors(FileInterceptor('avatar'))
   registerLocal(
     @Body() registerLocalUserDto: RegisterUserDto,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 }),
-          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif)' }),
         ],
       }),
     )
-    avatarUrl: Express.Multer.File,
+    avatar: Express.Multer.File,
   ) {
-    return this.authService.registerUser(registerLocalUserDto, avatarUrl);
+    return this.authService.registerUser(registerLocalUserDto, avatar);
   }
 
   @UseGuards(LocalAuthGuard)

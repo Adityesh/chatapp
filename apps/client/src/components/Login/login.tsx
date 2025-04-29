@@ -19,7 +19,7 @@ import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { LoginFormSchema, loginSchema } from "./loginSchema";
-import { useLoginUserMutation } from '@/store/api/authApi.ts';
+import { useLoginUserMutation } from "@/store/api/authApi.ts";
 
 export default function Login() {
   const navigate = useNavigate();

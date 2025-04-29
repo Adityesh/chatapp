@@ -1,1 +1,1 @@
-export { default } from './ConfirmationDialog.tsx'
+export { default } from "./ConfirmationDialog.tsx";

@@ -1,8 +1,6 @@
-import { useDocumentTitle } from 'usehooks-ts';
+import { useDocumentTitle } from "usehooks-ts";
 
 export default function Channels() {
-    useDocumentTitle("Channels");
-    return (
-        <div>Channels Content</div>
-    )
+  useDocumentTitle("Channels");
+  return <div>Channels Content</div>;
 }

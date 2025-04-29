@@ -37,7 +37,7 @@ const ActionView: FC<ChatActionViewProps> = ({ channelId }) => {
   );
 
   const renderAction = useMemo(() => {
-    if(!actionMessage) return null;
+    if (!actionMessage) return null;
     switch (action) {
       case "EDIT":
         return <span>Editing</span>;
@@ -49,7 +49,9 @@ const ActionView: FC<ChatActionViewProps> = ({ channelId }) => {
             <span className={"font-poppins-bold text-xs px-2"}>
               @{actionMessage?.sender?.userName}
             </span>
-            <div className={"mt-1 font-satoshi px-2"}>{actionMessage.content}</div>
+            <div className={"mt-1 font-satoshi px-2"}>
+              {actionMessage.content}
+            </div>
           </div>
         );
       default:

@@ -26,7 +26,7 @@ export default function UserItemRow({ user, selectedIndex }: UserItemRowProps) {
   const nameInitials = getNameInitials(fullName);
   const isItemSelected = tab === TAB_TYPE.USERS && selectedIndex === id;
 
-  const avatarFallbackColor = useMemo(() => getRandomColor(), [user.id]);
+  const avatarFallbackColor = useMemo(() => getRandomColor(), []);
 
   const handleUserSelect = () => {
     dispatch(SET_TAB_SELECTED_ITEM({ value: user }));

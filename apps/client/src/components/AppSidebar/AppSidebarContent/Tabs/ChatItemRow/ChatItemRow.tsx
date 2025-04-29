@@ -36,7 +36,11 @@ type ChatItemRowProps = {
 //   }
 // }
 
-const ChatItemRow: FC<ChatItemRowProps> = ({ channel, currentUser, selectedIndex }) => {
+const ChatItemRow: FC<ChatItemRowProps> = ({
+  channel,
+  currentUser,
+  selectedIndex,
+}) => {
   const dispatch = useAppDispatch();
   const { tab } = useAppSelector((state) => state.navigation);
   const navigate = useNavigate();
@@ -60,8 +64,7 @@ const ChatItemRow: FC<ChatItemRowProps> = ({ channel, currentUser, selectedIndex
       updatedAt: channel.updatedAt,
     };
   }, [currentUser, channel]);
-  const isItemSelected =
-    tab === TAB_TYPE.CHATS && selectedIndex === channel.id;
+  const isItemSelected = tab === TAB_TYPE.CHATS && selectedIndex === channel.id;
 
   const handleChannelSelect = () => {
     dispatch(SET_TAB_SELECTED_ITEM({ value: channel }));

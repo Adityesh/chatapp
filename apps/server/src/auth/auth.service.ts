@@ -86,11 +86,11 @@ export class AuthService {
 
   async registerUser(
     { email, userName, fullName, password }: RegisterUserDto,
-    avatarUrl?: Express.Multer.File,
+    avatar?: Express.Multer.File,
   ) {
     let newAvatarUrl = '';
-    if (avatarUrl) {
-      newAvatarUrl = (await this.cloudinaryService.uploadFile(avatarUrl)).url;
+    if (avatar) {
+      newAvatarUrl = (await this.cloudinaryService.uploadFile(avatar)).url;
     }
 
     const userNameExists = await this.userRepository.findOneBy({

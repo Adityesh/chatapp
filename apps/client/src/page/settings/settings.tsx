@@ -1,5 +1,3 @@
 export default function Settings() {
-  return (
-    <div>Settings element</div>
-  )
+  return <div>Settings element</div>;
 }

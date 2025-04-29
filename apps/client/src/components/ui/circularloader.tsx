@@ -1,7 +1,5 @@
-import './style.css'
+import "./style.css";
 
-export default function({ className } : { className? : string}) {
-    return (
-        <div className={`${className} circularLoader`}></div>
-    )
+export default function ({ className }: { className?: string }) {
+  return <div className={`${className} circularLoader`}></div>;
 }

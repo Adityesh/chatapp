@@ -1,8 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
-  ChatSliceInitialState, ResetDraftAction,
+  ChatSliceInitialState,
+  ResetDraftAction,
   UpdateDraftAction,
-} from '@/types/chatSlice.types.ts';
+} from "@/types/chatSlice.types.ts";
 
 const initialState: ChatSliceInitialState = {
   drafts: {},
@@ -20,7 +21,7 @@ const chatSlice = createSlice({
     },
     RESET_DRAFT: (state, action: PayloadAction<ResetDraftAction>) => {
       delete state.drafts[action.payload.channelId];
-    }
+    },
   },
 });
 

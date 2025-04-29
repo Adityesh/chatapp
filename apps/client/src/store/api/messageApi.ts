@@ -110,9 +110,7 @@ const messageApi = baseApi.injectEndpoints({
           getState(),
           "getAllMessages",
         );
-        const cacheKey = params.find(
-          (s) => s.channelId === channelId,
-        );
+        const cacheKey = params.find((s) => s.channelId === channelId);
         if (!cacheKey) return;
         dispatch(
           messageApi.util.updateQueryData(
@@ -122,11 +120,13 @@ const messageApi = baseApi.injectEndpoints({
               if (!deleteSuccess) return;
               draft.pages.forEach((page) => {
                 const messages = page.data.data;
-                const deleteIndex = messages.findIndex(m => m.id === messageId);
+                const deleteIndex = messages.findIndex(
+                  (m) => m.id === messageId,
+                );
                 if (deleteIndex >= 0) {
                   messages.splice(deleteIndex, 1);
                 }
-              })
+              });
             },
           ),
         );

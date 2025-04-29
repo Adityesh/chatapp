@@ -1,10 +1,13 @@
-import { ClassProperties, GetByIdType, PaginatedSearchQuery } from './common.types';
 import {
-  GetChannelResponseDto,
-  GetChannelsPaginatedResponseDto
-} from '../dto';
+  ClassProperties,
+  GetByIdType,
+  PaginatedSearchQuery,
+} from "./common.types";
+import { GetChannelResponseDto, GetChannelsPaginatedResponseDto } from "../dto";
 
-export type GetChannelsRequest = PaginatedSearchQuery & { currentUser? : boolean};
+export type GetChannelsRequest = PaginatedSearchQuery & {
+  currentUser?: boolean;
+};
 export type GetChannelsResponse = ClassProperties<
   typeof GetChannelsPaginatedResponseDto
 >;

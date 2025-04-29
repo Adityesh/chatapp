@@ -1,1 +1,1 @@
-export { default } from './chat.tsx'
+export { default } from "./chat.tsx";

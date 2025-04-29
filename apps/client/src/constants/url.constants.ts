@@ -7,29 +7,29 @@ export const AUTH_CONTROLLER = {
 export const USER_CONTROLLER = {
   GET_USER_BY_ID: "/user/{userId}",
   GET_USERS: "/user",
-  GET_CURRENT_USER: "/user/current"
+  GET_CURRENT_USER: "/user/current",
 };
 
 export const CONNECTIONS_CONTROLLER = {
-  GET_CONNECTION : "/connection/{userId}",
-  CREATE_CONNECTION : "/connection",
-  UPDATE_CONNECTION : "/connection",
-  GET_ALL_CONNECTIONS : "/connection",
-  DELETE_CONNECTION : "/connection/{connectionId}",
-}
+  GET_CONNECTION: "/connection/{userId}",
+  CREATE_CONNECTION: "/connection",
+  UPDATE_CONNECTION: "/connection",
+  GET_ALL_CONNECTIONS: "/connection",
+  DELETE_CONNECTION: "/connection/{connectionId}",
+};
 
 export const CHANNEL_CONTROLLER = {
-  GET_CHANNELS : "/channel",
+  GET_CHANNELS: "/channel",
   GET_CHANNEL_BY_ID: "/channel/{channelId}",
-  GET_CHANNELS_FOR_CURRENT_USER : "/channel/current",
-}
+  GET_CHANNELS_FOR_CURRENT_USER: "/channel/current",
+};
 
 export const MESSAGE_CONTROLLER = {
-  CREATE_MESSAGE : "/message",
-  DELETE_MESSAGE : "/message",
-  EDIT_MESSAGE : "/message",
-  GET_MESSAGES : "/message/{channelId}",
-}
+  CREATE_MESSAGE: "/message",
+  DELETE_MESSAGE: "/message",
+  EDIT_MESSAGE: "/message",
+  GET_MESSAGES: "/message/{channelId}",
+};
 
 export enum HTTP_METHODS {
   GET = "GET",

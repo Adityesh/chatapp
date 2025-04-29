@@ -1,1 +1,1 @@
-export { default } from './WithTooltip.tsx'
+export { default } from "./WithTooltip.tsx";

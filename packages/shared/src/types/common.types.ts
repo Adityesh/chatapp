@@ -1,7 +1,7 @@
 import { BaseApiResponseDto } from "../dto";
 import { z } from "zod";
 import { getByIdSchema } from "../schema";
-import { PaginateConfig, PaginateQuery } from 'nestjs-paginate';
+import { PaginateConfig, PaginateQuery } from "nestjs-paginate";
 
 type Newable = { new (...args: readonly unknown[]): unknown };
 type AnyFn = (...args: unknown[]) => unknown;
@@ -20,7 +20,7 @@ export type NestedTypeKeys<T> = T extends object
     }[keyof T]
   : never;
 
-export type ts<T> = PaginateConfig<T>["filterableColumns"]
+export type ts<T> = PaginateConfig<T>["filterableColumns"];
 
 export type PaginatedSearchQuery = PaginateQuery;
 

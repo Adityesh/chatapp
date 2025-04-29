@@ -6,7 +6,7 @@ import { BaseChannelDto } from "./channel.dto";
 import { AutoMap } from "@automapper/classes";
 import { IsNumber, IsOptional, IsString } from "class-validator";
 import { BooleanResponseType } from "../types";
-import { Paginated } from 'nestjs-paginate';
+import { Paginated } from "nestjs-paginate";
 
 export class BaseMessageDto extends BaseEntityDto {
   @AutoMap()

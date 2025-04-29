@@ -114,5 +114,4 @@ export class ChannelService {
       .getOne();
     return await this.mapper.mapAsync(channelEntity, Channel, BaseChannelDto);
   }
-
 }

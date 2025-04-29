@@ -1,5 +1,4 @@
 import { APP_URL } from "@/constants/clientUrl.constants.ts";
-
 import ProtectedRoute from "@/page/protected-route.tsx";
 import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -7,8 +6,8 @@ import { SidebarProvider } from "./components/ui/sidebar";
 import Index from "@/page";
 import Error from "@/page/error";
 import User from "@/page/user";
-import CommonHeader from "@/components/common/CommonHeader";
 
+const CommonHeader = lazy(() => import("@/components/common/CommonHeader"));
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
 const Settings = lazy(() => import("@/page/settings"));

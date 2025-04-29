@@ -11,7 +11,7 @@ const PageLoader = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(
         {children}
       </span>
     );
-  }
+  },
 );
 
 export default PageLoader;

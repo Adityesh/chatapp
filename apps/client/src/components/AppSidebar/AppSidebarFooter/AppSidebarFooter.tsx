@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator.tsx";
 import WithToolTip from "@/components/common/WithTooltip";
 import { useIsMobile } from "@/hooks/useIsMobile.ts";
 import { Fragment, ReactNode } from "react";
-import {useAppDispatch, useAppSelector} from "@/hooks/useStore.ts";
+import { useAppDispatch, useAppSelector } from "@/hooks/useStore.ts";
 import { TabValues } from "@/types/navigationSlice.types.ts";
 import { SET_NAVIGATION_TAB } from "@/store/slice/navigationSlice.ts";
 

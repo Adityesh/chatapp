@@ -1,1 +1,1 @@
-export { default } from './AppSidebarToggle'
+export { default } from "./AppSidebarToggle";

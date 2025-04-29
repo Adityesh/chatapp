@@ -32,12 +32,12 @@ export default function ConnectionItemRow({
 }: ConnectionItemRowProps) {
   const [updateConnection] = useUpdateConnectionMutation();
   const [deleteConnection] = useDeleteConnectionMutation();
-  const { avatarUrl, userName, fullName, id } =
+  const { avatarUrl, userName, fullName } =
     connectionFilterValue === "incoming"
       ? connection.requester
       : connection.recipient;
   const nameInitials = getNameInitials(fullName);
-  const avatarFallbackColor = useMemo(() => getRandomColor(), [id]);
+  const avatarFallbackColor = useMemo(() => getRandomColor(), []);
 
   const handleConnectionStatusChange = async (status: ConnectionStatusEnum) => {
     const result = await updateConnection({

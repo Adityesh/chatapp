@@ -6,6 +6,8 @@ import {
   MinLength,
   IsStrongPassword,
 } from "class-validator";
+import { BaseApiResponseDto } from "./common.dto";
+import { BooleanResponseType } from "../types";
 
 export class RegisterUserDto {
   @IsNotEmpty()
@@ -33,6 +35,8 @@ export class RegisterUserDto {
   email: string;
 }
 
+export class RegisterUserResponseDto extends BaseApiResponseDto<BooleanResponseType> {}
+
 export class LoginUserDto {
   @IsNotEmpty()
   userName: string;
@@ -40,3 +44,5 @@ export class LoginUserDto {
   @IsNotEmpty()
   password: string;
 }
+
+export class LoginUserResponseDto extends BaseApiResponseDto<void> {}

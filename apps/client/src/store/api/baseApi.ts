@@ -14,7 +14,7 @@ export const baseApi = createApi({
     "getCurrentUser",
     "getUserById",
     "getUsers",
-    "getMessages"
-],
+    "getMessages",
+  ],
   endpoints: () => ({}),
 });

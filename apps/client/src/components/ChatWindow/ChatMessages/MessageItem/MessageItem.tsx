@@ -21,7 +21,7 @@ const MessageItem: FC<ChatMessageProps> = ({ message, currentUser }) => {
   const isCurrentUserSender = sender.id === currentUser.id;
   const { fullName, avatarUrl, userName } = sender;
   const nameInitials = getNameInitials(fullName);
-  const avatarFallbackColor = useMemo(() => getRandomColor(), [sender.id]);
+  const avatarFallbackColor = useMemo(() => getRandomColor(), []);
 
   return (
     <div className={"w-full flex items-center group"}>
@@ -37,9 +37,13 @@ const MessageItem: FC<ChatMessageProps> = ({ message, currentUser }) => {
             {nameInitials}
           </AvatarFallback>
         </Avatar>
-        <div className={`flex items-center ${isCurrentUserSender ? "" : "flex-row-reverse"}`}>
+        <div
+          className={`flex items-center ${isCurrentUserSender ? "" : "flex-row-reverse"}`}
+        >
           <ChatMessageMenu message={message}>
-            <EllipsisVertical className={"mt-2 opacity-0 group-hover:opacity-100"} />
+            <EllipsisVertical
+              className={"mt-2 opacity-0 group-hover:opacity-100"}
+            />
           </ChatMessageMenu>
           <div
             className={`mt-2 rounded-lg pt-1 ${isCurrentUserSender ? "rounded-tr-none mr-2 mt-3 bg-gray-500" : "rounded-tl-none ml-2 bg-primary"}`}
@@ -53,7 +57,9 @@ const MessageItem: FC<ChatMessageProps> = ({ message, currentUser }) => {
               <div
                 className={`bg-gray-400 mx-1 rounded-lg ${isCurrentUserSender ? "border-l-primary border-l-4" : "border-r-grey-500 border-r-4"} flex-col items-start justify-start`}
               >
-                <span className={"font-poppins-bold text-xs"}>@{replyTo?.sender?.userName}</span>
+                <span className={"font-poppins-bold text-xs"}>
+                  @{replyTo?.sender?.userName}
+                </span>
                 <div className={"mt-1 font-satoshi px-2"}>
                   {replyTo.content}
                 </div>

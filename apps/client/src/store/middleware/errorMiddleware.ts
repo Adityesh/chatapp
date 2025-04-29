@@ -10,8 +10,10 @@ export const errorMiddleware: Middleware = () => (next) => (action) => {
   if (isRejectedWithValue(action)) {
     console.error(action.payload);
     toast.error(
-      ((action.payload as { data : BaseApiResponse }).data as BaseApiResponse)?.error?.message ||
-        "Failed to perform request.",
+      (
+        (action.payload as { data: BaseApiResponse<boolean> })
+          .data as BaseApiResponse<boolean>
+      )?.error?.message || "Failed to perform request.",
     );
   }
   return next(action);

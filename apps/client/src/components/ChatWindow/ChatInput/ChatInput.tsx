@@ -67,7 +67,7 @@ export default function ChatInput({ channelId }: ChatInputProps) {
       {channelDraft?.action && (
         <X
           onClick={handleResetAction}
-          className={`absolute ${channelDraft?.action === "REPLY" ? "top-15" : "top-8"} right-1 cursor-pointer`}
+          className={`absolute ${channelDraft?.action === "REPLY" ? "top-17" : "top-8"} right-1 cursor-pointer`}
         />
       )}
     </form>

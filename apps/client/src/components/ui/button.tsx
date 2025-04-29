@@ -24,24 +24,24 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(
           buttonVariants({ variant, size, className }),
-          "cursor-pointer"
+          "cursor-pointer",
         )}
         ref={ref}
         disabled={loading || disabled}
         {...props}
       >
         {children}
-        {loading && <Spinner className="h-5 w-5 ml-2 animate-spin"/>}
+        {loading && <Spinner className="h-5 w-5 ml-2 animate-spin" />}
       </Comp>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

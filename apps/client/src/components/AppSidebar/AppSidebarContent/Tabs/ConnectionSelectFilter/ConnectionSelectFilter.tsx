@@ -30,7 +30,7 @@ export default function ConnectionSelectFilter({
     dispatch(SET_USERS_TAB_SEARCH_TYPE(value ? "users" : "connections"));
 
   return (
-    <div className={'mb-6'}>
+    <div className={"mb-6"}>
       <div className={"text-white flex items-center justify-center my-6"}>
         <span className={`${searchType === "connections" && "text-primary"}`}>
           Connections

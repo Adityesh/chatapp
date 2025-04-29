@@ -1,11 +1,11 @@
-import { BaseApiResponseDto, BaseEntityDto } from './common.dto';
+import { BaseApiResponseDto, BaseEntityDto } from "./common.dto";
 import { ChannelTypeEnum } from "../enums";
-import { BaseMessageDto } from './message.dto';
-import { BaseUserDto } from './user.dto';
-import { BaseChannelUserDto } from './channeluser.dto';
-import { AutoMap } from '@automapper/classes';
-import { IsEnum } from 'class-validator';
-import { Paginated } from 'nestjs-paginate';
+import { BaseMessageDto } from "./message.dto";
+import { BaseUserDto } from "./user.dto";
+import { BaseChannelUserDto } from "./channeluser.dto";
+import { AutoMap } from "@automapper/classes";
+import { IsEnum } from "class-validator";
+import { Paginated } from "nestjs-paginate";
 
 export class BaseChannelDto extends BaseEntityDto {
   @AutoMap()

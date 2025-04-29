@@ -15,8 +15,11 @@ import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
-import { RegisterFormSchema, registerSchema } from "./registerSchema";
 import { useRegisterUserMutation } from "@/store/api/authApi.ts";
+import {
+  RegisterFormSchema,
+  registerSchema,
+} from "@/components/Register/registerSchema.ts";
 
 export default function Register() {
   const [registerUser] = useRegisterUserMutation();
@@ -28,9 +31,9 @@ export default function Register() {
     defaultValues: {
       userName: "",
       password: "",
-      avatarUrl: undefined,
       email: "",
       fullName: "",
+      avatar: undefined,
     },
   });
 
@@ -122,18 +125,20 @@ export default function Register() {
 
         <FormField
           control={form.control}
-          name="avatarUrl"
-          render={({ field: { onChange, ...field } }) => (
+          name="avatar"
+          render={({ field }) => (
             <FormItem className="mb-4">
               <FormLabel className="text-white">Avatar</FormLabel>
               <FormControl>
                 <Input
-                  {...field}
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) =>
-                    onChange(e.target.files && e.target.files[0])
-                  }
+                  ref={field.ref}
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    if (files) {
+                      field.onChange(Array.from(files).at(0));
+                    }
+                  }}
+                  type={"file"}
                   className="bg-transparent text-white"
                 />
               </FormControl>

@@ -1,1 +1,1 @@
-export { default } from './ChatWindow.tsx'
+export { default } from "./ChatWindow.tsx";

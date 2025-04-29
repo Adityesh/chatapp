@@ -111,7 +111,7 @@ export function generatePaginationFilterObj(
   const newObj = {} as PaginatedSearchQuery["filter"];
   for (const key in obj) {
     if (newObj) {
-      newObj['filter.' + key] = obj[key];
+      newObj["filter." + key] = obj[key];
     }
   }
   return newObj;

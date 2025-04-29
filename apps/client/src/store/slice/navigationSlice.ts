@@ -11,7 +11,7 @@ const initialState: NavigationSliceInitialState = {
   selectedItem: null,
   usersTab: {
     searchType: "connections",
-  }
+  },
 };
 
 const navigationSlice = createSlice({
@@ -22,7 +22,7 @@ const navigationSlice = createSlice({
       Object.assign(state, {
         ...state,
         tab: payload,
-        tabSearch: ""
+        tabSearch: "",
       });
     },
     UPDATE_TAB_SEARCH: (state, { payload }: PayloadAction<string>) => {

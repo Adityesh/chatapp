@@ -1,15 +1,16 @@
 const DraftActionTypes = {
-  EDIT : "EDIT",
-  REPLY : "REPLY",
+  EDIT: "EDIT",
+  REPLY: "REPLY",
 } as const;
 
-export type DraftAction = typeof DraftActionTypes[keyof typeof DraftActionTypes];
+export type DraftAction =
+  (typeof DraftActionTypes)[keyof typeof DraftActionTypes];
 
 type DraftObject = {
-  content : string;
+  content: string;
   action?: DraftAction;
   messageId?: number;
-}
+};
 
 export interface UpdateDraftAction extends Partial<DraftObject> {
   channelId: number;
@@ -17,9 +18,8 @@ export interface UpdateDraftAction extends Partial<DraftObject> {
 
 export type ResetDraftAction = {
   channelId: number;
-}
+};
 
 export type ChatSliceInitialState = {
-  drafts: Record<number, DraftObject>
-}
-
+  drafts: Record<number, DraftObject>;
+};

@@ -1,1 +1,1 @@
-export { default } from './CommonHeader.tsx'
+export { default } from "./CommonHeader.tsx";
