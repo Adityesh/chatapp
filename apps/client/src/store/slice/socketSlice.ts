@@ -26,9 +26,6 @@ const socketSlice = createSlice({
   },
 });
 
-export const {
-  JOIN_CHANNEL,
-  LEAVE_CHANNEL,
-} = socketSlice.actions;
+export const { JOIN_CHANNEL, LEAVE_CHANNEL } = socketSlice.actions;
 
 export default socketSlice.reducer;

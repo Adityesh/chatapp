@@ -14,7 +14,6 @@ function App() {
     );
   }, [SessionCookie, dispatch]);
 
-
   return <AppRoutes />;
 }
 
