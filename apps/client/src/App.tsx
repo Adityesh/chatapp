@@ -2,7 +2,6 @@ import Cookie from "js-cookie";
 import { useEffect } from "react";
 import { useAppDispatch } from "./hooks/useStore.ts";
 import { SET_AUTH_STATE } from "./store/slice/authSlice";
-import { INIT_SOCKET } from "./store/slice/socketSlice";
 import AppRoutes from "@/AppRoutes.tsx";
 
 function App() {
@@ -15,9 +14,6 @@ function App() {
     );
   }, [SessionCookie, dispatch]);
 
-  useEffect(() => {
-    dispatch(INIT_SOCKET());
-  }, [dispatch]);
 
   return <AppRoutes />;
 }

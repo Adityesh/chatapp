@@ -20,14 +20,15 @@ class SocketSingleton implements SocketInterface {
 
     this.socket = io(socketEndpoint, {
       withCredentials: true, // Ensure credentials are used for CORS
+      autoConnect: false,
     });
   }
 
-  public static getInstance(): SocketSingleton {
+  public static getInstance() {
     if (!SocketSingleton.instance) {
       SocketSingleton.instance = new SocketSingleton();
     }
-    return SocketSingleton.instance;
+    return SocketSingleton.instance.socket;
   }
 }
 

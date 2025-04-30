@@ -54,9 +54,10 @@ export class AuthController {
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 }),
           new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif)' }),
         ],
+        fileIsRequired: false,
       }),
     )
-    avatar: Express.Multer.File,
+    avatar?: Express.Multer.File,
   ) {
     return this.authService.registerUser(registerLocalUserDto, avatar);
   }

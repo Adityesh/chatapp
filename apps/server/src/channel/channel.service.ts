@@ -73,9 +73,12 @@ export class ChannelService {
         .getMany();
       const channelIds = userChannels.map((c) => c.channel.id);
 
-      baseQuery = baseQuery.where('channel.id IN (:...channelIds)', {
-        channelIds,
-      });
+      baseQuery = baseQuery.where(
+        `channel.id IN (${channelIds.length === 0 ? 'NULL' : ':...channelIds'})`,
+        {
+          channelIds,
+        },
+      );
     }
 
     const result = await paginate(query, baseQuery, CHANNEL_PAGINATION_CONFIG);
