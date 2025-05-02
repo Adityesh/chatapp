@@ -26,7 +26,7 @@ export class MessageService {
   async createMessage(
     { channelId, content, replyTo }: CreateMessageDto,
     currentUserId: number,
-  ) {
+  ): Promise<BaseMessageDto> {
     const messageQuery = await this.messageRepository
       .createQueryBuilder('message')
       .insert()
@@ -45,14 +45,13 @@ export class MessageService {
       })
       .execute();
     const savedMessage = await this.getMessageById(messageQuery.raw[0].id);
-
-    return this.mapper.mapAsync(savedMessage, Message, BaseMessageDto);
+    return await this.mapper.mapAsync(savedMessage, Message, BaseMessageDto);
   }
 
   async editMessage(
     { messageId, content }: EditMessageDto,
     currentUserId: number,
-  ) {
+  ): Promise<BaseMessageDto> {
     const messageQuery = this.messageRepository
       .createQueryBuilder('message')
       .where('message.id = :messageId AND sender.id = :currentUserId', {

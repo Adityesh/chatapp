@@ -15,8 +15,14 @@ import {
   getInfiniteQueryOptions,
   objToQuery,
 } from "@/utils";
+import {
+  deleteMessageCache,
+  editMessageCache,
+  insertMessageCache,
+} from "@/utils/api.ts";
+import { RootState } from "@/types/store.types.ts";
 
-const messageApi = baseApi.injectEndpoints({
+export const messageApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createMessage: builder.mutation<
       CreateMessageResponse,
@@ -32,25 +38,12 @@ const messageApi = baseApi.injectEndpoints({
         { dispatch, queryFulfilled, getState },
       ) {
         const { data: messageResponse } = await queryFulfilled;
-        const newMessage = messageResponse.data;
-        const params = messageApi.util.selectCachedArgsForQuery(
-          getState(),
-          "getAllMessages",
-        );
-        const cacheKey = params.find((s) => s.channelId === channelId);
-        if (!cacheKey) return;
-
-        dispatch(
-          messageApi.util.updateQueryData(
-            "getAllMessages",
-            cacheKey,
-            (draft) => {
-              const lastPage = draft.pages.at(0);
-              if (lastPage) {
-                lastPage.data.data.unshift(newMessage);
-              }
-            },
-          ),
+        const savedMessage = messageResponse.data;
+        insertMessageCache(
+          savedMessage,
+          channelId,
+          dispatch,
+          getState() as RootState,
         );
       },
     }),
@@ -66,28 +59,11 @@ const messageApi = baseApi.injectEndpoints({
       ) {
         const { data: editMessageResponse } = await queryFulfilled;
         const editedMessage = editMessageResponse.data;
-        const params = messageApi.util.selectCachedArgsForQuery(
-          getState(),
-          "getAllMessages",
-        );
-        const cacheKey = params.find(
-          (s) => s.channelId === editedMessage.channel.id,
-        );
-        if (!cacheKey) return;
-        dispatch(
-          messageApi.util.updateQueryData(
-            "getAllMessages",
-            cacheKey,
-            (draft) => {
-              if (!editedMessage) return;
-              const allMessages = draft.pages.flatMap((p) => p.data.data);
-              allMessages.forEach((message) => {
-                if (message.id === messageId) {
-                  Object.assign(message, editedMessage);
-                }
-              });
-            },
-          ),
+        editMessageCache(
+          editedMessage,
+          messageId,
+          dispatch,
+          getState() as RootState,
         );
       },
     }),
@@ -106,30 +82,14 @@ const messageApi = baseApi.injectEndpoints({
       ) {
         const { data: deleteMessageResponse } = await queryFulfilled;
         const deleteSuccess = deleteMessageResponse.data;
-        const params = messageApi.util.selectCachedArgsForQuery(
-          getState(),
-          "getAllMessages",
-        );
-        const cacheKey = params.find((s) => s.channelId === channelId);
-        if (!cacheKey) return;
-        dispatch(
-          messageApi.util.updateQueryData(
-            "getAllMessages",
-            cacheKey,
-            (draft) => {
-              if (!deleteSuccess) return;
-              draft.pages.forEach((page) => {
-                const messages = page.data.data;
-                const deleteIndex = messages.findIndex(
-                  (m) => m.id === messageId,
-                );
-                if (deleteIndex >= 0) {
-                  messages.splice(deleteIndex, 1);
-                }
-              });
-            },
-          ),
-        );
+        if (deleteSuccess) {
+          deleteMessageCache(
+            messageId,
+            channelId,
+            dispatch,
+            getState() as RootState,
+          );
+        }
       },
     }),
     getAllMessages: builder.infiniteQuery<

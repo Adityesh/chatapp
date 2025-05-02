@@ -44,6 +44,7 @@ const ChatItemRow: FC<ChatItemRowProps> = ({
   const dispatch = useAppDispatch();
   const { tab } = useAppSelector((state) => state.navigation);
   const navigate = useNavigate();
+
   const channelDetails = useMemo(() => {
     if (channel.channelType === ChannelTypeEnum.DIRECT) {
       const chatWith = channel.users.find(

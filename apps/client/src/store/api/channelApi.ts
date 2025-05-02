@@ -12,7 +12,7 @@ import {
   objToQuery,
 } from "@/utils";
 
-const channelApi = baseApi.injectEndpoints({
+export const channelApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getChannels: builder.infiniteQuery<
       GetChannelsResponse,

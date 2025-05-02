@@ -1,19 +1,67 @@
 import { Middleware } from "@reduxjs/toolkit";
-import { SocketEvents } from "shared";
-import SocketSingleton from "@/types/socket.types.ts";
-import { JOIN_CHANNEL, LEAVE_CHANNEL } from "@/store/slice/socketSlice.ts";
+import { BroadcastMessageToChannelEvent, SocketEvents } from "shared";
+import SocketSingleton from "@/utils/socket.ts";
+import { INIT_SOCKET, JOIN_CHANNEL } from "@/store/slice/socketSlice.ts";
+import {
+  deleteMessageCache,
+  editMessageCache,
+  insertMessageCache,
+} from "@/utils/api.ts";
+import { RootState } from "@/types/store.types.ts";
 
-const socketMiddleware: Middleware = () => {
-  const socket = SocketSingleton.getInstance();
+const socketMiddleware: Middleware = ({ dispatch, getState }) => {
+  let socket: SocketSingleton["socket"];
   return (next) => (action) => {
-    // Middleware logic for the `initSocket` action
-
-    if (JOIN_CHANNEL.match(action) && socket) {
-      socket.emit(SocketEvents.JOIN_CHANNEL, action.payload.id);
+    if (INIT_SOCKET.match(action)) {
+      if (!socket && typeof window !== "undefined") {
+        socket = SocketSingleton.getInstance();
+        socket.on(
+          SocketEvents.BROADCAST_MESSAGE_TO_CHANNEL,
+          ({
+            message,
+            channelId,
+            actionType,
+            messageId,
+          }: BroadcastMessageToChannelEvent) => {
+            switch (actionType) {
+              case "edit":
+                if (message) {
+                  editMessageCache(
+                    message,
+                    message.id,
+                    dispatch,
+                    getState() as RootState,
+                  );
+                }
+                break;
+              case "delete":
+                if (messageId) {
+                  deleteMessageCache(
+                    messageId,
+                    channelId,
+                    dispatch,
+                    getState() as RootState,
+                  );
+                }
+                break;
+              default:
+                if (message) {
+                  insertMessageCache(
+                    message,
+                    channelId,
+                    dispatch,
+                    getState() as RootState,
+                  );
+                }
+                break;
+            }
+          },
+        );
+      }
     }
 
-    if (LEAVE_CHANNEL.match(action) && socket) {
-      socket.emit(SocketEvents.LEAVE_CHANNEL, action.payload.id);
+    if (JOIN_CHANNEL.match(action) && socket) {
+      socket.emit(SocketEvents.JOIN_CHANNEL, action.payload);
     }
 
     next(action);

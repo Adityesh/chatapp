@@ -20,29 +20,50 @@ import {
   PaginatedSearchQuery,
 } from 'shared';
 import { Paginate } from 'nestjs-paginate';
+import { SocketService } from '../socket/socket.service';
 
 @Controller('message')
 @UseGuards(ProtectedGuard)
 export class MessageController {
-  constructor(private readonly messageService: MessageService) {}
+  constructor(
+    private readonly messageService: MessageService,
+    private readonly socketService: SocketService,
+  ) {}
 
   @Post('')
   async create(
     @Body() createMessageDto: CreateMessageDto,
     @Req() req: Request,
   ) {
-    return await this.messageService.createMessage(
+    const currentUserId: number = req['user'].id;
+    const savedMessage = await this.messageService.createMessage(
       createMessageDto,
-      req['user'].id,
+      currentUserId,
     );
+    this.socketService.broadcastMessage(
+      createMessageDto.channelId,
+      currentUserId,
+      req['sessionID'],
+      savedMessage,
+    );
+    return savedMessage;
   }
 
   @Patch()
   async edit(@Body() editMessageDto: EditMessageDto, @Req() req: Request) {
-    return await this.messageService.editMessage(
+    const currentUserId: number = req['user'].id;
+    const editedMessage = await this.messageService.editMessage(
       editMessageDto,
-      req['user'].id,
+      currentUserId,
     );
+    this.socketService.broadcastMessage(
+      editedMessage.channel.id,
+      currentUserId,
+      req['sessionID'],
+      editedMessage,
+      'edit',
+    );
+    return editedMessage;
   }
 
   @Get(':channelId')
@@ -58,9 +79,19 @@ export class MessageController {
     @Body() deleteMessageDto: DeleteMessageDto,
     @Req() req: Request,
   ) {
-    return await this.messageService.deleteMessage(
+    const currentUserId: number = req['user'].id;
+    const deleteResult = await this.messageService.deleteMessage(
       deleteMessageDto,
-      req['user'].id,
+      currentUserId,
     );
+    this.socketService.broadcastMessage(
+      deleteMessageDto.channelId,
+      currentUserId,
+      req['sessionID'],
+      undefined,
+      'delete',
+      deleteMessageDto.messageId,
+    );
+    return deleteResult;
   }
 }

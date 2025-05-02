@@ -4,11 +4,7 @@ const SOCKET_URL = import.meta.env.DEV
   ? "http://localhost:3000"
   : import.meta.env.VITE_SOCKET_URL;
 
-export interface SocketInterface {
-  socket: Socket;
-}
-
-class SocketSingleton implements SocketInterface {
+class SocketSingleton {
   public socket: Socket;
   private static instance: SocketSingleton;
 

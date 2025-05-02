@@ -1,14 +1,18 @@
 import {
+  ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
+  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
 import 'dotenv/config';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { SocketService } from 'src/socket/socket.service';
 import configuration from '../configuration/configuration';
+import { JoinChannelEvent, LeaveChannelEvent, SocketEvents } from 'shared';
 
 const validatedEnv = configuration();
 
@@ -30,11 +34,27 @@ export class SocketGateway
     this.socketService.server = server;
   }
 
-  handleDisconnect(client: any) {
-    this.socketService.users.delete(client.id);
+  handleDisconnect(socket: Socket) {
+    this.socketService.userDisconnection(socket);
   }
 
-  handleConnection(client: any) {
-    this.socketService.users.set(client.id, client.request.user);
+  handleConnection(socket: Socket) {
+    this.socketService.userConnection(socket);
+  }
+
+  @SubscribeMessage(SocketEvents.JOIN_CHANNEL)
+  joinChannelEvent(
+    @MessageBody() { channelIds }: JoinChannelEvent,
+    @ConnectedSocket() client: Socket,
+  ) {
+    this.socketService.joinChannel(channelIds, client);
+  }
+
+  @SubscribeMessage(SocketEvents.LEAVE_CHANNEL)
+  leaveChannelEvent(
+    @MessageBody() { channelId }: LeaveChannelEvent,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    this.socketService.leaveChannel(channelId, socket);
   }
 }
