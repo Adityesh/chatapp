@@ -15,6 +15,8 @@ export const baseApi = createApi({
     "getUserById",
     "getUsers",
     "getMessages",
+    "getChannels",
+    "getChannelById"
   ],
   endpoints: () => ({}),
 });

@@ -12,7 +12,12 @@ import 'dotenv/config';
 import { Server, Socket } from 'socket.io';
 import { SocketService } from 'src/socket/socket.service';
 import configuration from '../configuration/configuration';
-import { JoinChannelEvent, LeaveChannelEvent, SocketEvents } from 'shared';
+import {
+  JoinChannelEvent,
+  LeaveChannelEvent,
+  SocketEvents,
+  UpdateUserStatusEvent,
+} from 'shared';
 
 const validatedEnv = configuration();
 
@@ -56,5 +61,17 @@ export class SocketGateway
     @ConnectedSocket() socket: Socket,
   ) {
     this.socketService.leaveChannel(channelId, socket);
+  }
+
+  @SubscribeMessage(SocketEvents.BROADCAST_CURRENT_USER_STATUS)
+  broadcastUserStatus(
+    @MessageBody() { status }: UpdateUserStatusEvent,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    this.socketService.broadcastUserPresence(
+      socket.request.user.id,
+      new Date(),
+      status,
+    );
   }
 }

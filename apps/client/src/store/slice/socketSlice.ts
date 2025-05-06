@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { JoinChannelEvent, LeaveChannelEvent, SocketEvents } from "shared";
+import {
+  JoinChannelEvent,
+  LeaveChannelEvent,
+  SocketEvents,
+  UpdateUserStatusEvent,
+} from "shared";
 import { SocketSliceState } from "@/types/socketSlice.types.ts";
 import { channelApi } from "@/store/api/channelApi.ts";
 import SocketSingleton from "@/utils/socket.ts";
@@ -7,6 +12,7 @@ import SocketSingleton from "@/utils/socket.ts";
 const initialState: SocketSliceState = {
   channels: [],
   usersTyping: {},
+  userStatus: "online",
 };
 
 const socket = SocketSingleton.getInstance();
@@ -28,6 +34,9 @@ const socketSlice = createSlice({
         (id) => data.payload.channelId !== id,
       );
     },
+    UPDATE_USER_STATUS: (state, data: PayloadAction<UpdateUserStatusEvent>) => {
+      state.userStatus = data.payload.status;
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -45,6 +54,7 @@ const socketSlice = createSlice({
   },
 });
 
-export const { JOIN_CHANNEL, INIT_SOCKET } = socketSlice.actions;
+export const { JOIN_CHANNEL, INIT_SOCKET, UPDATE_USER_STATUS } =
+  socketSlice.actions;
 
 export default socketSlice.reducer;

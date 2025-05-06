@@ -61,6 +61,7 @@ export class ChannelService {
         'user.userName',
         'user.fullName',
         'user.avatarUrl',
+        'user.lastSeen',
       ]);
 
     if (userId) {
@@ -113,6 +114,7 @@ export class ChannelService {
         'user.userName',
         'user.fullName',
         'user.avatarUrl',
+        'user.lastSeen',
       ])
       .getOne();
     return await this.mapper.mapAsync(channelEntity, Channel, BaseChannelDto);

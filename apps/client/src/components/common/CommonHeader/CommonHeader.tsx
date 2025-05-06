@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ChannelTypeEnum } from "shared";
+import { ChannelTypeEnum, UserStatus } from 'shared';
 import {
   useGetCurrentUserQuery,
   useGetUserByIdQuery,
@@ -14,10 +14,13 @@ import {
 } from "@/components/ui/avatar.tsx";
 import { useGetChannelByIdQuery } from "@/store/api/channelApi.ts";
 import { APP_URL } from "@/constants/clientUrl.constants.ts";
+import { getUserPresenceColor } from "@/utils";
 
 type CommonHeaderObj = {
   avatar: string | null;
   name: string;
+  lastSeen?: Date | null;
+  status?: UserStatus | null;
 } | null;
 
 export default function CommonHeader() {
@@ -54,11 +57,15 @@ export default function CommonHeader() {
         return {
           avatar: chatWith.user.avatarUrl ?? "",
           name: chatWith.user.fullName,
-        };
+          lastSeen: chatWith.user.lastSeen,
+          status: chatWith.user.status,
+        } as CommonHeaderObj;
       }
       return {
         avatar: channel.data.channelAvatar,
         name: channel.data.topic,
+        lastSeen: null,
+        status: null,
       } as CommonHeaderObj;
     }
 
@@ -66,6 +73,8 @@ export default function CommonHeader() {
       return {
         avatar: user.data.avatarUrl,
         name: user.data.fullName,
+        lastSeen: null,
+        status: null,
       };
     }
   }, [currentUser, channel?.data, user?.data]);
@@ -81,7 +90,9 @@ export default function CommonHeader() {
           {!isMobile && (
             <ChevronLeft className={"text-white cursor-pointer mr-8"} />
           )}
-          <Avatar className={`h-10 w-10 mr-4`}>
+          <Avatar
+            className={`h-10 w-10 mr-4 ${renderHeader.lastSeen && "border-4 " + getUserPresenceColor(renderHeader.lastSeen, renderHeader.status)}`}
+          >
             <AvatarImage
               src={renderHeader.avatar || undefined}
               alt={`@${renderHeader.name}`}

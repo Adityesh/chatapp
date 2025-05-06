@@ -3,6 +3,7 @@ import {
   createMap,
   extend,
   forMember,
+  fromValue,
   mapFrom,
   Mapper,
 } from '@automapper/core';
@@ -16,6 +17,7 @@ import {
   BaseMessageStatusDto,
   BaseMessageAttachmentDto,
   BaseChannelUserDto,
+  UserStatusValues,
 } from 'shared';
 import { BaseEntity } from './entities/base.entity';
 import { User } from '../user/user.entity';
@@ -35,7 +37,16 @@ export class DtoMapper extends AutomapperProfile {
   override get profile() {
     return (mapper: Mapper) => {
       createMap(mapper, BaseEntity, BaseEntityDto);
-      createMap(mapper, User, BaseUserDto, extend(BaseEntity, BaseEntityDto));
+      createMap(
+        mapper,
+        User,
+        BaseUserDto,
+        forMember<User, BaseUserDto>(
+          (dest) => dest.status,
+          fromValue(UserStatusValues.DISCONNECTED),
+        ),
+        extend(BaseEntity, BaseEntityDto),
+      );
       createMap(
         mapper,
         Connection,

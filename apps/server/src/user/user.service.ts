@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
@@ -10,6 +10,7 @@ import {
   BaseUserDto,
   ConnectionStatusEnum,
   PaginatedSearchQuery,
+  UpdateUserDto,
 } from 'shared';
 import { Connection } from '../connection/connection.entity';
 
@@ -63,5 +64,19 @@ export class UserService {
       ...result,
       data: await this.mapper.mapArrayAsync(result.data, User, BaseUserDto),
     };
+  }
+
+  async updateUser(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.id = :userId', { userId: id })
+      .getOne();
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    Object.assign(user, updateUserDto);
+    return await this.userRepository.save(user);
   }
 }

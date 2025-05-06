@@ -1,9 +1,5 @@
-import { createZodDto } from "nestjs-zod";
-import { getByIdSchema } from "../schema";
 import { IsInstance, IsNumber, IsOptional, IsString } from "class-validator";
 import { AutoMap } from "@automapper/classes";
-
-export class GetByIdDto extends createZodDto(getByIdSchema) {}
 
 export class BaseErrorDto {
   @IsString()

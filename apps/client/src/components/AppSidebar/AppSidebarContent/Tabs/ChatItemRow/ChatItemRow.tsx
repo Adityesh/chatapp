@@ -16,25 +16,13 @@ import { APP_URL } from "@/constants/clientUrl.constants.ts";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStore.ts";
 import { useNavigate } from "react-router-dom";
 import { TAB_TYPE } from "@/types/navigationSlice.types.ts";
+import { getUserPresenceColor } from "@/utils";
 
 type ChatItemRowProps = {
   channel: ClassProperties<typeof BaseChannelDto>;
   currentUser: ClassProperties<typeof BaseUserDto>;
   selectedIndex?: number;
 };
-
-// function getColor(status: ChatItemRowProps["status"]) {
-//   switch (status) {
-//     case "online":
-//       return "border-green-400";
-//     case "offline":
-//       return "border-red-400";
-//     case "away":
-//       return "border-yellow-400";
-//     case "invisible":
-//       return "border-grey-400";
-//   }
-// }
 
 const ChatItemRow: FC<ChatItemRowProps> = ({
   channel,
@@ -53,6 +41,8 @@ const ChatItemRow: FC<ChatItemRowProps> = ({
       return {
         avatar: chatWith?.user.avatarUrl ?? "",
         name: chatWith?.user.fullName,
+        lastSeen: chatWith?.user.lastSeen,
+        status: chatWith?.user.status,
         // should be last message sent time
         updatedAt: channel.updatedAt,
       };
@@ -61,6 +51,8 @@ const ChatItemRow: FC<ChatItemRowProps> = ({
     return {
       avatar: channel.channelAvatar,
       name: channel.topic,
+      lastSeen: null,
+      status: null,
       // should be last message sent time
       updatedAt: channel.updatedAt,
     };
@@ -80,7 +72,9 @@ const ChatItemRow: FC<ChatItemRowProps> = ({
         onClick={handleChannelSelect}
         className={`${isItemSelected ? "bg-primary" : "hover:bg-sidebar-foreground"} w-full py-4 px-4 md:px-6 cursor-pointer rounded-sm flex items-center justify-between`}
       >
-        <Avatar className={`h-10 w-10 border-4`}>
+        <Avatar
+          className={`h-10 w-10 border-4 ${getUserPresenceColor(channelDetails.lastSeen, channelDetails.status)}`}
+        >
           <AvatarImage src={channelDetails.avatar} alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>

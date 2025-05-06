@@ -1,6 +1,4 @@
 import { BaseApiResponseDto } from "../dto";
-import { z } from "zod";
-import { getByIdSchema } from "../schema";
 import { PaginateConfig, PaginateQuery } from "nestjs-paginate";
 
 type Newable = { new (...args: readonly unknown[]): unknown };
@@ -26,6 +24,8 @@ export type PaginatedSearchQuery = PaginateQuery;
 
 export type BaseApiResponse<T> = InstanceType<typeof BaseApiResponseDto<T>>;
 
-export type GetByIdType = z.infer<typeof getByIdSchema>;
+export type GetByIdType = {
+  id: number;
+};
 
 export type BooleanResponseType = boolean;

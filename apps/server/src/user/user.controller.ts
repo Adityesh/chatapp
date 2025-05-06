@@ -1,15 +1,17 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Req,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Paginate } from 'nestjs-paginate';
-import { PaginatedSearchQuery } from 'shared';
+import { PaginatedSearchQuery, UpdateUserDto } from 'shared';
 import { ProtectedGuard } from '../auth/guards/protected.guard';
 import { Request } from 'express';
 
@@ -34,5 +36,10 @@ export class UserController {
     @Req() req: Request,
   ) {
     return this.userService.getUsers(query, req.user['id']);
+  }
+
+  @Patch(':id')
+  async updateUser(@Param('id', ParseIntPipe) id: number,  @Body(ValidationPipe) updateUserDto: UpdateUserDto) {
+    return this.userService.updateUser(id, updateUserDto);
   }
 }

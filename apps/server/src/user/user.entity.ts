@@ -36,6 +36,14 @@ export class User extends BaseEntity {
   email: string;
 
   @AutoMap()
+  @Column({
+    name: 'last_seen',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  lastSeen: Date;
+
+  @AutoMap()
   @OneToMany(() => Connection, (connection) => connection.requester)
   connectionsRequested: Connection[];
 

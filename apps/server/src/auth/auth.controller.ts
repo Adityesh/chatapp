@@ -21,6 +21,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { RegisterUserDto } from 'shared';
+import { SocketService } from '../socket/socket.service';
 
 @Controller('auth')
 export class AuthController {
@@ -28,6 +29,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly configService: ConfigurationService,
+    private readonly socketService: SocketService,
   ) {}
 
   @Get('google')
@@ -71,6 +73,7 @@ export class AuthController {
         maxAge: this.configService.get('COOKIE_MAXAGE'),
       })
       .end();
+    this.socketService.broadcastUserPresence(req.user.id, new Date());
   }
 
   @Post('logout')
@@ -80,5 +83,6 @@ export class AuthController {
       .clearCookie('valid_session')
       .clearCookie('connect.sid')
       .json({ success: true });
+    this.socketService.broadcastUserPresence(req.user.id, new Date());
   }
 }

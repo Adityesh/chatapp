@@ -1,11 +1,16 @@
 import { Middleware } from "@reduxjs/toolkit";
-import { BroadcastMessageToChannelEvent, SocketEvents } from "shared";
+import {
+  BroadcastMessageToChannelEvent,
+  BroadcastUserPresenceEvent,
+  SocketEvents,
+} from "shared";
 import SocketSingleton from "@/utils/socket.ts";
-import { INIT_SOCKET, JOIN_CHANNEL } from "@/store/slice/socketSlice.ts";
+import { INIT_SOCKET, JOIN_CHANNEL, UPDATE_USER_STATUS } from '@/store/slice/socketSlice.ts';
 import {
   deleteMessageCache,
   editMessageCache,
   insertMessageCache,
+  updateUserPresenceInCache,
 } from "@/utils/api.ts";
 import { RootState } from "@/types/store.types.ts";
 
@@ -57,11 +62,28 @@ const socketMiddleware: Middleware = ({ dispatch, getState }) => {
             }
           },
         );
+
+        socket.on(
+          SocketEvents.BROADCAST_USER_PRESENCE,
+          ({ userId, lastSeen, status }: BroadcastUserPresenceEvent) => {
+            updateUserPresenceInCache(
+              userId,
+              lastSeen,
+              dispatch,
+              getState() as RootState,
+              status,
+            );
+          },
+        );
       }
     }
 
     if (JOIN_CHANNEL.match(action) && socket) {
       socket.emit(SocketEvents.JOIN_CHANNEL, action.payload);
+    }
+
+    if(UPDATE_USER_STATUS.match(action) && socket) {
+      socket.emit(SocketEvents.BROADCAST_CURRENT_USER_STATUS, action.payload)
     }
 
     next(action);

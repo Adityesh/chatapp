@@ -1,9 +1,9 @@
 import { cva } from "class-variance-authority";
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import Cookie from "js-cookie";
 import { InfiniteQueryConfigOptions } from "@reduxjs/toolkit/query";
-import { PaginatedSearchQuery } from "shared";
+import { PaginatedSearchQuery, UserStatus } from "shared";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -60,12 +60,6 @@ export function objToQuery(obj: any) {
   return "?" + new URLSearchParams(objCopy).toString();
 }
 
-export function getUsersTyping(users: string[]) {
-  if (users.length === 0) return "";
-  if (users.length === 1) return users[0] + " is typing";
-  return users.join(",") + " are typing";
-}
-
 export function convertObjectToFormData(obj: any) {
   const formData = new FormData();
   for (const key in obj) {
@@ -115,4 +109,20 @@ export function generatePaginationFilterObj(
     }
   }
   return newObj;
+}
+
+export function getUserPresenceColor(
+  lastSeen: Date | null | undefined,
+  status?: UserStatus | null,
+) {
+  if (!lastSeen || !status || status === "disconnected")
+    return "border-red-500";
+  switch (status) {
+    case "online":
+      return "border-green-500";
+    case "away":
+      return "border-yellow-500";
+    default:
+      return "border-red-500";
+  }
 }
