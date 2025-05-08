@@ -4,4 +4,4 @@ export * from "./connection.types";
 export * from "./auth.types";
 export * from "./channel.types";
 export * from "./message.types";
-export * from "./socket.types"
+export * from "./socket.types";

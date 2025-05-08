@@ -1,7 +1,8 @@
-import { UserStatus } from 'shared';
+import { UserStatus } from "shared";
 
 export interface SocketSliceState {
   channels: number[];
-  usersTyping: Record<string, string[]>;
+  usersTyping: Record<number, number[]>;
   userStatus: UserStatus;
+  typing: boolean;
 }

@@ -2,10 +2,17 @@ import { Middleware } from "@reduxjs/toolkit";
 import {
   BroadcastMessageToChannelEvent,
   BroadcastUserPresenceEvent,
+  BroadcastUserTypingEvent,
   SocketEvents,
 } from "shared";
 import SocketSingleton from "@/utils/socket.ts";
-import { INIT_SOCKET, JOIN_CHANNEL, UPDATE_USER_STATUS } from '@/store/slice/socketSlice.ts';
+import {
+  BROADCAST_USER_TYPING,
+  INIT_SOCKET,
+  JOIN_CHANNEL,
+  UPDATE_USER_STATUS,
+  UPDATE_USER_TYPING,
+} from "@/store/slice/socketSlice.ts";
 import {
   deleteMessageCache,
   editMessageCache,
@@ -75,6 +82,14 @@ const socketMiddleware: Middleware = ({ dispatch, getState }) => {
             );
           },
         );
+
+        socket.on(
+          SocketEvents.BROADCAST_USER_TYPING,
+          (payload: BroadcastUserTypingEvent) => {
+            console.log(payload);
+            dispatch(UPDATE_USER_TYPING(payload));
+          },
+        );
       }
     }
 
@@ -82,8 +97,12 @@ const socketMiddleware: Middleware = ({ dispatch, getState }) => {
       socket.emit(SocketEvents.JOIN_CHANNEL, action.payload);
     }
 
-    if(UPDATE_USER_STATUS.match(action) && socket) {
-      socket.emit(SocketEvents.BROADCAST_CURRENT_USER_STATUS, action.payload)
+    if (UPDATE_USER_STATUS.match(action) && socket) {
+      socket.emit(SocketEvents.BROADCAST_CURRENT_USER_STATUS, action.payload);
+    }
+
+    if (BROADCAST_USER_TYPING.match(action) && socket) {
+      socket.emit(SocketEvents.USER_TYPING, action.payload);
     }
 
     next(action);

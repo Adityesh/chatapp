@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ChannelTypeEnum, UserStatus } from 'shared';
+import { ChannelTypeEnum, UserStatus } from "shared";
 import {
   useGetCurrentUserQuery,
   useGetUserByIdQuery,

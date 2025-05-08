@@ -16,7 +16,7 @@ import { APP_URL } from "@/constants/clientUrl.constants.ts";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStore.ts";
 import { useNavigate } from "react-router-dom";
 import { TAB_TYPE } from "@/types/navigationSlice.types.ts";
-import { getUserPresenceColor } from "@/utils";
+import { getUserPresenceColor, getUsersTyping } from "@/utils";
 
 type ChatItemRowProps = {
   channel: ClassProperties<typeof BaseChannelDto>;
@@ -31,6 +31,7 @@ const ChatItemRow: FC<ChatItemRowProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { tab } = useAppSelector((state) => state.navigation);
+  const usersTyping = useAppSelector((state) => state.socket.usersTyping);
   const navigate = useNavigate();
 
   const channelDetails = useMemo(() => {
@@ -58,6 +59,7 @@ const ChatItemRow: FC<ChatItemRowProps> = ({
     };
   }, [currentUser, channel]);
   const isItemSelected = tab === TAB_TYPE.CHATS && selectedIndex === channel.id;
+  const displayUsersTyping = getUsersTyping(usersTyping, channel, channel.id);
 
   const handleChannelSelect = () => {
     dispatch(SET_TAB_SELECTED_ITEM({ value: channel }));
@@ -88,8 +90,9 @@ const ChatItemRow: FC<ChatItemRowProps> = ({
           <p
             className={"text-white font-poppins text-xs md:text-sm text-nowrap"}
           >
-            Sounds perfect. How
-            about..................sdfsdfsdfsdfsdfsdfsdfsdfsdfsdf
+            {displayUsersTyping.length > 0
+              ? displayUsersTyping
+              : "Sounds perfect. How about.................."}
           </p>
         </div>
       </div>

@@ -117,7 +117,7 @@ export function updateUserPresenceInCache(
       },
     ),
   );
-  paramsGetChannelById.forEach(cacheKey => {
+  paramsGetChannelById.forEach((cacheKey) => {
     dispatch(
       channelApi.util.updateQueryData("getChannelById", cacheKey, (draft) => {
         const channel = draft.data;
@@ -129,5 +129,5 @@ export function updateUserPresenceInCache(
         }
       }),
     );
-  })
+  });
 }

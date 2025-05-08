@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  BroadcastUserTypingEvent,
   JoinChannelEvent,
   LeaveChannelEvent,
   SocketEvents,
   UpdateUserStatusEvent,
+  UserTypingEvent,
 } from "shared";
 import { SocketSliceState } from "@/types/socketSlice.types.ts";
 import { channelApi } from "@/store/api/channelApi.ts";
@@ -13,6 +15,7 @@ const initialState: SocketSliceState = {
   channels: [],
   usersTyping: {},
   userStatus: "online",
+  typing: false,
 };
 
 const socket = SocketSingleton.getInstance();
@@ -37,6 +40,35 @@ const socketSlice = createSlice({
     UPDATE_USER_STATUS: (state, data: PayloadAction<UpdateUserStatusEvent>) => {
       state.userStatus = data.payload.status;
     },
+    UPDATE_USER_TYPING: (
+      state,
+      {
+        payload: { userId, channelId, type },
+      }: PayloadAction<BroadcastUserTypingEvent>,
+    ) => {
+      const channelUsers = state.usersTyping[channelId];
+      switch (type) {
+        case "start":
+          if (!channelUsers) {
+            state.usersTyping[channelId] = [userId];
+            return;
+          }
+          if (channelUsers.indexOf(userId) === -1) {
+            channelUsers.push(userId);
+            return;
+          }
+          break;
+        case "stop":
+          channelUsers.splice(channelUsers.indexOf(userId), 1);
+          break;
+      }
+    },
+    BROADCAST_USER_TYPING: (
+      state,
+      { payload: { type } }: PayloadAction<UserTypingEvent>,
+    ) => {
+      state.typing = type === "start";
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -54,7 +86,12 @@ const socketSlice = createSlice({
   },
 });
 
-export const { JOIN_CHANNEL, INIT_SOCKET, UPDATE_USER_STATUS } =
-  socketSlice.actions;
+export const {
+  JOIN_CHANNEL,
+  INIT_SOCKET,
+  UPDATE_USER_STATUS,
+  UPDATE_USER_TYPING,
+  BROADCAST_USER_TYPING,
+} = socketSlice.actions;
 
 export default socketSlice.reducer;

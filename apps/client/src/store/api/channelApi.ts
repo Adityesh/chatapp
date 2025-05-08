@@ -32,7 +32,7 @@ export const channelApi = baseApi.injectEndpoints({
           objToQuery({ ...queryObj, ...generatePaginationFilterObj(filter) })
         );
       },
-      providesTags: ["getChannels"]
+      providesTags: ["getChannels"],
     }),
     getChannelById: builder.query<GetChannelResponse, GetChannelRequest>({
       query: ({ id }) => ({
@@ -41,7 +41,7 @@ export const channelApi = baseApi.injectEndpoints({
           id!.toString(),
         ),
       }),
-      providesTags: ["getChannelById"]
+      providesTags: ["getChannelById"],
     }),
   }),
 });

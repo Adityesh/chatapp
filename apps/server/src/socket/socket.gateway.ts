@@ -17,6 +17,7 @@ import {
   LeaveChannelEvent,
   SocketEvents,
   UpdateUserStatusEvent,
+  UserTypingEvent,
 } from 'shared';
 
 const validatedEnv = configuration();
@@ -49,10 +50,10 @@ export class SocketGateway
 
   @SubscribeMessage(SocketEvents.JOIN_CHANNEL)
   joinChannelEvent(
-    @MessageBody() { channelIds }: JoinChannelEvent,
+    @MessageBody() body: JoinChannelEvent,
     @ConnectedSocket() client: Socket,
   ) {
-    this.socketService.joinChannel(channelIds, client);
+    this.socketService.joinChannel(body, client);
   }
 
   @SubscribeMessage(SocketEvents.LEAVE_CHANNEL)
@@ -65,13 +66,17 @@ export class SocketGateway
 
   @SubscribeMessage(SocketEvents.BROADCAST_CURRENT_USER_STATUS)
   broadcastUserStatus(
-    @MessageBody() { status }: UpdateUserStatusEvent,
+    @MessageBody() body: UpdateUserStatusEvent,
     @ConnectedSocket() socket: Socket,
   ) {
-    this.socketService.broadcastUserPresence(
-      socket.request.user.id,
-      new Date(),
-      status,
-    );
+    this.socketService.broadcastUserPresence(socket.request.user.id, body);
+  }
+
+  @SubscribeMessage(SocketEvents.USER_TYPING)
+  userTyping(
+    @MessageBody() body: UserTypingEvent,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    this.socketService.broadcastUserTyping(body, socket);
   }
 }

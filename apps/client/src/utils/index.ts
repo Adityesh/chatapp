@@ -3,7 +3,13 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import Cookie from "js-cookie";
 import { InfiniteQueryConfigOptions } from "@reduxjs/toolkit/query";
-import { PaginatedSearchQuery, UserStatus } from "shared";
+import {
+  BaseChannelDto,
+  ClassProperties,
+  PaginatedSearchQuery,
+  UserStatus,
+} from "shared";
+import { SocketSliceState } from "@/types/socketSlice.types.ts";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -125,4 +131,24 @@ export function getUserPresenceColor(
     default:
       return "border-red-500";
   }
+}
+
+export function getUsersTyping(
+  usersTyping: SocketSliceState["usersTyping"],
+  channel: ClassProperties<typeof BaseChannelDto>,
+  channelId: number,
+) {
+  const userIds = usersTyping[channelId];
+  if (!userIds || !channel) return "";
+  if (userIds.length > 2) return "Several people are typing...";
+
+  const channelUsers = channel.users
+    .map((cu) => cu.user)
+    .filter((user) => userIds.includes(user.id))
+    .map((user) => user.fullName);
+
+  if (channelUsers.length === 0) return "";
+  return channelUsers.length === 1
+    ? `${channelUsers[0]} is typing...`
+    : `${channelUsers.join(",")} are typing...`;
 }

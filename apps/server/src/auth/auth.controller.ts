@@ -18,7 +18,6 @@ import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
 import { Request, Response } from 'express';
 import 'dotenv/config';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { RegisterUserDto } from 'shared';
 import { SocketService } from '../socket/socket.service';
@@ -27,7 +26,6 @@ import { SocketService } from '../socket/socket.service';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly cloudinaryService: CloudinaryService,
     private readonly configService: ConfigurationService,
     private readonly socketService: SocketService,
   ) {}
@@ -73,7 +71,6 @@ export class AuthController {
         maxAge: this.configService.get('COOKIE_MAXAGE'),
       })
       .end();
-    this.socketService.broadcastUserPresence(req.user.id, new Date());
   }
 
   @Post('logout')
@@ -83,6 +80,8 @@ export class AuthController {
       .clearCookie('valid_session')
       .clearCookie('connect.sid')
       .json({ success: true });
-    this.socketService.broadcastUserPresence(req.user.id, new Date());
+    this.socketService.broadcastUserPresence(req.user.id, {
+      status: 'disconnected',
+    });
   }
 }

@@ -39,7 +39,10 @@ export class UserController {
   }
 
   @Patch(':id')
-  async updateUser(@Param('id', ParseIntPipe) id: number,  @Body(ValidationPipe) updateUserDto: UpdateUserDto) {
+  async updateUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
+  ) {
     return this.userService.updateUser(id, updateUserDto);
   }
 }

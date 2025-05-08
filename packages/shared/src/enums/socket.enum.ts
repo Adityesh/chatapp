@@ -4,6 +4,8 @@ export enum SocketEvents {
   BROADCAST_MESSAGE_TO_CHANNEL = "broadcast-message-to-channel",
   BROADCAST_USER_PRESENCE = "broadcast-user-presence",
   BROADCAST_CURRENT_USER_STATUS = "broadcast-current_user-status",
+  USER_TYPING = "user-typing",
+  BROADCAST_USER_TYPING = "broadcast-user-typing",
 }
 
 export const UserStatusValues = {
@@ -12,4 +14,5 @@ export const UserStatusValues = {
   AWAY: "away",
 } as const;
 
-export type UserStatus = typeof UserStatusValues[keyof typeof UserStatusValues];
+export type UserStatus =
+  (typeof UserStatusValues)[keyof typeof UserStatusValues];
