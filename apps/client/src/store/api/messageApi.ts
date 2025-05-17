@@ -28,11 +28,20 @@ export const messageApi = baseApi.injectEndpoints({
       CreateMessageResponse,
       CreateMessageRequest
     >({
-      query: (payload) => ({
-        url: MESSAGE_CONTROLLER.CREATE_MESSAGE,
-        body: payload,
-        method: HTTP_METHODS.POST,
-      }),
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      query: ({ files, ...payload }) => {
+        // const formData = convertObjectToFormData(payload);
+        // if (files) {
+        //   Array.from(files).forEach((file) => {
+        //     formData.append("files", file);
+        //   });
+        // }
+        return {
+          url: MESSAGE_CONTROLLER.CREATE_MESSAGE,
+          body: payload,
+          method: HTTP_METHODS.POST,
+        };
+      },
       async onQueryStarted(
         { channelId },
         { dispatch, queryFulfilled, getState },

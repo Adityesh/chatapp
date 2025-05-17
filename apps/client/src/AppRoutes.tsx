@@ -19,6 +19,7 @@ export default function () {
     <BrowserRouter
       future={{
         v7_startTransition: true,
+        v7_relativeSplatPath: true,
       }}
     >
       <SidebarProvider>

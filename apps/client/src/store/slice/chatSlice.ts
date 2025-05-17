@@ -14,8 +14,10 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     UPDATE_DRAFT: (state, action: PayloadAction<UpdateDraftAction>) => {
+      console.log(action.payload.content);
+      const channelDraft = state.drafts[action.payload.channelId];
       state.drafts[action.payload.channelId] = {
-        ...state.drafts[action.payload.channelId],
+        ...channelDraft,
         ...action.payload,
       };
     },

@@ -9,7 +9,9 @@ import {
   GetMessagesPaginatedResponseDto,
 } from "../dto";
 
-export type CreateMessageRequest = ClassProperties<typeof CreateMessageDto>;
+export type CreateMessageRequest = ClassProperties<typeof CreateMessageDto> & {
+  files?: FileList | null;
+};
 export type CreateMessageResponse = ClassProperties<
   typeof CreateMessageResponseDto
 >;
