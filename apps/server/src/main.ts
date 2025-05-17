@@ -36,7 +36,12 @@ const sessionMiddleware = session({
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    }),
+  );
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.enableCors({
     origin: validatedEnv.CLIENT_ORIGIN,

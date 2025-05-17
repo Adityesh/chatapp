@@ -590,3 +590,16 @@
 [2025-05-03T18:25:42.711Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1746296696020,"SchemaUpdate1746296696020"]
 [2025-05-03T18:25:42.713Z][QUERY]: COMMIT
 [2025-05-03T18:25:42.714Z]Migration SchemaUpdate1746296696020 has been  executed successfully.
+[2025-05-17T20:18:31.393Z][QUERY]: SELECT * FROM current_schema()
+[2025-05-17T20:18:39.838Z][QUERY]: SELECT version();
+[2025-05-17T20:18:39.841Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'projects' AND "table_name" = 'chatapp_migrations'
+[2025-05-17T20:18:39.846Z][QUERY]: SELECT * FROM "projects"."chatapp_migrations" "chatapp_migrations" ORDER BY "id" DESC
+[2025-05-17T20:18:39.847Z]13 migrations are already loaded in the database.
+[2025-05-17T20:18:39.847Z]14 migrations were found in the source code.
+[2025-05-17T20:18:39.847Z]SchemaUpdate1746296696020 is the last executed migration. It was executed on Sat May 03 2025 23:54:56 GMT+0530 (India Standard Time).
+[2025-05-17T20:18:39.848Z]1 migrations are new migrations must be executed.
+[2025-05-17T20:18:39.848Z][QUERY]: START TRANSACTION
+[2025-05-17T20:18:39.848Z][QUERY]: ALTER TABLE "projects"."message_attachments" ADD "vendor_id" character varying
+[2025-05-17T20:18:39.853Z][QUERY]: INSERT INTO "projects"."chatapp_migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1747513081857,"SchemaUpdate1747513081857"]
+[2025-05-17T20:18:39.855Z][QUERY]: COMMIT
+[2025-05-17T20:18:39.857Z]Migration SchemaUpdate1747513081857 has been  executed successfully.

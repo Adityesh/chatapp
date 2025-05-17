@@ -7,12 +7,15 @@ import {
   CreateMessageDto,
   DeleteMessageDto,
   EditMessageDto,
+  InsertMessageAttachmentDto,
   PaginatedSearchQuery,
 } from 'shared';
 import { paginate } from 'nestjs-paginate';
 import { MESSAGE_PAGINATION_CONFIG } from '../common/utils/pagination';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { MessageAttachmentService } from '../messageattachment/messageattachment.service';
 
 @Injectable()
 export class MessageService {
@@ -21,11 +24,14 @@ export class MessageService {
     private readonly messageRepository: Repository<Message>,
     @InjectMapper()
     private readonly mapper: Mapper,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly messageAttachmentService: MessageAttachmentService,
   ) {}
 
   async createMessage(
     { channelId, content, replyTo }: CreateMessageDto,
     currentUserId: number,
+    files?: Array<Express.Multer.File>,
   ): Promise<BaseMessageDto> {
     const messageQuery = await this.messageRepository
       .createQueryBuilder('message')
@@ -43,14 +49,22 @@ export class MessageService {
         },
         content,
       })
+      .returning(['id'])
       .execute();
-    const savedMessage = await this.getMessageById(messageQuery.raw[0].id);
+    const messageId: number = messageQuery.raw[0].id;
+
+    if (files) {
+      await this.uploadAndInsertAttachments(files, messageId);
+    }
+
+    const savedMessage = await this.getMessageById(messageId);
     return await this.mapper.mapAsync(savedMessage, Message, BaseMessageDto);
   }
 
   async editMessage(
     { messageId, content }: EditMessageDto,
     currentUserId: number,
+    files?: Array<Express.Multer.File>,
   ): Promise<BaseMessageDto> {
     const messageQuery = this.messageRepository
       .createQueryBuilder('message')
@@ -69,6 +83,10 @@ export class MessageService {
     const message = await messageQuery.getOne();
     message.content = content;
     message.isEdited = true;
+
+    if (files) {
+      await this.uploadAndInsertAttachments(files, messageId);
+    }
     const savedMessage = await this.messageRepository.save(message);
     const messageResult = await this.getMessageById(savedMessage.id);
     return await this.mapper.mapAsync(messageResult, Message, BaseMessageDto);
@@ -119,7 +137,7 @@ export class MessageService {
         "You don't have permission to delete this message",
       );
     }
-
+    await this.messageAttachmentService.deleteAttachmentByMessageId(messageId);
     const { affected } = await this.messageRepository.delete(messageId);
     return affected === 1;
   }
@@ -135,5 +153,27 @@ export class MessageService {
       .leftJoinAndSelect('message.messageStatus', 'messageStatus')
       .addSelect(['channel.id'])
       .getOne();
+  }
+
+  async uploadAndInsertAttachments(
+    files: Array<Express.Multer.File>,
+    messageId: number,
+  ) {
+    const fileUrls = await this.cloudinaryService.uploadMultipeFiles(files);
+    if (fileUrls.length > 0) {
+      const insertAttachmentDtos: InsertMessageAttachmentDto[] = fileUrls.map(
+        (file, index) => ({
+          messageId,
+          url: file.url,
+          size: file.bytes,
+          mimeType: files[index].mimetype,
+          vendorId: file.public_id,
+        }),
+      );
+      return await this.messageAttachmentService.insertAttachments(
+        insertAttachmentDtos,
+      );
+    }
+    return false;
   }
 }

@@ -11,7 +11,7 @@ import { ConnectionModule } from './connection/connection.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { MessageModule } from './message/message.module';
-import { MessageattachmentModule } from './messageattachment/messageattachment.module';
+import { MessageAttachmentModule } from './messageattachment/messageattachment.module';
 import { MessagestatusModule } from './messagestatus/messagestatus.module';
 import { ChanneluserController } from './channeluser/channeluser.controller';
 import { ChannelModule } from './channel/channel.module';
@@ -35,7 +35,7 @@ import { ChannelUserModule } from './channeluser/channeluser.module';
     ConnectionModule,
     DatabaseModule,
     MessageModule,
-    MessageattachmentModule,
+    MessageAttachmentModule,
     MessagestatusModule,
     ChannelUserModule,
     ChannelModule,

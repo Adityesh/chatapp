@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { MessageattachmentController } from './messageattachment.controller';
-import { MessageattachmentService } from './messageattachment.service';
+import { MessageAttachmentController } from './messageattachment.controller';
+import { MessageAttachmentService } from './messageattachment.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MessageAttachment } from './messageattachment.entity';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
-  controllers: [MessageattachmentController],
-  providers: [MessageattachmentService],
+  controllers: [MessageAttachmentController],
+  providers: [MessageAttachmentService],
+  imports: [TypeOrmModule.forFeature([MessageAttachment]), CloudinaryModule],
+  exports: [MessageAttachmentService],
 })
-export class MessageattachmentModule {}
+export class MessageAttachmentModule {}

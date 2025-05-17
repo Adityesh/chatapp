@@ -29,4 +29,17 @@ export class CloudinaryService {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async deleteFiles(publicIds: string[]) {
+    try {
+      return Promise.all(
+        publicIds.map((file) => {
+          return cloudinary.uploader.destroy(file);
+        }),
+      );
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
 }

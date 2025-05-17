@@ -22,4 +22,8 @@ export class MessageAttachment extends BaseEntity {
     onDelete: 'CASCADE',
   })
   message: Message;
+
+  @Column({ name: 'vendor_id', nullable: true })
+  vendorId?: string;
+
 }

@@ -16,7 +16,9 @@ export type CreateMessageResponse = ClassProperties<
   typeof CreateMessageResponseDto
 >;
 
-export type EditMessageRequest = ClassProperties<typeof EditMessageDto>;
+export type EditMessageRequest = ClassProperties<typeof EditMessageDto> & {
+  files?: FileList | null;
+};
 export type EditMessageResponse = ClassProperties<
   typeof EditMessageResponseDto
 >;

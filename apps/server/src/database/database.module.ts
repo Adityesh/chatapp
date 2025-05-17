@@ -22,7 +22,7 @@ import { ConfigurationService } from '../configuration/configuration.service';
             migrationsDir: __dirname + '/database/migrations/',
           },
           migrationsRun: true,
-          logging: ['error'],
+          logging: ['error', 'query'],
         } as TypeOrmModuleOptions;
       },
     }),

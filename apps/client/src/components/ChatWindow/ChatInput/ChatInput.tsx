@@ -23,10 +23,14 @@ export type ChatInputProps = {
 };
 
 const ChatInput = ({ channelId }: ChatInputProps) => {
-  const { inputProps, showFilePreview, deleteFile, files } = useFileInput({
-    multiple: true,
-    accept: "image/*",
-  });
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { inputProps, showFilePreview, deleteFile, files, resetFiles } =
+    useFileInput({
+      multiple: true,
+      accept: "image/*",
+      afterFileInput: () => fileInputRef?.current?.focus(),
+    });
   const [emojiOpen, setEmojiOpen] = useState(false);
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
@@ -45,8 +49,6 @@ const ChatInput = ({ channelId }: ChatInputProps) => {
       skip: !pathname.includes(APP_URL.CHAT),
     },
   );
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleResetAction = () => dispatch(RESET_DRAFT({ channelId }));
 
@@ -58,10 +60,12 @@ const ChatInput = ({ channelId }: ChatInputProps) => {
       const result = await editMessage({
         content,
         messageId: channelDraft.messageId,
+        files
       }).unwrap();
 
       if (!result.error) {
         dispatch(RESET_DRAFT({ channelId }));
+        resetFiles();
       }
       return;
     }
@@ -76,6 +80,7 @@ const ChatInput = ({ channelId }: ChatInputProps) => {
 
     if (!result.error) {
       dispatch(RESET_DRAFT({ channelId }));
+      resetFiles();
     }
   };
 
@@ -99,21 +104,30 @@ const ChatInput = ({ channelId }: ChatInputProps) => {
     }
   }, [debouncedContent, content, channelId, dispatch]);
 
-  const handleFileUpload = () => {
-    fileInputRef.current?.click();
-  };
-
   return (
     <form onSubmit={handleMessageActions} className={"relative"}>
-      <input {...inputProps} ref={fileInputRef} className={"hidden"} key={new Date().toISOString()}/>
+      <input
+        {...inputProps}
+        ref={fileInputRef}
+        className={"hidden"}
+        key={new Date().toISOString()}
+      />
       {displayUsersTyping.length > 0 && <span>{displayUsersTyping}</span>}
-      <ActionView channelId={channelId} files={showFilePreview()} deleteFile={deleteFile}/>
+      <ActionView
+        channelId={channelId}
+        files={showFilePreview()}
+        deleteFile={deleteFile}
+      />
       <div className={"flex items-center relative"}>
         <WithToolTip tooltipText={"Attachment"}>
-          <Paperclip
-            className={`cursor-pointer mr-2`}
-            onClick={handleFileUpload}
-          />
+          <button
+            onClick={(event) => {
+              event.preventDefault();
+              fileInputRef.current?.click();
+            }}
+          >
+            <Paperclip className={`cursor-pointer mr-2`} />
+          </button>
         </WithToolTip>
         <WithToolTip tooltipText={"Emoticon"}>
           <EmojiInput
@@ -126,14 +140,15 @@ const ChatInput = ({ channelId }: ChatInputProps) => {
               inputRef?.current?.focus();
             }}
           >
-            <Laugh
-              className={`cursor-pointer mr-2`}
+            <button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 setEmojiOpen(true);
               }}
-            />
+            >
+              <Laugh className={`cursor-pointer mr-2`} />
+            </button>
           </EmojiInput>
         </WithToolTip>
         <Input

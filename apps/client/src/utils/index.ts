@@ -69,7 +69,10 @@ export function objToQuery(obj: any) {
 export function convertObjectToFormData(obj: any) {
   const formData = new FormData();
   for (const key in obj) {
-    formData.append(key, obj[key]);
+    const value = obj[key];
+    if(value) {
+      formData.append(key, value);
+    }
   }
   return formData;
 }

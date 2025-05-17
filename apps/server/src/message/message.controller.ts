@@ -2,13 +2,18 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseIntPipe,
   Patch,
   Post,
   Req,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
 import { ProtectedGuard } from '../auth/guards/protected.guard';
@@ -21,6 +26,7 @@ import {
 } from 'shared';
 import { Paginate } from 'nestjs-paginate';
 import { SocketService } from '../socket/socket.service';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('message')
 @UseGuards(ProtectedGuard)
@@ -30,15 +36,27 @@ export class MessageController {
     private readonly socketService: SocketService,
   ) {}
 
-  @Post('')
+  @Post()
+  @UseInterceptors(FilesInterceptor('files', 3))
   async create(
     @Body() createMessageDto: CreateMessageDto,
     @Req() req: Request,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif)' }),
+        ],
+        fileIsRequired: false,
+      }),
+    )
+    files?: Array<Express.Multer.File>,
   ) {
     const currentUserId: number = req['user'].id;
     const savedMessage = await this.messageService.createMessage(
       createMessageDto,
       currentUserId,
+      files,
     );
     this.socketService.broadcastMessage(
       createMessageDto.channelId,
@@ -50,11 +68,26 @@ export class MessageController {
   }
 
   @Patch()
-  async edit(@Body() editMessageDto: EditMessageDto, @Req() req: Request) {
+  @UseInterceptors(FilesInterceptor('files', 3))
+  async edit(
+    @Body() editMessageDto: EditMessageDto,
+    @Req() req: Request,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif)' }),
+        ],
+        fileIsRequired: false,
+      }),
+    )
+    files?: Array<Express.Multer.File>,
+  ) {
     const currentUserId: number = req['user'].id;
     const editedMessage = await this.messageService.editMessage(
       editMessageDto,
       currentUserId,
+      files,
     );
     this.socketService.broadcastMessage(
       editedMessage.channel.id,

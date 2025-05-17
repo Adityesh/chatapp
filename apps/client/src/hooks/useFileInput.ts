@@ -6,6 +6,7 @@ type useFileInputProps = {
   multiple: boolean;
   accept?: string;
   maxFileLimit?: number;
+  afterFileInput?: () => void;
 };
 
 export type useFileInputResult = {
@@ -31,6 +32,7 @@ export const useFileInput = ({
   multiple,
   accept,
   maxFileLimit,
+  afterFileInput,
 }: useFileInputProps): useFileInputResult => {
   const [files, setFiles] = useState<FileList | null>(null);
 
@@ -56,8 +58,9 @@ export const useFileInput = ({
         return;
       }
       setFiles(selectedFiles);
+      afterFileInput && afterFileInput();
     },
-    [],
+    [afterFileInput, maxFileLimit],
   );
 
   const showFilePreview = () => {
